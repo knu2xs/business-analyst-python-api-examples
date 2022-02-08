@@ -1,0 +1,40 @@
+name: ba-ex
+
+channels:
+  - esri
+  - conda-forge
+
+dependencies:
+  - arcgis
+  - cookiecutter
+  - dask
+  - h3-py
+  - jupyterlab
+  - mkdocs
+  - munch
+  - nodejs
+  - pip
+  - pytest
+  - python=3.7
+  - python-dotenv
+  - pyarrow
+  - pyyaml
+  - scipy
+  - scikit-learn
+  - seaborn
+  - shapely
+  - swifter
+  - tabulate
+  - tqdm
+  - pip:
+    - azure-storage-blob
+    - boto3
+    - bump2version
+    - ipykernel
+    - nbsphinx
+    - placekey
+    - sphinx
+    - sphinx-autodoc-typehints
+    - tox
+    - tox-conda
+    - twine
