@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'business-analyst-python-api-examples'
+project = 'BA-Python-API-Examples'
 copyright = '2021, Joel McCune'
 author = 'Joel McCune'
 
@@ -34,8 +34,6 @@ author = 'Joel McCune'
 release = '0.0.0'
 
 # -- Copying notebooks for inclusion -----------------------------------------
-
-print("Copy example notebooks into docsrc/notebooks")
 prj_dir = os.path.abspath('../../')
 
 def all_but_ipynb(dir, contents):
@@ -45,7 +43,7 @@ def all_but_ipynb(dir, contents):
             result += [c]
     return result
 
-shutil.rmtree(os.path.join(prj_dir, "docsrc", "source", "_notebooks"), ignore_errors=True)
+shutil.rmtree(os.path.join(prj_dir, "docsrc", "source", "notebooks"), ignore_errors=True)
 shutil.copytree(
     os.path.join(prj_dir, "notebooks"),
     os.path.join(prj_dir, "docsrc", "source", "notebooks"),

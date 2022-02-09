@@ -1,0 +1,9 @@
+Workflows
+=========
+
+The examples found in this section are much more about application, things I have
+cooked up and tried. These examples are much less likely to run in your environment
+since they may require additional dependencies or depend on datasets not included
+with this repository.
+
+.. toctree::
