@@ -7,7 +7,7 @@ Business Analyst Python API Examples
 
 Recently, the development team working on Business Analyst has put significant resources into improving the 
 functionality of Business Analyst through Python, specifically the Python API for ArcGIS, the ``arcgis`` 
-package. This repository contains examples of how this functionality can be used. 
+package. This `repository`_ contains examples of how this functionality can be used. 
 
 .. note::
 
@@ -21,3 +21,5 @@ package. This repository contains examples of how this functionality can be used
    Setup <setup>
    Capabilities <capabilities>
    Workflows <workflows>
+
+.. _repository: https://github.com/knu2xs/business-analyst-python-api-examples

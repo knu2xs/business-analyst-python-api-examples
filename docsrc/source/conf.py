@@ -140,7 +140,11 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     'page_width': '70%',
-    'fixed_sidebar': True
+    'fixed_sidebar': True,
+    'github_button': True,
+    'github_user': 'knu2xs',
+    'github_repo': 'business-analyst-python-api-examples',
+    'github_count': False
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

@@ -5,7 +5,7 @@ If you just want to get started and not be encumbered by reading much background
 the command line in a location where you want to save this repo. If you are using Conda packaged with ArcGIS
 Pro, you will need to ensure you open the command prompt from Start > ArcGIS > Python Command Prompt.
 
-.. code-block:: batch
+.. code-block:: bash
 
     git clone https://github.com/knu2xs/business-analyst-python-api-examples
     cd business-analyst-demos
