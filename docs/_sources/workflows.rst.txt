@@ -7,3 +7,5 @@ since they may require additional dependencies or depend on datasets not include
 with this repository.
 
 .. toctree::
+
+    Variables for Medical Fraud <notebooks/medical-fraud-enrich-aliases-to-excel>

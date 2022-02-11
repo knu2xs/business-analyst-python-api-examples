@@ -1,0 +1,1574 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Create a Country Object Instance &#8212; BA-Python-API-Examples 0.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <link rel="index" title="Index" href="../genindex.htm" />
+    <link rel="search" title="Search" href="../search.htm" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.htm">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<p># Getting Data for Medical Fraud Detection</p>
+<p>The need, in this case, is to get potentially relevant variables to Excel with <em>intelligible</em> column names for follow on analyses for medical fraud detection using Excel.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span><span class="p">,</span> <span class="n">enrich</span>
+<span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># paths to common data locations</span>
+<span class="n">dir_prj</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">dir_data</span> <span class="o">=</span> <span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;data&#39;</span>
+<span class="n">dir_int</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;interim&#39;</span>
+
+<span class="c1"># load environment variables from .env</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># create a GIS object instance; if you did not enter any information here, it defaults to anonymous access to ArcGIS Online</span>
+<span class="n">gis</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span>
+    <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">),</span>
+    <span class="n">password</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">))</span> <span class="ow">is</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">gis</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a></div>
+</div>
+<section id="Create-a-Country-Object-Instance">
+<h1>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this headline">¶</a></h1>
+<p>The starting point is creation of a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance to work with.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cntry</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis</span><span class="p">)</span>
+
+<span class="n">cntry</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States (GIS @ https://bateam.maps.arcgis.com version:9.4)&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Retrieve-Standard-Geographies-for-Analysis">
+<h1>Retrieve Standard Geographies for Analysis<a class="headerlink" href="#Retrieve-Standard-Geographies-for-Analysis" title="Permalink to this headline">¶</a></h1>
+<p>Standard geographies can be retrieved from the country object. Especially for the CBSA’s, the exact string can be difficult to figure out. Thankfully, the <code class="docutils literal notranslate"><span class="pre">`standard_geography_query</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query</a>&gt;`__ can be used to search for the exact string to use for retrieving subgeographies.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zip_dict</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">subgeographies</span><span class="o">.</span><span class="n">cbsa</span><span class="p">[</span><span class="s1">&#39;Olympia-Lacey-Tumwater,_WA_Metropolitan_Statistical_Area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">zip5</span>
+
+<span class="n">zip_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;98501&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98501&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98502&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98502&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98503&#39;: &lt;NamedArea name:&#34;Lacey&#34; area_id=&#34;98503&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98506&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98506&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98512&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98512&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98513&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98513&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98516&#39;: &lt;NamedArea name:&#34;Olympia&#34; area_id=&#34;98516&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98530&#39;: &lt;NamedArea name:&#34;Bucoda&#34; area_id=&#34;98530&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98531&#39;: &lt;NamedArea name:&#34;Centralia&#34; area_id=&#34;98531&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98576&#39;: &lt;NamedArea name:&#34;Rainier&#34; area_id=&#34;98576&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98579&#39;: &lt;NamedArea name:&#34;Rochester&#34; area_id=&#34;98579&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98589&#39;: &lt;NamedArea name:&#34;Tenino&#34; area_id=&#34;98589&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;,
+ &#39;98597&#39;: &lt;NamedArea name:&#34;Yelm&#34; area_id=&#34;98597&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;}
+</pre></div></div>
+</div>
+</section>
+<section id="Enrich">
+<h1>Enrich<a class="headerlink" href="#Enrich" title="Permalink to this headline">¶</a></h1>
+<section id="Get-Variables-for-Enrichment">
+<h2>Get Variables for Enrichment<a class="headerlink" href="#Get-Variables-for-Enrichment" title="Permalink to this headline">¶</a></h2>
+<p>Using the filtering capabilities for Pandas data frames, we can quickly create a list of variables to work with. It is useful to note, even though I do not take advantage of it below, the <cite>Pandas ``contains`</cite> &lt;<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html</a>&gt;`__ method supports <a class="reference external" href="https://docs.python.org/3/howto/regex.html">Python regular expression</a> string syntax facilitating very powerful filtering.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich_variables</span>
+
+<span class="n">sv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span> <span class="o">==</span> <span class="s1">&#39;Health&#39;</span><span class="p">)</span>      <span class="c1"># &quot;Health&quot; data collection</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">vintage</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;2021&#39;</span><span class="p">))</span>   <span class="c1"># 2021 variables</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Avg:&#39;</span><span class="p">))</span>    <span class="c1"># Exclude averages</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;Index:&#39;</span><span class="p">))</span>  <span class="c1"># Exclude index variables</span>
+<span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+      <th>description</th>
+      <th>vintage</th>
+      <th>units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>X8001_X</td>
+      <td>2021 Health Care</td>
+      <td>Health</td>
+      <td>Health.X8001_X</td>
+      <td>Health_X8001_X</td>
+      <td>2021 Health Care</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>X8002_X</td>
+      <td>2021 Health Insurance</td>
+      <td>Health</td>
+      <td>Health.X8002_X</td>
+      <td>Health_X8002_X</td>
+      <td>2021 Health Insurance</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>X8041_X</td>
+      <td>2021 Fee for Svc Health Plan Excl Blue Cross/B...</td>
+      <td>Health</td>
+      <td>Health.X8041_X</td>
+      <td>Health_X8041_X</td>
+      <td>2021 Fee for Service Health Plan Excluding Blu...</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>X8012_X</td>
+      <td>2021 HMO Excl Blue Cross/Blue Shield</td>
+      <td>Health</td>
+      <td>Health.X8012_X</td>
+      <td>Health_X8012_X</td>
+      <td>2021 HMO Excluding Blue Cross/Blue Shield</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X8015_X</td>
+      <td>2021 Medicare Supplements Excl Blue Cross/Blue...</td>
+      <td>Health</td>
+      <td>Health.X8015_X</td>
+      <td>Health_X8015_X</td>
+      <td>2021 Medicare Supplements Excluding Blue Cross...</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>MEDAGE_CY</td>
+      <td>2021 Median Age</td>
+      <td>Health</td>
+      <td>Health.MEDAGE_CY</td>
+      <td>Health_MEDAGE_CY</td>
+      <td>2021 Median Age (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>Health</td>
+      <td>Health.MEDHINC_CY</td>
+      <td>Health_MEDHINC_CY</td>
+      <td>2021 Median Household Income (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>S27_BUS</td>
+      <td>2021 Health Services - Businesses (SIC)</td>
+      <td>Health</td>
+      <td>Health.S27_BUS</td>
+      <td>Health_S27_BUS</td>
+      <td>2021 Health Services (SIC80) Businesses</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>S27_SALES</td>
+      <td>2021 Health Services - Sales ($000) (SIC)</td>
+      <td>Health</td>
+      <td>Health.S27_SALES</td>
+      <td>Health_S27_SALES</td>
+      <td>2021 Health Services (SIC80) Sales ($000)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>S27_EMP</td>
+      <td>2021 Health Services - Employees (SIC)</td>
+      <td>Health</td>
+      <td>Health.S27_EMP</td>
+      <td>Health_S27_EMP</td>
+      <td>2021 Health Services (SIC80) Employees</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+  </tbody>
+</table>
+<p>68 rows × 8 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Perform-Enrichment">
+<h2>Perform Enrichment<a class="headerlink" href="#Perform-Enrichment" title="Permalink to this headline">¶</a></h2>
+<p>Enrichment is as straightforward as running the <code class="docutils literal notranslate"><span class="pre">`enrich</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich</a>&gt;`__. Please notice the input for the <code class="docutils literal notranslate"><span class="pre">analysis_variables</span></code> parameter, a list of variable names. In the next release, you will be able to just input the filtered enrichment variables dataframe to make this easier, but for now, we still need to prepare the input for this parameter a bit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_df</span> <span class="o">=</span> <span class="n">enrich</span><span class="p">(</span><span class="n">zip_dict</span><span class="p">,</span> <span class="n">analysis_variables</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">sv</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">return_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis</span><span class="p">)</span>
+
+<span class="n">enrich_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>OBJECTID</th>
+      <th>StdGeographyLevel</th>
+      <th>StdGeographyName</th>
+      <th>StdGeographyID</th>
+      <th>sourceCountry</th>
+      <th>aggregationMethod</th>
+      <th>populationToPolygonSizeRating</th>
+      <th>apportionmentConfidence</th>
+      <th>HasData</th>
+      <th>...</th>
+      <th>POP75_CY</th>
+      <th>POP80_CY</th>
+      <th>POP85_CY</th>
+      <th>POP18UP_CY</th>
+      <th>POP21UP_CY</th>
+      <th>MEDAGE_CY</th>
+      <th>MEDHINC_CY</th>
+      <th>S27_BUS</th>
+      <th>S27_SALES</th>
+      <th>S27_EMP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98501</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>1516</td>
+      <td>945</td>
+      <td>1028</td>
+      <td>36826</td>
+      <td>35334</td>
+      <td>41.9</td>
+      <td>80354</td>
+      <td>112</td>
+      <td>140533</td>
+      <td>933</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98502</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>1141</td>
+      <td>674</td>
+      <td>794</td>
+      <td>29992</td>
+      <td>28297</td>
+      <td>39.8</td>
+      <td>76355</td>
+      <td>182</td>
+      <td>266062</td>
+      <td>1790</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>3</td>
+      <td>US.ZIP5</td>
+      <td>Lacey</td>
+      <td>98503</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>1326</td>
+      <td>915</td>
+      <td>1318</td>
+      <td>33065</td>
+      <td>31301</td>
+      <td>37.5</td>
+      <td>70669</td>
+      <td>96</td>
+      <td>242272</td>
+      <td>1643</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>4</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98506</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>714</td>
+      <td>440</td>
+      <td>718</td>
+      <td>16272</td>
+      <td>15755</td>
+      <td>45.3</td>
+      <td>72398</td>
+      <td>171</td>
+      <td>297161</td>
+      <td>4198</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>5</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98512</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>1039</td>
+      <td>610</td>
+      <td>621</td>
+      <td>26305</td>
+      <td>25273</td>
+      <td>43.2</td>
+      <td>81002</td>
+      <td>41</td>
+      <td>39399</td>
+      <td>370</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>6</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98513</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>938</td>
+      <td>489</td>
+      <td>452</td>
+      <td>27363</td>
+      <td>26262</td>
+      <td>38.1</td>
+      <td>82593</td>
+      <td>4</td>
+      <td>1564</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>7</td>
+      <td>US.ZIP5</td>
+      <td>Olympia</td>
+      <td>98516</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>1160</td>
+      <td>663</td>
+      <td>497</td>
+      <td>21949</td>
+      <td>21105</td>
+      <td>40.7</td>
+      <td>89478</td>
+      <td>53</td>
+      <td>68868</td>
+      <td>451</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7</td>
+      <td>8</td>
+      <td>US.ZIP5</td>
+      <td>Bucoda</td>
+      <td>98530</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>11</td>
+      <td>7</td>
+      <td>5</td>
+      <td>299</td>
+      <td>293</td>
+      <td>44.2</td>
+      <td>50000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>8</td>
+      <td>9</td>
+      <td>US.ZIP5</td>
+      <td>Centralia</td>
+      <td>98531</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>901</td>
+      <td>670</td>
+      <td>861</td>
+      <td>19766</td>
+      <td>18864</td>
+      <td>38.3</td>
+      <td>52691</td>
+      <td>88</td>
+      <td>112573</td>
+      <td>1719</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9</td>
+      <td>10</td>
+      <td>US.ZIP5</td>
+      <td>Rainier</td>
+      <td>98576</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>151</td>
+      <td>77</td>
+      <td>66</td>
+      <td>4491</td>
+      <td>4319</td>
+      <td>44.4</td>
+      <td>78361</td>
+      <td>1</td>
+      <td>194</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>10</td>
+      <td>11</td>
+      <td>US.ZIP5</td>
+      <td>Rochester</td>
+      <td>98579</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>466</td>
+      <td>260</td>
+      <td>172</td>
+      <td>11361</td>
+      <td>10874</td>
+      <td>42.1</td>
+      <td>76899</td>
+      <td>6</td>
+      <td>9334</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>11</td>
+      <td>12</td>
+      <td>US.ZIP5</td>
+      <td>Tenino</td>
+      <td>98589</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>303</td>
+      <td>168</td>
+      <td>131</td>
+      <td>7238</td>
+      <td>6981</td>
+      <td>45.4</td>
+      <td>70765</td>
+      <td>6</td>
+      <td>3377</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12</td>
+      <td>13</td>
+      <td>US.ZIP5</td>
+      <td>Yelm</td>
+      <td>98597</td>
+      <td>US</td>
+      <td>Query:US.ZIP5</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>647</td>
+      <td>371</td>
+      <td>303</td>
+      <td>20302</td>
+      <td>19411</td>
+      <td>37.5</td>
+      <td>74969</td>
+      <td>32</td>
+      <td>30649</td>
+      <td>200</td>
+    </tr>
+  </tbody>
+</table>
+<p>13 rows × 78 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Add-Aliases">
+<h1>Add Aliases<a class="headerlink" href="#Add-Aliases" title="Permalink to this headline">¶</a></h1>
+<section id="Create-Pandas-Series-for-Alias-Lookup">
+<h2>Create Pandas Series for Alias Lookup<a class="headerlink" href="#Create-Pandas-Series-for-Alias-Lookup" title="Permalink to this headline">¶</a></h2>
+<p>We can create a Pandas series enabling easy column alias lookup by removing duplicate names, set the index to the column name, and just keeping the alias column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">var_lookup</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)[</span><span class="s1">&#39;alias&#39;</span><span class="p">]</span>
+
+<span class="n">var_lookup</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+name
+AGE0_CY                                  2021 Population Age &lt;1
+AGE1_CY                                   2021 Population Age 1
+AGE2_CY                                   2021 Population Age 2
+AGE3_CY                                   2021 Population Age 3
+AGE4_CY                                   2021 Population Age 4
+                                    ...
+RELRMV1989       2019 RHHs/Moved In: 1989/Before REL (ACS 5-Yr)
+ACSMEDYRMV     2019 Median Year Householder Moved In (ACS 5-Yr)
+MOEMEDYRMV    2019 Median Year Householder Moved In MOE (ACS...
+RELMEDYRMV    2019 Median Year Householder Moved In REL (ACS...
+RELOWNER                   2019 Owner Households REL (ACS 5-Yr)
+Name: alias, Length: 16275, dtype: object
+</pre></div></div>
+</div>
+</section>
+<section id="Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">
+<h2>Use Alias List to Look Up Relevant Column Aliases<a class="headerlink" href="#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases" title="Permalink to this headline">¶</a></h2>
+<p>Using a ternerary operator in a list comprehension with the Pandas Series created in the last step enables us to look up aliases if there is a match and keep the existing column name if there is not a match. This enables us to create a list of column names for the output data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alias_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_lookup</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">var_lookup</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+
+<span class="n">alias_lst</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;ID&#39;,
+ &#39;OBJECTID&#39;,
+ &#39;StdGeographyLevel&#39;,
+ &#39;StdGeographyName&#39;,
+ &#39;StdGeographyID&#39;,
+ &#39;sourceCountry&#39;,
+ &#39;aggregationMethod&#39;,
+ &#39;populationToPolygonSizeRating&#39;,
+ &#39;apportionmentConfidence&#39;,
+ &#39;HasData&#39;,
+ &#39;2021 Health Care&#39;,
+ &#39;2021 Health Insurance&#39;,
+ &#39;2021 Fee for Svc Health Plan Excl Blue Cross/Blue Shield&#39;,
+ &#39;2021 HMO Excl Blue Cross/Blue Shield&#39;,
+ &#39;2021 Medicare Supplements Excl Blue Cross/Blue Shield&#39;,
+ &#39;2021 Blue Cross/Blue Shield&#39;,
+ &#39;2021 Blue Cross/Blue Shield Fee-Svc Health Plan&#39;,
+ &#39;2021 Blue Cross/Blue Shield HMO&#39;,
+ &#39;2021 Blue Cross/Blue Shield Commercial Medicare Supplmt&#39;,
+ &#39;2021 Blue Cross/Blue Shield Dental Care Insur&#39;,
+ &#39;2021 Blue Cross/Blue Shield Vision Care Insur&#39;,
+ &#39;2021 Blue Cross/Blue Shield Prescription Drug Insur&#39;,
+ &#39;2021 Blue Cross/Blue Shield Long Term Care Insur&#39;,
+ &#39;2021 Blue Cross/Blue Shield Oth Single Svc Insur&#39;,
+ &#39;2021 Medicare Payments&#39;,
+ &#39;2021 Medicaid Premiums&#39;,
+ &#39;2021 Tricare/Military Premiums&#39;,
+ &#39;2021 Children`s Health Insur Program (CHIP) Premiums&#39;,
+ &#39;2021 Medical Care&#39;,
+ &#39;2021 Medical Services&#39;,
+ &#39;2021 Physician Services&#39;,
+ &#39;2021 Dental Services&#39;,
+ &#39;2021 Eyecare Services&#39;,
+ &#39;2021 Non-Physician Svcs Inside Home&#39;,
+ &#39;2021 Non-Physician Svcs Outside Home&#39;,
+ &#39;2021 Lab Tests/X-Rays&#39;,
+ &#39;2021 Hospital Room/Hospital Svc&#39;,
+ &#39;2021 Convalescent/Nursing Home Care&#39;,
+ &#39;2021 Oth Medical Svcs&#39;,
+ &#39;2021 Drugs/Vitamins&#39;,
+ &#39;2021 NonPrescription Drugs&#39;,
+ &#39;2021 Prescription Drugs&#39;,
+ &#39;2021 NonPrescription Vitamins&#39;,
+ &#39;2021 Medicare Prescription Drug Premium&#39;,
+ &#39;2021 Medical Supplies&#39;,
+ &#39;2021 Eyeglasses/Contact Lenses&#39;,
+ &#39;2021 Hearing Aids&#39;,
+ &#39;2021 Topicals/Dressings&#39;,
+ &#39;2021 Medical Equip-General Use&#39;,
+ &#39;2021 Supportive/Convalescent Medical Equip&#39;,
+ &#39;2021 Rental of Medical Equip-General Use&#39;,
+ &#39;2021 Rental of Supportive/Convalescent Medical Equip&#39;,
+ &#39;2021 Dom Tapestry Segment Name&#39;,
+ &#39;2021 Population Age 0-4&#39;,
+ &#39;2021 Population Age 5-9&#39;,
+ &#39;2021 Population Age 10-14&#39;,
+ &#39;2021 Population Age 15-19&#39;,
+ &#39;2021 Population Age 20-24&#39;,
+ &#39;2021 Population Age 25-29&#39;,
+ &#39;2021 Population Age 30-34&#39;,
+ &#39;2021 Population Age 35-39&#39;,
+ &#39;2021 Population Age 40-44&#39;,
+ &#39;2021 Population Age 45-49&#39;,
+ &#39;2021 Population Age 50-54&#39;,
+ &#39;2021 Population Age 55-59&#39;,
+ &#39;2021 Population Age 60-64&#39;,
+ &#39;2021 Population Age 65-69&#39;,
+ &#39;2021 Population Age 70-74&#39;,
+ &#39;2021 Population Age 75-79&#39;,
+ &#39;2021 Population Age 80-84&#39;,
+ &#39;2021 Population Age 85+&#39;,
+ &#39;2021 Population Age 18+&#39;,
+ &#39;2021 Population Age 21+&#39;,
+ &#39;2021 Median Age&#39;,
+ &#39;2021 Median Household Income&#39;,
+ &#39;2021 Health Services - Businesses (SIC)&#39;,
+ &#39;2021 Health Services - Sales ($000) (SIC)&#39;,
+ &#39;2021 Health Services - Employees (SIC)&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Prune-Columns">
+<h2>Prune Columns<a class="headerlink" href="#Prune-Columns" title="Permalink to this headline">¶</a></h2>
+<p>If the intention for the output data is for subsequent analysis, it is easier to just have the unique identifier, in this case the zip code, and the enriched columns in the final output. We can create a list of these columns using a list comprehension to filter the column names.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">id_col</span> <span class="o">=</span> <span class="s1">&#39;StdGeographyID&#39;</span>
+
+<span class="n">keep_col_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">id_col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">var_lookup</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+
+<span class="n">sel_df</span> <span class="o">=</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">keep_col_lst</span><span class="p">]</span>
+
+<span class="n">sel_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>StdGeographyID</th>
+      <th>X8001_X</th>
+      <th>X8002_X</th>
+      <th>X8041_X</th>
+      <th>X8012_X</th>
+      <th>X8015_X</th>
+      <th>X8006_X</th>
+      <th>X8042_X</th>
+      <th>X8009_X</th>
+      <th>X8010_X</th>
+      <th>...</th>
+      <th>POP75_CY</th>
+      <th>POP80_CY</th>
+      <th>POP85_CY</th>
+      <th>POP18UP_CY</th>
+      <th>POP21UP_CY</th>
+      <th>MEDAGE_CY</th>
+      <th>MEDHINC_CY</th>
+      <th>S27_BUS</th>
+      <th>S27_SALES</th>
+      <th>S27_EMP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>98501</td>
+      <td>125564861</td>
+      <td>82946494</td>
+      <td>17480482</td>
+      <td>14884608</td>
+      <td>7170661</td>
+      <td>21398640</td>
+      <td>14855839</td>
+      <td>5515270</td>
+      <td>480180</td>
+      <td>...</td>
+      <td>1516</td>
+      <td>945</td>
+      <td>1028</td>
+      <td>36826</td>
+      <td>35334</td>
+      <td>41.9</td>
+      <td>80354</td>
+      <td>112</td>
+      <td>140533</td>
+      <td>933</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>98502</td>
+      <td>95864256</td>
+      <td>63381327</td>
+      <td>12919620</td>
+      <td>11663331</td>
+      <td>5582000</td>
+      <td>16126731</td>
+      <td>11195309</td>
+      <td>4135517</td>
+      <td>370443</td>
+      <td>...</td>
+      <td>1141</td>
+      <td>674</td>
+      <td>794</td>
+      <td>29992</td>
+      <td>28297</td>
+      <td>39.8</td>
+      <td>76355</td>
+      <td>182</td>
+      <td>266062</td>
+      <td>1790</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>98503</td>
+      <td>93164805</td>
+      <td>61554303</td>
+      <td>12895647</td>
+      <td>10808456</td>
+      <td>5387191</td>
+      <td>16054938</td>
+      <td>11152453</td>
+      <td>4129485</td>
+      <td>358297</td>
+      <td>...</td>
+      <td>1326</td>
+      <td>915</td>
+      <td>1318</td>
+      <td>33065</td>
+      <td>31301</td>
+      <td>37.5</td>
+      <td>70669</td>
+      <td>96</td>
+      <td>242272</td>
+      <td>1643</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>98506</td>
+      <td>53087085</td>
+      <td>35003255</td>
+      <td>7063814</td>
+      <td>6065116</td>
+      <td>3285978</td>
+      <td>8817808</td>
+      <td>6116308</td>
+      <td>2249011</td>
+      <td>222312</td>
+      <td>...</td>
+      <td>714</td>
+      <td>440</td>
+      <td>718</td>
+      <td>16272</td>
+      <td>15755</td>
+      <td>45.3</td>
+      <td>72398</td>
+      <td>171</td>
+      <td>297161</td>
+      <td>4198</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>98512</td>
+      <td>84464691</td>
+      <td>55700618</td>
+      <td>11352475</td>
+      <td>9668400</td>
+      <td>5058839</td>
+      <td>14429007</td>
+      <td>10061386</td>
+      <td>3651490</td>
+      <td>352823</td>
+      <td>...</td>
+      <td>1039</td>
+      <td>610</td>
+      <td>621</td>
+      <td>26305</td>
+      <td>25273</td>
+      <td>43.2</td>
+      <td>81002</td>
+      <td>41</td>
+      <td>39399</td>
+      <td>370</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 69 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Apply-Aliases">
+<h2>Apply Aliases<a class="headerlink" href="#Apply-Aliases" title="Permalink to this headline">¶</a></h2>
+<p>Using the same method as above, we can create a list of aliases. These aliases can then be applied to the output data frame. Also, to faciliate quick retrieval by ID, we can set the index to this ID.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alias_lst</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_lookup</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">var_lookup</span><span class="o">.</span><span class="n">index</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">keep_col_lst</span><span class="p">]</span>
+
+<span class="n">sel_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">alias_lst</span>
+
+<span class="n">sel_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;StdGeographyID&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">sel_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>2021 Health Care</th>
+      <th>2021 Health Insurance</th>
+      <th>2021 Fee for Svc Health Plan Excl Blue Cross/Blue Shield</th>
+      <th>2021 HMO Excl Blue Cross/Blue Shield</th>
+      <th>2021 Medicare Supplements Excl Blue Cross/Blue Shield</th>
+      <th>2021 Blue Cross/Blue Shield</th>
+      <th>2021 Blue Cross/Blue Shield Fee-Svc Health Plan</th>
+      <th>2021 Blue Cross/Blue Shield HMO</th>
+      <th>2021 Blue Cross/Blue Shield Commercial Medicare Supplmt</th>
+      <th>2021 Blue Cross/Blue Shield Dental Care Insur</th>
+      <th>...</th>
+      <th>2021 Population Age 75-79</th>
+      <th>2021 Population Age 80-84</th>
+      <th>2021 Population Age 85+</th>
+      <th>2021 Population Age 18+</th>
+      <th>2021 Population Age 21+</th>
+      <th>2021 Median Age</th>
+      <th>2021 Median Household Income</th>
+      <th>2021 Health Services - Businesses (SIC)</th>
+      <th>2021 Health Services - Sales ($000) (SIC)</th>
+      <th>2021 Health Services - Employees (SIC)</th>
+    </tr>
+    <tr>
+      <th>StdGeographyID</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>98501</th>
+      <td>125564861</td>
+      <td>82946494</td>
+      <td>17480482</td>
+      <td>14884608</td>
+      <td>7170661</td>
+      <td>21398640</td>
+      <td>14855839</td>
+      <td>5515270</td>
+      <td>480180</td>
+      <td>327850</td>
+      <td>...</td>
+      <td>1516</td>
+      <td>945</td>
+      <td>1028</td>
+      <td>36826</td>
+      <td>35334</td>
+      <td>41.9</td>
+      <td>80354</td>
+      <td>112</td>
+      <td>140533</td>
+      <td>933</td>
+    </tr>
+    <tr>
+      <th>98502</th>
+      <td>95864256</td>
+      <td>63381327</td>
+      <td>12919620</td>
+      <td>11663331</td>
+      <td>5582000</td>
+      <td>16126731</td>
+      <td>11195309</td>
+      <td>4135517</td>
+      <td>370443</td>
+      <td>248872</td>
+      <td>...</td>
+      <td>1141</td>
+      <td>674</td>
+      <td>794</td>
+      <td>29992</td>
+      <td>28297</td>
+      <td>39.8</td>
+      <td>76355</td>
+      <td>182</td>
+      <td>266062</td>
+      <td>1790</td>
+    </tr>
+    <tr>
+      <th>98503</th>
+      <td>93164805</td>
+      <td>61554303</td>
+      <td>12895647</td>
+      <td>10808456</td>
+      <td>5387191</td>
+      <td>16054938</td>
+      <td>11152453</td>
+      <td>4129485</td>
+      <td>358297</td>
+      <td>258021</td>
+      <td>...</td>
+      <td>1326</td>
+      <td>915</td>
+      <td>1318</td>
+      <td>33065</td>
+      <td>31301</td>
+      <td>37.5</td>
+      <td>70669</td>
+      <td>96</td>
+      <td>242272</td>
+      <td>1643</td>
+    </tr>
+    <tr>
+      <th>98506</th>
+      <td>53087085</td>
+      <td>35003255</td>
+      <td>7063814</td>
+      <td>6065116</td>
+      <td>3285978</td>
+      <td>8817808</td>
+      <td>6116308</td>
+      <td>2249011</td>
+      <td>222312</td>
+      <td>138775</td>
+      <td>...</td>
+      <td>714</td>
+      <td>440</td>
+      <td>718</td>
+      <td>16272</td>
+      <td>15755</td>
+      <td>45.3</td>
+      <td>72398</td>
+      <td>171</td>
+      <td>297161</td>
+      <td>4198</td>
+    </tr>
+    <tr>
+      <th>98512</th>
+      <td>84464691</td>
+      <td>55700618</td>
+      <td>11352475</td>
+      <td>9668400</td>
+      <td>5058839</td>
+      <td>14429007</td>
+      <td>10061386</td>
+      <td>3651490</td>
+      <td>352823</td>
+      <td>221560</td>
+      <td>...</td>
+      <td>1039</td>
+      <td>610</td>
+      <td>621</td>
+      <td>26305</td>
+      <td>25273</td>
+      <td>43.2</td>
+      <td>81002</td>
+      <td>41</td>
+      <td>39399</td>
+      <td>370</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 68 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Final-Product---Export-to-Excel">
+<h1>Final Product - Export to Excel<a class="headerlink" href="#Final-Product---Export-to-Excel" title="Permalink to this headline">¶</a></h1>
+<p>For follow on analysis using Excel, Pandas data frames can easily be saved to Excel.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sel_df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">dir_int</span><span class="o">/</span><span class="s1">&#39;esri_enriched.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/notebooks/medical-fraud-enrich-aliases-to-excel.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

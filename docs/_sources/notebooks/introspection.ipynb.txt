@@ -81,9 +81,9 @@
    ],
    "source": [
     "gis_agol = GIS(\n",
-    "    url=os.getenv('AGOL_URL'), \n",
-    "    username=os.getenv('AGOL_USERNAME'),\n",
-    "    password=os.getenv('AGOL_PASSWORD')\n",
+    "    url=os.getenv('ESRI_GIS_URL'), \n",
+    "    username=os.getenv('ESRI_GIS_USERNAME'),\n",
+    "    password=os.getenv('ESRI_GIS_PASSWORD')\n",
     ")\n",
     "\n",
     "gis_agol"
