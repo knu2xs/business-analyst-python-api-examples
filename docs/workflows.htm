@@ -16,7 +16,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
-    <link rel="next" title="Create a Country Object Instance" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" />
+    <link rel="next" title="Getting Data for Medical Fraud Detection" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" />
     <link rel="prev" title="Future" href="future.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -43,11 +43,7 @@
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflows</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Create a Country Object Instance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Retrieve-Standard-Geographies-for-Analysis">Retrieve Standard Geographies for Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Enrich">Enrich</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Add-Aliases">Add Aliases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Final-Product---Export-to-Excel">Final Product - Export to Excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a></li>
 </ul>
 </li>
 </ul>
@@ -57,7 +53,7 @@
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
       <li>Previous: <a href="future.htm" title="previous chapter">Future</a></li>
-      <li>Next: <a href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" title="next chapter">Create a Country Object Instance</a></li>
+      <li>Next: <a href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" title="next chapter">Getting Data for Medical Fraud Detection</a></li>
   </ul></li>
 </ul>
 </div>
@@ -95,21 +91,24 @@ since they may require additional dependencies or depend on datasets not include
 with this repository.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Create a Country Object Instance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Retrieve-Standard-Geographies-for-Analysis">Retrieve Standard Geographies for Analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Enrich">Enrich</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Get-Variables-for-Enrichment">Get Variables for Enrichment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Perform-Enrichment">Perform Enrichment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Create-a-Country-Object-Instance">Create a Country Object Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Retrieve-Standard-Geographies-for-Analysis">Retrieve Standard Geographies for Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Enrich">Enrich</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Get-Variables-for-Enrichment">Get Variables for Enrichment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Perform-Enrichment">Perform Enrichment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Add-Aliases">Add Aliases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Create-Pandas-Series-for-Alias-Lookup">Create Pandas Series for Alias Lookup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">Use Alias List to Look Up Relevant Column Aliases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Prune-Columns">Prune Columns</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Apply-Aliases">Apply Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Add-Aliases">Add Aliases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Create-Pandas-Series-for-Alias-Lookup">Create Pandas Series for Alias Lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">Use Alias List to Look Up Relevant Column Aliases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Prune-Columns">Prune Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Apply-Aliases">Apply Aliases</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Final-Product---Export-to-Excel">Final Product - Export to Excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Final-Product---Export-to-Excel">Final Product - Export to Excel</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>
