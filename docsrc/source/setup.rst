@@ -65,8 +65,8 @@ these following commands.
 
     git clone https://github.com/knu2xs/business-analyst-demos
     cd business-analyst-demos
-    make get-geosaurus
-    make env-geosaurus
+    git clone https://github.com/arcgis/geosaurus ./src
+    make env_geosaurus
     jupyter lab
 
 This clones the development branch of the Python API into the ``./src`` directory on your machine, creates
