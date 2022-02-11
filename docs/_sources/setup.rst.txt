@@ -7,12 +7,12 @@ Pro, you will need to ensure you open the command prompt from Start > ArcGIS > P
 
 .. code-block:: batch
 
-    git clone https://github.com/knu2xs/business-analyst-demos
+    git clone https://github.com/knu2xs/business-analyst-python-api-examples
     cd business-analyst-demos
     make env
-    jupyter lab
+    jupyter lab ./notebooks
 
-From there, take a look in the ``./notebooks`` directory to find the example notebooks.
+From there, take a look at the example notebooks.
 
 Requirements
 ############
@@ -49,9 +49,9 @@ comparatively easy. If you *are* helping with development, I have tried to make 
 Creating an Environment with Stable
 ***********************************
 
-If all you need to do is get set up with the stable branch, your live is comparatively straightforward. The
+If all you need to do is get set up with the stable branch, this is comparatively straightforward. The
 four lines above will get you started. These commands retrieve the contents of this repository to your local
-machine, steps into the directory, creates a Conda environment named ``ba-demos``, installs dependencies, and 
+machine, steps into the directory, creates a Conda environment named ``ba-ex``, installs dependencies, and 
 starts Jupyter Lab so you can investigate the example notebooks in the ``./notebooks`` directory.
 
 Creating an Environment with a Development Branch
@@ -61,7 +61,7 @@ If you have access to the development repository, this means you are internal to
 out with development or testing of the Python API. To make your life a little easier as well, you can run
 these following commands.
 
-.. code-block:: batch
+.. code-block:: bash
 
     git clone https://github.com/knu2xs/business-analyst-demos
     cd business-analyst-demos
@@ -70,7 +70,7 @@ these following commands.
     jupyter lab
 
 This clones the development branch of the Python API into the ``./src`` directory on your machine, creates
-an environment named ``geosaurus-demos`` with the same dependences from the ``environment.yml`` file and
+an environment named ``geosaurus`` with the same dependences from the ``environment.yml`` file and
 installs the downloaded development version of the Python API using PIP in edit mode. This means if you 
 need to switch to a different branch or pull updates for any reason, Python will recognize these changes,
 and you can immediately test against them. 

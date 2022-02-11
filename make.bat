@@ -26,8 +26,9 @@
 SETLOCAL
 SET PROJECT_DIR=%cd%
 SET PROJECT_NAME=business-analyst-python-api-examples
-SET SUPPORT_LIBRARY = ba_ex
+SET SUPPORT_LIBRARY=ba_ex
 SET ENV_NAME=ba-ex
+SET ENV_DEV_NAME=geosaurus
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: COMMANDS                                                                     :
@@ -62,7 +63,7 @@ GOTO %1
 :env
     ENDLOCAL & (
 
-        :: Create new environment from environment file
+        :: Create new environment by cloning the original
         CALL conda create --name "%ENV_NAME%" --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
 
         :: Add more fun stuff from environment file
@@ -77,9 +78,25 @@ GOTO %1
     )
     EXIT /B
 
-:: Activate the environment
-:env_activate
-    ENDLOCAL & CALL activate "%ENV_NAME%"
+:env_geosaurus
+    ENDLOCAL & (
+        
+        :: Create new environment by cloning the original
+        CALL conda create --name "%ENV_DEV_NAME%" --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
+
+        :: Add more fun stuff from environment file
+        CALL conda env update -e "%ENV_DEV_NAME%" -f environment.yml
+
+        :: Install geosaurus in development (edit) mode
+        CALL python -m pip install -e ./src/geosaurus/src
+
+        :: Install the local package in development (experimental) mode
+        CALL python -m pip install -e .
+
+        :: Activate the environment so you can get to work
+        CALL activate "%ENV_DEV_NAME%"
+
+    )
     EXIT /B
 
 :: Remove the environment
@@ -89,33 +106,6 @@ GOTO %1
 		CALL conda env remove --name "%ENV_NAME%" -y
 	)
 	EXIT /B
-
-:: Make the package for uploading
-:build
-    ENDLOCAL & (
-
-        :: Build the pip package
-        CALL python setup.py sdist
-
-        :: Build conda package
-        CALL conda build ./conda-recipe --output-folder ./conda-recipe/conda-build
-
-    )
-    EXIT /B
-
-:build_upload
-    ENDLOCAL & (
-
-        :: Build the pip package
-        CALL python setup.py sdist bdist_wheel
-        CALL twine upload ./dist/*
-
-        :: Build conda package
-        CALL conda build ./conda-recipe --output-folder ./conda-recipe/conda-build
-        CALL anaconda upload ./conda-recipe/conda-build/win-64/business-analyst-python-api-examples*.tar.bz2
-
-    )
-    EXIT /B
 
 :: Run all tests in module
 :test
