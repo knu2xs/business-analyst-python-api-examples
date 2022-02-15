@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interesting Facts &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -14,7 +13,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -50,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
 </ul>
 
 <div class="relations">
@@ -333,7 +333,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Interesting-Facts">
+<div class="section" id="Interesting-Facts">
 <h1>Interesting Facts<a class="headerlink" href="#Interesting-Facts" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -343,7 +343,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
-<span class="kn">from</span> <span class="nn">arcgis.geoenrichment._business_analyst</span> <span class="kn">import</span> <span class="n">BusinessAnalyst</span>
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
 <span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
 <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -370,7 +370,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
@@ -384,36 +384,19 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
 GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ba</span> <span class="o">=</span> <span class="n">BusinessAnalyst</span><span class="p">(</span><span class="n">gis_agol</span><span class="p">)</span>
-
-<span class="n">ba</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;BusinessAnalyst (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ba</span><span class="o">.</span><span class="vm">__dict__</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">)</span>
+
+<span class="bp">self</span>
 </pre></div>
 </div>
 </div>
@@ -423,60 +406,192 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-{&#39;_source&#39;: GIS @ https://baqa.mapsqa.arcgis.com version:9.4,
- &#39;_base_url&#39;: &#39;https://geoenrichqa.arcgis.com/arcgis/rest/services/World/GeoenrichmentServer&#39;,
- &#39;_lazy_countries&#39;:     iso2 iso3    country_name        datasets default_dataset  \
- 0     AL  ALB         Albania  [ALB_MBR_2020]    ALB_MBR_2020
- 1     DZ  DZA         Algeria  [DZA_MBR_2019]    DZA_MBR_2019
- 2     AD  AND         Andorra  [AND_MBR_2020]    AND_MBR_2020
- 3     AO  AGO          Angola  [AGO_MBR_2019]    AGO_MBR_2019
- 4     AI  AIA        Anguilla  [AIA_MBR_2020]    AIA_MBR_2020
- ..   ...  ...             ...             ...             ...
- 149   UZ  UZB      Uzbekistan  [UZB_MBR_2020]    UZB_MBR_2020
- 150   VE  VEN       Venezuela  [VEN_MBR_2020]    VEN_MBR_2020
- 151   VN  VNM         Vietnam  [VNM_MBR_2020]    VNM_MBR_2020
- 152   VI  VIR  Virgin Islands  [VIR_MBR_2020]    VIR_MBR_2020
- 153   ZM  ZMB          Zambia  [ZMB_MBR_2019]    ZMB_MBR_2019
-
-                               alt_name      continent
- 0                              ALBANIA         Europe
- 1                              ALGERIA         Africa
- 2                              ANDORRA         Europe
- 3                               ANGOLA         Africa
- 4                             ANGUILLA  North America
- ..                                 ...            ...
- 149                         UZBEKISTAN           Asia
- 150  VENEZUELA, BOLIVARIAN REPUBLIC OF  South America
- 151                           VIET NAM           Asia
- 152       UNITED STATES VIRGIN ISLANDS  North America
- 153                             ZAMBIA         Africa
-
- [154 rows x 7 columns]}
+&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span> <span class="o">=</span> <span class="n">ba</span><span class="o">.</span><span class="n">get_country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">geography_levels</span><span class="p">[</span><span class="n">usa</span><span class="o">.</span><span class="n">geography_levels</span><span class="p">[</span><span class="s1">&#39;level_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;block_groups&#39;</span><span class="p">][</span><span class="s1">&#39;level_id&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">enrich_variables</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+      <th>description</th>
+      <th>vintage</th>
+      <th>units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AGE0_CY</td>
+      <td>2021 Population Age &lt;1</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE0_CY</td>
+      <td>F1yearincrements_AGE0_CY</td>
+      <td>2021 Total Population Age &lt;1 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AGE1_CY</td>
+      <td>2021 Population Age 1</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE1_CY</td>
+      <td>F1yearincrements_AGE1_CY</td>
+      <td>2021 Total Population Age 1 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AGE2_CY</td>
+      <td>2021 Population Age 2</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE2_CY</td>
+      <td>F1yearincrements_AGE2_CY</td>
+      <td>2021 Total Population Age 2 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AGE3_CY</td>
+      <td>2021 Population Age 3</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE3_CY</td>
+      <td>F1yearincrements_AGE3_CY</td>
+      <td>2021 Total Population Age 3 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AGE4_CY</td>
+      <td>2021 Population Age 4</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE4_CY</td>
+      <td>F1yearincrements_AGE4_CY</td>
+      <td>2021 Total Population Age 4 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>19148</th>
+      <td>MOEMEDYRMV</td>
+      <td>2019 Median Year Householder Moved In MOE (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEMEDYRMV</td>
+      <td>yearmovedin_MOEMEDYRMV</td>
+      <td>2019 Median Year Householder Moved into Unit M...</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19149</th>
+      <td>RELMEDYRMV</td>
+      <td>2019 Median Year Householder Moved In REL (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELMEDYRMV</td>
+      <td>yearmovedin_RELMEDYRMV</td>
+      <td>2019 Median Year Householder Moved into Unit R...</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19150</th>
+      <td>ACSOWNER</td>
+      <td>2019 Owner Households (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.ACSOWNER</td>
+      <td>yearmovedin_ACSOWNER</td>
+      <td>2019 Owner Households (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19151</th>
+      <td>MOEOWNER</td>
+      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEOWNER</td>
+      <td>yearmovedin_MOEOWNER</td>
+      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19152</th>
+      <td>RELOWNER</td>
+      <td>2019 Owner Households REL (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELOWNER</td>
+      <td>yearmovedin_RELOWNER</td>
+      <td>2019 Owner Households REL (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+  </tbody>
+</table>
+<p>19153 rows × 8 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&#39;US.BlockGroups&#39;
+&lt;bound method AOI.get_enrich_variables_from_iterable of &lt;Country - USA (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;&gt;
 </pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -487,7 +602,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </pre></div>
 </div>
 </div>
-</section>
+</div>
 
 
           </div>
@@ -500,7 +615,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

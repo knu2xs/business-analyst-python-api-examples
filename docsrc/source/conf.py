@@ -217,3 +217,6 @@ htmlhelp_basename = f'business-analyst-python-api-examples_doc'
 
 # For NBSphinx, since the sys.path additions stop conversion, ignore errors
 nbsphinx_allow_errors = True
+
+# Autodoc options
+autoclass_content = 'both'

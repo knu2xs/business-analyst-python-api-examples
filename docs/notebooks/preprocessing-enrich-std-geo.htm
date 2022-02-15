@@ -17,8 +17,6 @@
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
-    <link rel="next" title="Enrich Using Point Geometries" href="enrich-pt-geom.htm" />
-    <link rel="prev" title="Enrich" href="../enrich.htm" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -47,27 +45,9 @@
 
 
 <h3>Navigation</h3>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../capabilities.htm">Capabilities</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../current.htm">Current</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../next.htm">Next Release</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="../enrich.htm">Enrich</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Enrich Using Standard Geographies</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#Standard-Geography-From-a-List">Standard Geography From a List</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Standard-Geography-From-a-Data-Frame">Standard Geography From a Data Frame</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Consolidating-into-a-Function">Consolidating into a Function</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Switching-Sources">Switching Sources</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="enrich-pt-geom.htm">Enrich Using Point Geometries</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../future.htm">Future</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
 </ul>
@@ -76,14 +56,6 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.htm">Documentation overview</a><ul>
-  <li><a href="../capabilities.htm">Capabilities and Functionality</a><ul>
-  <li><a href="../next.htm">Next Release</a><ul>
-  <li><a href="../enrich.htm">Enrich</a><ul>
-      <li>Previous: <a href="../enrich.htm" title="previous chapter">Enrich</a></li>
-      <li>Next: <a href="enrich-pt-geom.htm" title="next chapter">Enrich Using Point Geometries</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -365,7 +337,7 @@ div.rendered_html tbody tr:hover {
 <h1>Enrich Using Standard Geographies<a class="headerlink" href="#Enrich-Using-Standard-Geographies" title="Permalink to this headline">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -374,24 +346,25 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
 <span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
 <span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
-<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">IFrame</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PowerTransformer</span>
 </pre></div>
 </div>
 </div>
 <p>Next, we need some test data to work with. Hence, here we are accessing two files with pickled exports from Spatially Enabled Pandas Data Frames. One is of postal codes (zip codes) in Portland, Oregon, and the other is for block groups in Portland.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load .env file</span>
-<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
-
-<span class="c1"># paths to input data</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># paths to input data</span>
 <span class="n">dir_prj</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 <span class="n">dir_data</span> <span class="o">=</span> <span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;data&#39;</span>
 <span class="n">dir_raw</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;raw&#39;</span>
+
+<span class="c1"># import the two preprocessors from the examples</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">ba_samples.preprocessing</span> <span class="kn">import</span> <span class="n">EnrichStandardGeography</span><span class="p">,</span> <span class="n">KeepOnlyEnrichColumns</span>
 
 <span class="c1"># specifically, the data being used for this example - pickled dataframes</span>
 <span class="n">postal_codes_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;postal_codes.pkl&#39;</span>
@@ -401,7 +374,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>For the first example, we are going to get a list of standard geography codes to use from the postal code data, just a list of zip codes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postal_code_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">postal_codes_pth</span><span class="p">)</span>
@@ -421,7 +394,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>For the latter, we are going to use the Data Frame directly, and tell the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> function which column to look in when we invoke the function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_groups_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">block_groups_pth</span><span class="p">)</span>
@@ -449,7 +422,7 @@ memory usage: 1.7+ KB
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -512,226 +485,43 @@ memory usage: 1.7+ KB
 </div></div>
 </div>
 <p>Now, we are going to need a connection to ArcGIS Online to demonstrate the abiliy to use ArcGIS Online for geoenrichment. This is accomplished by instantiating a <code class="docutils literal notranslate"><span class="pre">GIS</span></code> object instance with valid credentials read from environment variables.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
-    <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">),</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="n">gis_agol</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_local</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
 </div>
 <div class="section" id="Standard-Geography-From-a-List">
 <h2>Standard Geography From a List<a class="headerlink" href="#Standard-Geography-From-a-List" title="Permalink to this headline">¶</a></h2>
 <p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Online.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_local</span><span class="p">)</span>
 
-<span class="n">usa_agol</span>
+<span class="n">usa_local</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
+&lt;Country - United States 2021 (&#39;local&#39;)&gt;
 </pre></div></div>
 </div>
-<p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country.</p>
+<p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich_variables</span>
-
-<span class="n">ev</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>alias</th>
-      <th>data_collection</th>
-      <th>enrich_name</th>
-      <th>enrich_field_name</th>
-      <th>description</th>
-      <th>vintage</th>
-      <th>units</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>AGE0_CY</td>
-      <td>2021 Population Age &lt;1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE0_CY</td>
-      <td>F1yearincrements_AGE0_CY</td>
-      <td>2021 Total Population Age &lt;1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>AGE1_CY</td>
-      <td>2021 Population Age 1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE1_CY</td>
-      <td>F1yearincrements_AGE1_CY</td>
-      <td>2021 Total Population Age 1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AGE2_CY</td>
-      <td>2021 Population Age 2</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE2_CY</td>
-      <td>F1yearincrements_AGE2_CY</td>
-      <td>2021 Total Population Age 2 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AGE3_CY</td>
-      <td>2021 Population Age 3</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE3_CY</td>
-      <td>F1yearincrements_AGE3_CY</td>
-      <td>2021 Total Population Age 3 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AGE4_CY</td>
-      <td>2021 Population Age 4</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE4_CY</td>
-      <td>F1yearincrements_AGE4_CY</td>
-      <td>2021 Total Population Age 4 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>19148</th>
-      <td>MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In MOE (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEMEDYRMV</td>
-      <td>yearmovedin_MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit M...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19149</th>
-      <td>RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In REL (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELMEDYRMV</td>
-      <td>yearmovedin_RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit R...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19150</th>
-      <td>ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.ACSOWNER</td>
-      <td>yearmovedin_ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19151</th>
-      <td>MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEOWNER</td>
-      <td>yearmovedin_MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19152</th>
-      <td>RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELOWNER</td>
-      <td>yearmovedin_RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-  </tbody>
-</table>
-<p>19153 rows × 8 columns</p>
-</div></div>
-</div>
-<p>Tens of thousands of variables is just a few too many to deal with, so we can parse this down a bit using some Pandas Data Frame filtering to get just key United States variables for the current year.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_local</span><span class="o">.</span><span class="n">enrich_variables</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
     <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
     <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
 <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -741,7 +531,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -768,9 +558,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <th>data_collection</th>
       <th>enrich_name</th>
       <th>enrich_field_name</th>
-      <th>description</th>
-      <th>vintage</th>
-      <th>units</th>
     </tr>
   </thead>
   <tbody>
@@ -781,9 +568,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.TOTPOP_CY</td>
       <td>KeyUSFacts_TOTPOP_CY</td>
-      <td>2021 Total Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>1</th>
@@ -792,9 +576,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.GQPOP_CY</td>
       <td>KeyUSFacts_GQPOP_CY</td>
-      <td>2021 Group Quarters Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>2</th>
@@ -803,9 +584,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.DIVINDX_CY</td>
       <td>KeyUSFacts_DIVINDX_CY</td>
-      <td>2021 Diversity Index (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>3</th>
@@ -814,9 +592,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.TOTHH_CY</td>
       <td>KeyUSFacts_TOTHH_CY</td>
-      <td>2021 Total Households (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>4</th>
@@ -825,9 +600,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.AVGHHSZ_CY</td>
       <td>KeyUSFacts_AVGHHSZ_CY</td>
-      <td>2021 Average Household Size (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>5</th>
@@ -836,9 +608,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.MEDHINC_CY</td>
       <td>KeyUSFacts_MEDHINC_CY</td>
-      <td>2021 Median Household Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
     </tr>
     <tr>
       <th>6</th>
@@ -847,9 +616,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.AVGHINC_CY</td>
       <td>KeyUSFacts_AVGHINC_CY</td>
-      <td>2021 Average Household Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
     </tr>
     <tr>
       <th>7</th>
@@ -858,9 +624,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.PCI_CY</td>
       <td>KeyUSFacts_PCI_CY</td>
-      <td>2021 Per Capita Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
     </tr>
     <tr>
       <th>8</th>
@@ -869,9 +632,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.TOTHU_CY</td>
       <td>KeyUSFacts_TOTHU_CY</td>
-      <td>2021 Total Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>9</th>
@@ -880,9 +640,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.OWNER_CY</td>
       <td>KeyUSFacts_OWNER_CY</td>
-      <td>2021 Owner Occupied Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>10</th>
@@ -891,9 +648,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.RENTER_CY</td>
       <td>KeyUSFacts_RENTER_CY</td>
-      <td>2021 Renter Occupied Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>11</th>
@@ -902,9 +656,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.VACANT_CY</td>
       <td>KeyUSFacts_VACANT_CY</td>
-      <td>2021 Vacant Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>12</th>
@@ -913,9 +664,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.MEDVAL_CY</td>
       <td>KeyUSFacts_MEDVAL_CY</td>
-      <td>2021 Median Home Value (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
     </tr>
     <tr>
       <th>13</th>
@@ -924,9 +672,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.AVGVAL_CY</td>
       <td>KeyUSFacts_AVGVAL_CY</td>
-      <td>2021 Average Home Value (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
     </tr>
     <tr>
       <th>14</th>
@@ -935,9 +680,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.POPGRW10CY</td>
       <td>KeyUSFacts_POPGRW10CY</td>
-      <td>2010-2021 Population: Compound Annual Growth R...</td>
-      <td>2021</td>
-      <td>pct</td>
     </tr>
     <tr>
       <th>15</th>
@@ -946,9 +688,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.HHGRW10CY</td>
       <td>KeyUSFacts_HHGRW10CY</td>
-      <td>2010-2021 Households: Compound Annual Growth R...</td>
-      <td>2021</td>
-      <td>pct</td>
     </tr>
     <tr>
       <th>16</th>
@@ -957,9 +696,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.FAMGRW10CY</td>
       <td>KeyUSFacts_FAMGRW10CY</td>
-      <td>2010-2021 Families: Compound Annual Growth Rat...</td>
-      <td>2021</td>
-      <td>pct</td>
     </tr>
     <tr>
       <th>17</th>
@@ -968,9 +704,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.DPOP_CY</td>
       <td>KeyUSFacts_DPOP_CY</td>
-      <td>2021 Total Daytime Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>18</th>
@@ -979,9 +712,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.DPOPWRK_CY</td>
       <td>KeyUSFacts_DPOPWRK_CY</td>
-      <td>2021 Daytime Population: Workers (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
     </tr>
     <tr>
       <th>19</th>
@@ -990,153 +720,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       <td>KeyUSFacts</td>
       <td>KeyUSFacts.DPOPRES_CY</td>
       <td>KeyUSFacts_DPOPRES_CY</td>
-      <td>2021 Daytime Population: Residents (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<p>Next we are going to enrich the postal codes for Portland. Before enriching, we need to know how to specify the correct standard geography level. This can be discovered using the <code class="docutils literal notranslate"><span class="pre">levels</span></code> property of the <code class="docutils literal notranslate"><span class="pre">Country</span></code>. Specifically, the value in the <code class="docutils literal notranslate"><span class="pre">level_name</span></code> column is what we are interested in. For this instance, postal codes, we need to use <code class="docutils literal notranslate"><span class="pre">zip5</span></code>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span><span class="o">.</span><span class="n">levels</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>level_name</th>
-      <th>singular_name</th>
-      <th>plural_name</th>
-      <th>alias</th>
-      <th>level_id</th>
-      <th>admin_level</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>block_groups</td>
-      <td>Block Group</td>
-      <td>Block Groups</td>
-      <td>Block Groups</td>
-      <td>US.BlockGroups</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>tracts</td>
-      <td>Census Tract</td>
-      <td>Census Tracts</td>
-      <td>Census Tracts</td>
-      <td>US.Tracts</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>places</td>
-      <td>Place</td>
-      <td>Places</td>
-      <td>Cities and Towns (Places)</td>
-      <td>US.Places</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>zip5</td>
-      <td>ZIP Code</td>
-      <td>ZIP Codes</td>
-      <td>ZIP Codes</td>
-      <td>US.ZIP5</td>
-      <td>Admin4</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>csd</td>
-      <td>County Subdivision</td>
-      <td>County Subdivisions</td>
-      <td>County Subdivisions</td>
-      <td>US.CSD</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>counties</td>
-      <td>County</td>
-      <td>Counties</td>
-      <td>Counties</td>
-      <td>US.Counties</td>
-      <td>Admin3</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>cbsa</td>
-      <td>CBSA</td>
-      <td>CBSAs</td>
-      <td>CBSAs</td>
-      <td>US.CBSA</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>cd</td>
-      <td>Congressional District</td>
-      <td>Congressional Districts</td>
-      <td>Congressional Districts</td>
-      <td>US.CD</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>dma</td>
-      <td>DMA</td>
-      <td>DMAs</td>
-      <td>DMAs</td>
-      <td>US.DMA</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>states</td>
-      <td>State</td>
-      <td>States</td>
-      <td>States</td>
-      <td>US.States</td>
-      <td>Admin2</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>whole_usa</td>
-      <td>United States of America</td>
-      <td>United States of America</td>
-      <td>Entire Country</td>
-      <td>US.WholeUSA</td>
-      <td>Admin1</td>
     </tr>
   </tbody>
 </table>
@@ -1144,17 +727,18 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </div>
 <p>Finally, we are ready to enrich the postal codes using the resources above.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zip_enrich_df</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span>
-    <span class="n">geographies</span><span class="o">=</span><span class="n">postal_code_lst</span><span class="p">,</span>
-    <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span>
-    <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;zip5&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">EnrichStandardGeography</span><span class="p">(</span><span class="n">usa_local</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;zip5&#39;</span><span class="p">,</span> <span class="n">return_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">KeepOnlyEnrichColumns</span><span class="p">(</span><span class="n">usa_local</span><span class="p">,</span> <span class="n">id_column</span><span class="o">=</span><span class="s1">&#39;id_field&#39;</span><span class="p">,</span> <span class="n">keep_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
 
-<span class="n">zip_enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-<span class="n">zip_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">trn_df</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">postal_code_lst</span><span class="p">)</span>
+
+<span class="n">trn_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">trn_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1164,45 +748,36 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 13 entries, 0 to 12
-Data columns (total 29 columns):
- #   Column                             Non-Null Count  Dtype
----  ------                             --------------  -----
- 0   std_geography_level                13 non-null     object
- 1   std_geography_name                 13 non-null     object
- 2   std_geography_id                   13 non-null     object
- 3   source_country                     13 non-null     object
- 4   aggregation_method                 13 non-null     object
- 5   population_to_polygon_size_rating  13 non-null     float64
- 6   apportionment_confidence           13 non-null     float64
- 7   has_data                           13 non-null     int64
- 8   totpop_cy                          13 non-null     int64
- 9   gqpop_cy                           13 non-null     int64
- 10  divindx_cy                         13 non-null     float64
- 11  tothh_cy                           13 non-null     int64
- 12  avghhsz_cy                         13 non-null     float64
- 13  medhinc_cy                         13 non-null     int64
- 14  avghinc_cy                         13 non-null     int64
- 15  pci_cy                             13 non-null     int64
- 16  tothu_cy                           13 non-null     int64
- 17  owner_cy                           13 non-null     int64
- 18  renter_cy                          13 non-null     int64
- 19  vacant_cy                          13 non-null     int64
- 20  medval_cy                          13 non-null     int64
- 21  avgval_cy                          13 non-null     int64
- 22  popgrw10_cy                        13 non-null     float64
- 23  hhgrw10_cy                         13 non-null     float64
- 24  famgrw10_cy                        13 non-null     float64
- 25  dpop_cy                            13 non-null     int64
- 26  dpopwrk_cy                         13 non-null     int64
- 27  dpopres_cy                         13 non-null     int64
- 28  SHAPE                              13 non-null     geometry
-dtypes: float64(7), geometry(1), int64(16), object(5)
-memory usage: 3.1+ KB
+Index: 13 entries, 83801 to 83876
+Data columns (total 20 columns):
+ #   Column                 Non-Null Count  Dtype
+---  ------                 --------------  -----
+ 0   keyusfacts_totpop_cy   13 non-null     float64
+ 1   keyusfacts_gqpop_cy    13 non-null     float64
+ 2   keyusfacts_divindx_cy  13 non-null     float64
+ 3   keyusfacts_tothh_cy    13 non-null     float64
+ 4   keyusfacts_avghhsz_cy  13 non-null     float64
+ 5   keyusfacts_medhinc_cy  13 non-null     float64
+ 6   keyusfacts_avghinc_cy  13 non-null     float64
+ 7   keyusfacts_pci_cy      13 non-null     float64
+ 8   keyusfacts_tothu_cy    13 non-null     float64
+ 9   keyusfacts_owner_cy    13 non-null     float64
+ 10  keyusfacts_renter_cy   13 non-null     float64
+ 11  keyusfacts_vacant_cy   13 non-null     float64
+ 12  keyusfacts_medval_cy   13 non-null     float64
+ 13  keyusfacts_avgval_cy   13 non-null     float64
+ 14  keyusfacts_popgrw10cy  13 non-null     float64
+ 15  keyusfacts_hhgrw10cy   13 non-null     float64
+ 16  keyusfacts_famgrw10cy  13 non-null     float64
+ 17  keyusfacts_dpop_cy     13 non-null     float64
+ 18  keyusfacts_dpopwrk_cy  13 non-null     float64
+ 19  keyusfacts_dpopres_cy  13 non-null     float64
+dtypes: float64(20)
+memory usage: 2.1+ KB
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1224,153 +799,562 @@ memory usage: 3.1+ KB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>std_geography_level</th>
-      <th>std_geography_name</th>
-      <th>std_geography_id</th>
-      <th>source_country</th>
-      <th>aggregation_method</th>
-      <th>population_to_polygon_size_rating</th>
-      <th>apportionment_confidence</th>
-      <th>has_data</th>
-      <th>totpop_cy</th>
-      <th>gqpop_cy</th>
-      <th>...</th>
-      <th>vacant_cy</th>
-      <th>medval_cy</th>
-      <th>avgval_cy</th>
-      <th>popgrw10_cy</th>
-      <th>hhgrw10_cy</th>
-      <th>famgrw10_cy</th>
-      <th>dpop_cy</th>
-      <th>dpopwrk_cy</th>
-      <th>dpopres_cy</th>
-      <th>SHAPE</th>
+      <th>keyusfacts_totpop_cy</th>
+      <th>keyusfacts_gqpop_cy</th>
+      <th>keyusfacts_divindx_cy</th>
+      <th>keyusfacts_tothh_cy</th>
+      <th>keyusfacts_avghhsz_cy</th>
+      <th>keyusfacts_medhinc_cy</th>
+      <th>keyusfacts_avghinc_cy</th>
+      <th>keyusfacts_pci_cy</th>
+      <th>keyusfacts_tothu_cy</th>
+      <th>keyusfacts_owner_cy</th>
+      <th>keyusfacts_renter_cy</th>
+      <th>keyusfacts_vacant_cy</th>
+      <th>keyusfacts_medval_cy</th>
+      <th>keyusfacts_avgval_cy</th>
+      <th>keyusfacts_popgrw10cy</th>
+      <th>keyusfacts_hhgrw10cy</th>
+      <th>keyusfacts_famgrw10cy</th>
+      <th>keyusfacts_dpop_cy</th>
+      <th>keyusfacts_dpopwrk_cy</th>
+      <th>keyusfacts_dpopres_cy</th>
+    </tr>
+    <tr>
+      <th>id_field</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>US.ZIP5</td>
-      <td>Athol</td>
-      <td>83801</td>
-      <td>US</td>
-      <td>Query:US.ZIP5</td>
-      <td>2.191</td>
-      <td>2.576</td>
-      <td>1</td>
-      <td>8497</td>
-      <td>0</td>
-      <td>...</td>
-      <td>421</td>
-      <td>382542</td>
-      <td>391184</td>
+      <th>83801</th>
+      <td>8497.0</td>
+      <td>0.0</td>
+      <td>13.6</td>
+      <td>3142.0</td>
+      <td>2.70</td>
+      <td>62413.0</td>
+      <td>78746.0</td>
+      <td>30156.0</td>
+      <td>3563.0</td>
+      <td>2660.0</td>
+      <td>482.0</td>
+      <td>421.0</td>
+      <td>382542.0</td>
+      <td>391184.0</td>
       <td>2.07</td>
       <td>2.09</td>
       <td>1.92</td>
-      <td>6502</td>
-      <td>1962</td>
-      <td>4540</td>
-      <td>{"rings": [[[-116.69531754168734, 48.075561485...</td>
+      <td>6502.0</td>
+      <td>1962.0</td>
+      <td>4540.0</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>US.ZIP5</td>
-      <td>Bayview</td>
-      <td>83803</td>
-      <td>US</td>
-      <td>Query:US.ZIP5</td>
-      <td>2.191</td>
-      <td>2.576</td>
-      <td>1</td>
-      <td>656</td>
-      <td>0</td>
-      <td>...</td>
-      <td>318</td>
-      <td>391333</td>
-      <td>403113</td>
+      <th>83803</th>
+      <td>656.0</td>
+      <td>0.0</td>
+      <td>10.5</td>
+      <td>341.0</td>
+      <td>1.92</td>
+      <td>43344.0</td>
+      <td>61732.0</td>
+      <td>29472.0</td>
+      <td>659.0</td>
+      <td>264.0</td>
+      <td>76.0</td>
+      <td>318.0</td>
+      <td>391333.0</td>
+      <td>403113.0</td>
       <td>1.76</td>
       <td>1.80</td>
       <td>1.56</td>
-      <td>499</td>
-      <td>145</td>
-      <td>354</td>
-      <td>{"rings": [[[-116.49664843313857, 47.991467236...</td>
+      <td>499.0</td>
+      <td>145.0</td>
+      <td>354.0</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>US.ZIP5</td>
-      <td>Cataldo</td>
-      <td>83810</td>
-      <td>US</td>
-      <td>Query:US.ZIP5</td>
-      <td>2.191</td>
-      <td>2.576</td>
-      <td>1</td>
-      <td>1090</td>
-      <td>4</td>
-      <td>...</td>
-      <td>100</td>
-      <td>439516</td>
-      <td>465172</td>
+      <th>83810</th>
+      <td>1090.0</td>
+      <td>4.0</td>
+      <td>11.7</td>
+      <td>479.0</td>
+      <td>2.27</td>
+      <td>60088.0</td>
+      <td>89006.0</td>
+      <td>38340.0</td>
+      <td>579.0</td>
+      <td>406.0</td>
+      <td>72.0</td>
+      <td>100.0</td>
+      <td>437903.0</td>
+      <td>464383.0</td>
       <td>0.94</td>
       <td>0.96</td>
       <td>0.76</td>
-      <td>762</td>
-      <td>246</td>
-      <td>516</td>
-      <td>{"rings": [[[-116.40476999992698, 47.612659999...</td>
+      <td>762.0</td>
+      <td>246.0</td>
+      <td>516.0</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>US.ZIP5</td>
-      <td>Coeur D Alene</td>
-      <td>83814</td>
-      <td>US</td>
-      <td>Query:US.ZIP5</td>
-      <td>2.191</td>
-      <td>2.576</td>
-      <td>1</td>
-      <td>28546</td>
-      <td>609</td>
-      <td>...</td>
-      <td>2600</td>
-      <td>377722</td>
-      <td>508589</td>
+      <th>83814</th>
+      <td>28546.0</td>
+      <td>609.0</td>
+      <td>21.2</td>
+      <td>12454.0</td>
+      <td>2.24</td>
+      <td>57487.0</td>
+      <td>80524.0</td>
+      <td>34960.0</td>
+      <td>15054.0</td>
+      <td>6855.0</td>
+      <td>5599.0</td>
+      <td>2600.0</td>
+      <td>377722.0</td>
+      <td>508589.0</td>
       <td>1.86</td>
       <td>1.91</td>
       <td>1.72</td>
-      <td>38109</td>
-      <td>22942</td>
-      <td>15167</td>
-      <td>{"rings": [[[-116.58028267664488, 47.744349414...</td>
+      <td>38178.0</td>
+      <td>23011.0</td>
+      <td>15167.0</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>US.ZIP5</td>
-      <td>Coeur D Alene</td>
-      <td>83815</td>
-      <td>US</td>
-      <td>Query:US.ZIP5</td>
-      <td>2.191</td>
-      <td>2.576</td>
-      <td>1</td>
-      <td>38614</td>
-      <td>617</td>
-      <td>...</td>
-      <td>1146</td>
-      <td>308198</td>
-      <td>374194</td>
+      <th>83815</th>
+      <td>38614.0</td>
+      <td>617.0</td>
+      <td>24.1</td>
+      <td>15247.0</td>
+      <td>2.49</td>
+      <td>56872.0</td>
+      <td>73431.0</td>
+      <td>29323.0</td>
+      <td>16393.0</td>
+      <td>9649.0</td>
+      <td>5598.0</td>
+      <td>1146.0</td>
+      <td>308198.0</td>
+      <td>374194.0</td>
       <td>1.79</td>
       <td>1.78</td>
       <td>1.51</td>
-      <td>37345</td>
-      <td>15891</td>
-      <td>21454</td>
-      <td>{"rings": [[[-116.69790643782714, 47.729762324...</td>
+      <td>37345.0</td>
+      <td>15891.0</td>
+      <td>21454.0</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 29 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;yeo-johnson&#39;</span><span class="p">)</span>
+
+<span class="n">arr</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">trn_df</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">trn_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">trn_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+D:\Anaconda3\envs\geosaurus\lib\site-packages\sklearn\preprocessing\_data.py:3253: RuntimeWarning: divide by zero encountered in log
+  loglike = -n_samples / 2 * np.log(x_trans.var())
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>keyusfacts_totpop_cy</th>
+      <th>keyusfacts_gqpop_cy</th>
+      <th>keyusfacts_divindx_cy</th>
+      <th>keyusfacts_tothh_cy</th>
+      <th>keyusfacts_avghhsz_cy</th>
+      <th>keyusfacts_medhinc_cy</th>
+      <th>keyusfacts_avghinc_cy</th>
+      <th>keyusfacts_pci_cy</th>
+      <th>keyusfacts_tothu_cy</th>
+      <th>keyusfacts_owner_cy</th>
+      <th>keyusfacts_renter_cy</th>
+      <th>keyusfacts_vacant_cy</th>
+      <th>keyusfacts_medval_cy</th>
+      <th>keyusfacts_avgval_cy</th>
+      <th>keyusfacts_popgrw10cy</th>
+      <th>keyusfacts_hhgrw10cy</th>
+      <th>keyusfacts_famgrw10cy</th>
+      <th>keyusfacts_dpop_cy</th>
+      <th>keyusfacts_dpopwrk_cy</th>
+      <th>keyusfacts_dpopres_cy</th>
+    </tr>
+    <tr>
+      <th>id_field</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>83801</th>
+      <td>0.168550</td>
+      <td>-1.113505</td>
+      <td>-0.542176</td>
+      <td>0.112866</td>
+      <td>1.158966</td>
+      <td>0.240908</td>
+      <td>-0.183587</td>
+      <td>0.0</td>
+      <td>-0.046770</td>
+      <td>0.184312</td>
+      <td>-0.062410</td>
+      <td>-0.603029</td>
+      <td>0.064342</td>
+      <td>-0.460086</td>
+      <td>0.503606</td>
+      <td>0.507008</td>
+      <td>0.525388</td>
+      <td>0.077259</td>
+      <td>0.019262</td>
+      <td>0.136500</td>
+    </tr>
+    <tr>
+      <th>83803</th>
+      <td>-1.196066</td>
+      <td>-1.113505</td>
+      <td>-1.477190</td>
+      <td>-1.118763</td>
+      <td>-1.779359</td>
+      <td>-1.992848</td>
+      <td>-1.686528</td>
+      <td>0.0</td>
+      <td>-1.067416</td>
+      <td>-1.161138</td>
+      <td>-0.966999</td>
+      <td>-0.814751</td>
+      <td>0.173481</td>
+      <td>-0.335440</td>
+      <td>-0.085829</td>
+      <td>-0.061930</td>
+      <td>-0.182166</td>
+      <td>-1.208741</td>
+      <td>-1.222394</td>
+      <td>-1.204427</td>
+    </tr>
+    <tr>
+      <th>83810</th>
+      <td>-0.968891</td>
+      <td>-0.148353</td>
+      <td>-1.060640</td>
+      <td>-0.958105</td>
+      <td>-0.793368</td>
+      <td>-0.072514</td>
+      <td>1.246619</td>
+      <td>0.0</td>
+      <td>-1.130455</td>
+      <td>-0.954738</td>
+      <td>-0.991268</td>
+      <td>-1.439204</td>
+      <td>0.755506</td>
+      <td>0.264172</td>
+      <td>-1.541385</td>
+      <td>-1.598279</td>
+      <td>-1.628419</td>
+      <td>-1.028550</td>
+      <td>-0.993018</td>
+      <td>-1.043046</td>
+    </tr>
+    <tr>
+      <th>83814</th>
+      <td>1.041680</td>
+      <td>1.452413</td>
+      <td>0.638916</td>
+      <td>1.134051</td>
+      <td>-0.896162</td>
+      <td>-0.409677</td>
+      <td>0.032276</td>
+      <td>0.0</td>
+      <td>1.201580</td>
+      <td>0.938856</td>
+      <td>1.381679</td>
+      <td>1.747688</td>
+      <td>0.004606</td>
+      <td>0.660622</td>
+      <td>0.102147</td>
+      <td>0.151729</td>
+      <td>0.128315</td>
+      <td>1.290816</td>
+      <td>1.480525</td>
+      <td>1.019065</td>
+    </tr>
+    <tr>
+      <th>83815</th>
+      <td>1.287525</td>
+      <td>1.455045</td>
+      <td>0.899813</td>
+      <td>1.304346</td>
+      <td>0.085295</td>
+      <td>-0.487317</td>
+      <td>-0.756867</td>
+      <td>0.0</td>
+      <td>1.289198</td>
+      <td>1.247772</td>
+      <td>1.381563</td>
+      <td>0.435298</td>
+      <td>-0.848338</td>
+      <td>-0.642668</td>
+      <td>-0.029658</td>
+      <td>-0.100488</td>
+      <td>-0.277839</td>
+      <td>1.273683</td>
+      <td>1.240551</td>
+      <td>1.310222</td>
+    </tr>
+    <tr>
+      <th>83833</th>
+      <td>-0.758692</td>
+      <td>-1.113505</td>
+      <td>-1.124465</td>
+      <td>-0.707943</td>
+      <td>-1.182468</td>
+      <td>1.972745</td>
+      <td>1.408880</td>
+      <td>0.0</td>
+      <td>-0.371707</td>
+      <td>-0.699530</td>
+      <td>-0.737788</td>
+      <td>0.753802</td>
+      <td>2.302382</td>
+      <td>2.157659</td>
+      <td>1.717922</td>
+      <td>1.781086</td>
+      <td>1.750877</td>
+      <td>-0.648029</td>
+      <td>-0.545851</td>
+      <td>-0.693898</td>
+    </tr>
+    <tr>
+      <th>83835</th>
+      <td>0.907365</td>
+      <td>1.070701</td>
+      <td>0.509690</td>
+      <td>0.905488</td>
+      <td>0.366739</td>
+      <td>1.089360</td>
+      <td>1.227169</td>
+      <td>0.0</td>
+      <td>0.894612</td>
+      <td>0.995110</td>
+      <td>0.762944</td>
+      <td>0.932300</td>
+      <td>-0.046730</td>
+      <td>0.147940</td>
+      <td>0.121060</td>
+      <td>0.093194</td>
+      <td>0.108720</td>
+      <td>0.895797</td>
+      <td>0.904103</td>
+      <td>0.911211</td>
+    </tr>
+    <tr>
+      <th>83842</th>
+      <td>-1.781009</td>
+      <td>-1.113505</td>
+      <td>-1.328926</td>
+      <td>-1.811658</td>
+      <td>-0.576114</td>
+      <td>-0.213199</td>
+      <td>0.915263</td>
+      <td>0.0</td>
+      <td>-1.883583</td>
+      <td>-1.797255</td>
+      <td>-1.863280</td>
+      <td>-1.869657</td>
+      <td>0.767897</td>
+      <td>0.292604</td>
+      <td>-0.636757</td>
+      <td>-0.704894</td>
+      <td>-0.523486</td>
+      <td>-1.773304</td>
+      <td>-1.754636</td>
+      <td>-1.784556</td>
+    </tr>
+    <tr>
+      <th>83854</th>
+      <td>1.503007</td>
+      <td>1.068428</td>
+      <td>0.867499</td>
+      <td>1.463427</td>
+      <td>1.216565</td>
+      <td>-0.300930</td>
+      <td>-0.980865</td>
+      <td>0.0</td>
+      <td>1.501389</td>
+      <td>1.528723</td>
+      <td>1.356819</td>
+      <td>1.006537</td>
+      <td>-0.864607</td>
+      <td>-0.513656</td>
+      <td>1.534478</td>
+      <td>1.361912</td>
+      <td>1.368790</td>
+      <td>1.381439</td>
+      <td>1.261121</td>
+      <td>1.494684</td>
+    </tr>
+    <tr>
+      <th>83858</th>
+      <td>0.658405</td>
+      <td>-0.264944</td>
+      <td>0.298862</td>
+      <td>0.608049</td>
+      <td>1.216565</td>
+      <td>1.164285</td>
+      <td>0.434072</td>
+      <td>0.0</td>
+      <td>0.549686</td>
+      <td>0.668464</td>
+      <td>0.523747</td>
+      <td>0.453478</td>
+      <td>-0.184852</td>
+      <td>-0.081074</td>
+      <td>0.756531</td>
+      <td>0.930047</td>
+      <td>0.993798</td>
+      <td>0.556734</td>
+      <td>0.456443</td>
+      <td>0.653679</td>
+    </tr>
+    <tr>
+      <th>83861</th>
+      <td>0.038323</td>
+      <td>0.904466</td>
+      <td>0.243695</td>
+      <td>0.079765</td>
+      <td>-0.686721</td>
+      <td>-1.378573</td>
+      <td>-1.513232</td>
+      <td>0.0</td>
+      <td>-0.039217</td>
+      <td>0.065839</td>
+      <td>0.164578</td>
+      <td>-0.272289</td>
+      <td>-2.209873</td>
+      <td>-2.245395</td>
+      <td>-1.740171</td>
+      <td>-1.683890</td>
+      <td>-1.695597</td>
+      <td>0.124524</td>
+      <td>0.282361</td>
+      <td>0.029881</td>
+    </tr>
+    <tr>
+      <th>83869</th>
+      <td>-0.142396</td>
+      <td>-0.422864</td>
+      <td>0.079089</td>
+      <td>-0.191287</td>
+      <td>0.880187</td>
+      <td>0.278454</td>
+      <td>-0.399272</td>
+      <td>0.0</td>
+      <td>-0.330651</td>
+      <td>-0.152226</td>
+      <td>-0.288760</td>
+      <td>-0.599201</td>
+      <td>-0.195127</td>
+      <td>-0.457835</td>
+      <td>0.273104</td>
+      <td>0.249722</td>
+      <td>0.305789</td>
+      <td>-0.203957</td>
+      <td>-0.365412</td>
+      <td>-0.110508</td>
+    </tr>
+    <tr>
+      <th>83876</th>
+      <td>-0.757801</td>
+      <td>-0.660874</td>
+      <td>1.995835</td>
+      <td>-0.820235</td>
+      <td>0.989876</td>
+      <td>0.109308</td>
+      <td>0.256071</td>
+      <td>0.0</td>
+      <td>-0.566666</td>
+      <td>-0.864189</td>
+      <td>-0.660827</td>
+      <td>0.269027</td>
+      <td>0.281314</td>
+      <td>1.213157</td>
+      <td>-0.975048</td>
+      <td>-0.925216</td>
+      <td>-0.874170</td>
+      <td>-0.737670</td>
+      <td>-0.763054</td>
+      <td>-0.718807</td>
+    </tr>
+  </tbody>
+</table>
 </div></div>
 </div>
 </div>
@@ -1379,7 +1363,7 @@ memory usage: 3.1+ KB
 <p>For the sake of efficiency, it is possible to provide the dataframe directly as input to the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method, and use the <code class="docutils literal notranslate"><span class="pre">standard_geography_id_column</span></code> parameter to specify the column. Also, in the following example, we are going to use a local source (ArcGIS Pro with Business Analyst and the USA data pack) and consolidate the steps above.</p>
 <p>Previously, we loaded a dataframe from memory to use for enrichment consisting of all the block groups in Portland, OR. The values we will be using are located in the <code class="docutils literal notranslate"><span class="pre">ID</span></code> column.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_groups_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -1387,7 +1371,7 @@ memory usage: 3.1+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1451,7 +1435,7 @@ memory usage: 3.1+ KB
 </div>
 <p>Next, we create a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance using the <code class="docutils literal notranslate"><span class="pre">'pro'</span></code> keyword to indicate using the local ArcGIS Pro instance.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">))</span>
@@ -1461,7 +1445,7 @@ memory usage: 3.1+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1471,7 +1455,7 @@ memory usage: 3.1+ KB
 </div>
 <p>Just as before, we can filter to just the key current year variables. Although in this case they are identical, since there are small variations in available variables between local and ArcGIS Online, I always apply the filter on variables from the same soure as I will be using for enricment.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_local</span><span class="o">.</span><span class="n">enrich_variables</span>
@@ -1485,7 +1469,7 @@ memory usage: 3.1+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1681,7 +1665,7 @@ memory usage: 3.1+ KB
 </div>
 <p>Just double checking, we can quickly see the correct value we need to use for United States Census Block Groups is <code class="docutils literal notranslate"><span class="pre">block_groups</span></code>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span><span class="o">.</span><span class="n">levels</span>
@@ -1689,7 +1673,7 @@ memory usage: 3.1+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1848,8 +1832,8 @@ memory usage: 3.1+ KB
 </div></div>
 </div>
 <p>Now, we are ready to enrich using ArcGIS Pro with Business Analyst and the USA data pack.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_enrich_df</span> <span class="o">=</span> <span class="n">usa_local</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">block_groups_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;block_groups&#39;</span><span class="p">,</span> <span class="n">standard_geography_id_column</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
@@ -1858,219 +1842,6 @@ memory usage: 3.1+ KB
 <span class="n">bg_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 66 entries, 0 to 65
-Data columns (total 27 columns):
- #   Column                 Non-Null Count  Dtype
----  ------                 --------------  -----
- 0   id_field               66 non-null     object
- 1   area_desc              66 non-null     object
- 2   ta_desc                66 non-null     object
- 3   names                  66 non-null     object
- 4   has_data               66 non-null     int64
- 5   aggregation_method     66 non-null     object
- 6   keyusfacts_totpop_cy   66 non-null     float64
- 7   keyusfacts_gqpop_cy    66 non-null     float64
- 8   keyusfacts_divindx_cy  66 non-null     float64
- 9   keyusfacts_tothh_cy    66 non-null     float64
- 10  keyusfacts_avghhsz_cy  66 non-null     float64
- 11  keyusfacts_medhinc_cy  66 non-null     float64
- 12  keyusfacts_avghinc_cy  66 non-null     float64
- 13  keyusfacts_pci_cy      66 non-null     float64
- 14  keyusfacts_tothu_cy    66 non-null     float64
- 15  keyusfacts_owner_cy    66 non-null     float64
- 16  keyusfacts_renter_cy   66 non-null     float64
- 17  keyusfacts_vacant_cy   66 non-null     float64
- 18  keyusfacts_medval_cy   66 non-null     float64
- 19  keyusfacts_avgval_cy   66 non-null     float64
- 20  keyusfacts_popgrw10cy  66 non-null     float64
- 21  keyusfacts_hhgrw10cy   66 non-null     float64
- 22  keyusfacts_famgrw10cy  66 non-null     float64
- 23  keyusfacts_dpop_cy     66 non-null     float64
- 24  keyusfacts_dpopwrk_cy  66 non-null     float64
- 25  keyusfacts_dpopres_cy  66 non-null     float64
- 26  SHAPE                  66 non-null     geometry
-dtypes: float64(20), geometry(1), int64(1), object(5)
-memory usage: 14.0+ KB
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id_field</th>
-      <th>area_desc</th>
-      <th>ta_desc</th>
-      <th>names</th>
-      <th>has_data</th>
-      <th>aggregation_method</th>
-      <th>keyusfacts_totpop_cy</th>
-      <th>keyusfacts_gqpop_cy</th>
-      <th>keyusfacts_divindx_cy</th>
-      <th>keyusfacts_tothh_cy</th>
-      <th>...</th>
-      <th>keyusfacts_vacant_cy</th>
-      <th>keyusfacts_medval_cy</th>
-      <th>keyusfacts_avgval_cy</th>
-      <th>keyusfacts_popgrw10cy</th>
-      <th>keyusfacts_hhgrw10cy</th>
-      <th>keyusfacts_famgrw10cy</th>
-      <th>keyusfacts_dpop_cy</th>
-      <th>keyusfacts_dpopwrk_cy</th>
-      <th>keyusfacts_dpopres_cy</th>
-      <th>SHAPE</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>160550001001</td>
-      <td>160550001001</td>
-      <td>TA from geography Layer: 160550001001</td>
-      <td>160550001.001</td>
-      <td>1</td>
-      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>1790.0</td>
-      <td>0.0</td>
-      <td>16.5</td>
-      <td>738.0</td>
-      <td>...</td>
-      <td>550.0</td>
-      <td>441324.0</td>
-      <td>443159.0</td>
-      <td>1.92</td>
-      <td>1.93</td>
-      <td>1.71</td>
-      <td>1485.0</td>
-      <td>402.0</td>
-      <td>1083.0</td>
-      <td>{"rings": [[[-117.02439699899998, 47.977556000...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>160550003011</td>
-      <td>160550003011</td>
-      <td>TA from geography Layer: 160550003011</td>
-      <td>160550003.011</td>
-      <td>1</td>
-      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>4395.0</td>
-      <td>0.0</td>
-      <td>18.5</td>
-      <td>1624.0</td>
-      <td>...</td>
-      <td>113.0</td>
-      <td>282969.0</td>
-      <td>398431.0</td>
-      <td>3.52</td>
-      <td>3.54</td>
-      <td>3.37</td>
-      <td>3617.0</td>
-      <td>905.0</td>
-      <td>2712.0</td>
-      <td>{"rings": [[[-116.89419099999998, 47.748638000...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>160550003012</td>
-      <td>160550003012</td>
-      <td>TA from geography Layer: 160550003012</td>
-      <td>160550003.012</td>
-      <td>1</td>
-      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>2808.0</td>
-      <td>9.0</td>
-      <td>17.2</td>
-      <td>1094.0</td>
-      <td>...</td>
-      <td>92.0</td>
-      <td>422907.0</td>
-      <td>441570.0</td>
-      <td>1.64</td>
-      <td>1.66</td>
-      <td>1.50</td>
-      <td>1979.0</td>
-      <td>520.0</td>
-      <td>1459.0</td>
-      <td>{"rings": [[[-117.01928099899999, 47.866435000...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>160550003021</td>
-      <td>160550003021</td>
-      <td>TA from geography Layer: 160550003021</td>
-      <td>160550003.021</td>
-      <td>1</td>
-      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>1594.0</td>
-      <td>0.0</td>
-      <td>21.7</td>
-      <td>597.0</td>
-      <td>...</td>
-      <td>87.0</td>
-      <td>384884.0</td>
-      <td>453981.0</td>
-      <td>1.96</td>
-      <td>1.98</td>
-      <td>1.82</td>
-      <td>1366.0</td>
-      <td>330.0</td>
-      <td>1036.0</td>
-      <td>{"rings": [[[-116.88429299899997, 47.890789000...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>160550004011</td>
-      <td>160550004011</td>
-      <td>TA from geography Layer: 160550004011</td>
-      <td>160550004.011</td>
-      <td>1</td>
-      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>4725.0</td>
-      <td>22.0</td>
-      <td>30.5</td>
-      <td>1719.0</td>
-      <td>...</td>
-      <td>107.0</td>
-      <td>304801.0</td>
-      <td>345988.0</td>
-      <td>1.89</td>
-      <td>1.92</td>
-      <td>1.72</td>
-      <td>5704.0</td>
-      <td>3377.0</td>
-      <td>2327.0</td>
-      <td>{"rings": [[[-117.01446999899997, 47.745406999...</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 27 columns</p>
-</div></div>
 </div>
 </div>
 <div class="section" id="Consolidating-into-a-Function">
@@ -2591,7 +2362,7 @@ memory usage: 3.1+ KB
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/notebooks/enrich-std-geo.ipynb.txt"
+      <a href="../_sources/notebooks/preprocessing-enrich-std-geo.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 

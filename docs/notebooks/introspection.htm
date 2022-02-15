@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Introspection &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -14,7 +13,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -80,6 +79,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
 </ul>
 
 <div class="relations">
@@ -369,7 +369,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Introspection">
+<div class="section" id="Introspection">
 <h1>Introspection<a class="headerlink" href="#Introspection" title="Permalink to this headline">¶</a></h1>
 <p>Discovering what is available and distilling this down to something usable is the first step in analysis. Consequently, this is the first piece of functionality we added support for, <em>introspection</em>. This provides the ability to discover what countries are available, and within a country, what enrichment variables are available.</p>
 <div class="nbinput docutils container">
@@ -395,7 +395,7 @@ div.rendered_html tbody tr:hover {
 True
 </pre></div></div>
 </div>
-<section id="GIS-Source">
+<div class="section" id="GIS-Source">
 <h2>GIS <em>Source</em><a class="headerlink" href="#GIS-Source" title="Permalink to this headline">¶</a></h2>
 <p>The source GIS being used determines the countries available. Business Analyst can be accessed either locally (ArcGIS Pro with Business Analyst and Data) or through a connection to a Web GIS (ArcGIS Enterprise or ArcGIS Online). In this case, we are connecting to an instance of ArcGIS Online.</p>
 <div class="nbinput docutils container">
@@ -419,11 +419,11 @@ True
 <div class="output_area rendered_html docutils container">
 GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
 </div>
-</section>
-<section id="Discovering-Countries">
+</div>
+<div class="section" id="Discovering-Countries">
 <h2>Discovering Countries<a class="headerlink" href="#Discovering-Countries" title="Permalink to this headline">¶</a></h2>
 <p>Since the data is organized into countries, this is the first instrospection step, discovering countries.</p>
-<section id="Country-Source---local">
+<div class="section" id="Country-Source---local">
 <h3>Country Source - local<a class="headerlink" href="#Country-Source---local" title="Permalink to this headline">¶</a></h3>
 <p>A local <code class="docutils literal notranslate"><span class="pre">gis</span></code> source can be used by passing in an instance of the <code class="docutils literal notranslate"><span class="pre">GIS</span></code> object created using the <code class="docutils literal notranslate"><span class="pre">'pro'</span></code> keyword. As you can see, I have quite a few datasets installed on my machine.</p>
 <div class="nbinput docutils container">
@@ -515,8 +515,8 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </table>
 </div></div>
 </div>
-</section>
-<section id="Country-Source---Web-GIS">
+</div>
+<div class="section" id="Country-Source---Web-GIS">
 <h3>Country Source - Web GIS<a class="headerlink" href="#Country-Source---Web-GIS" title="Permalink to this headline">¶</a></h3>
 <p>Similarly, we can access the countries available on the Web GIS through the <code class="docutils literal notranslate"><span class="pre">arcpy.gis.GIS</span></code> object. Obviously, if this is ArcGIS Online, this is a <em>lot</em> of countries.</p>
 <div class="nbinput docutils container">
@@ -675,9 +675,9 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 <p>154 rows × 7 columns</p>
 </div></div>
 </div>
-</section>
-</section>
-<section id="Creating-a-Country">
+</div>
+</div>
+<div class="section" id="Creating-a-Country">
 <h2>Creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code><a class="headerlink" href="#Creating-a-Country" title="Permalink to this headline">¶</a></h2>
 <p>Before digging into enrichment variables, we need to create a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. A <code class="docutils literal notranslate"><span class="pre">Country</span></code> is created using the ISO3 code displayed in the data frame above along with the corresponding <code class="docutils literal notranslate"><span class="pre">gis</span></code> source.</p>
 <div class="nbinput docutils container">
@@ -719,8 +719,8 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 &lt;Country - United States 2019 (&#39;local&#39;)&gt;
 </pre></div></div>
 </div>
-</section>
-<section id="Enrichment-Variables">
+</div>
+<div class="section" id="Enrichment-Variables">
 <h2>Enrichment Variables<a class="headerlink" href="#Enrichment-Variables" title="Permalink to this headline">¶</a></h2>
 <p>Discovering enrichment variables available is possible through the <code class="docutils literal notranslate"><span class="pre">Country</span></code> object’s <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property.</p>
 <div class="nbinput docutils container">
@@ -855,8 +855,8 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 <p>17963 rows × 5 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Filtering-Variables">
+</div>
+<div class="section" id="Filtering-Variables">
 <h2>Filtering Variables<a class="headerlink" href="#Filtering-Variables" title="Permalink to this headline">¶</a></h2>
 <p>The usefulness of relevant metadata, especially categorical data, cannot be overstated. Using relevant criteria we can quickly identify variables to use for enrichment. To make this easier, we save the dataframe into an easily accessible variable, <code class="docutils literal notranslate"><span class="pre">ev</span></code>.</p>
 <div class="nbinput docutils container">
@@ -944,7 +944,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </table>
 </div></div>
 </div>
-<section id="Get-Current-Income-Metrics">
+<div class="section" id="Get-Current-Income-Metrics">
 <h3>Get Current Income Metrics<a class="headerlink" href="#Get-Current-Income-Metrics" title="Permalink to this headline">¶</a></h3>
 <p>Since a Pandas DataFrame, finding income indicies for use in analysis is relatively straightforward.</p>
 <div class="nbinput docutils container">
@@ -1299,8 +1299,8 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </table>
 </div></div>
 </div>
-</section>
-<section id="Get-Current-Key-Metrics">
+</div>
+<div class="section" id="Get-Current-Key-Metrics">
 <h3>Get Current Key Metrics<a class="headerlink" href="#Get-Current-Key-Metrics" title="Permalink to this headline">¶</a></h3>
 <p>One of the more common example datasets I use when exploring if an idea is vialbe are the current year key metrics.</p>
 <div class="nbinput docutils container">
@@ -1551,13 +1551,13 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </table>
 </div></div>
 </div>
-</section>
-</section>
-<section id="Onto-Enrich">
+</div>
+</div>
+<div class="section" id="Onto-Enrich">
 <h2>Onto Enrich<a class="headerlink" href="#Onto-Enrich" title="Permalink to this headline">¶</a></h2>
 <p>From here the next step is enriching data using the retrieved variables. Which values from the retrieved Dataframe need to be used for input into the local (<code class="docutils literal notranslate"><span class="pre">arcpy.ba.EnrichLayer</span></code>) versus the online (<code class="docutils literal notranslate"><span class="pre">arcgis.geoenrichment.Country.enrich</span></code>) enrich methods are slightly different, but can easily be formatted for input into the respective functions.</p>
 <p><strong>NOTE:</strong> Fortunately, this will not be necessary once the updated <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method gets released, which is already in review. (28 Jan 2022)</p>
-<section id="Enrich-Variables-for-Web-GIS">
+<div class="section" id="Enrich-Variables-for-Web-GIS">
 <h3>Enrich Variables for Web GIS<a class="headerlink" href="#Enrich-Variables-for-Web-GIS" title="Permalink to this headline">¶</a></h3>
 <p>If planning to enrich using online, we need the variable <code class="docutils literal notranslate"><span class="pre">name</span></code> column joined by semicolons to use with the <code class="docutils literal notranslate"><span class="pre">arcgis.geoenrichment.Country.enrich</span></code> method.</p>
 <div class="nbinput docutils container">
@@ -1579,8 +1579,8 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 &#39;TOTPOP_CY;GQPOP_CY;DIVINDX_CY;TOTHH_CY;AVGHHSZ_CY;MEDHINC_CY;AVGHINC_CY;PCI_CY;TOTHU_CY;OWNER_CY;RENTER_CY;VACANT_CY;MEDVAL_CY;AVGVAL_CY;POPGRW10CY;HHGRW10CY;FAMGRW10CY;POPGRWCYFY;HHGRWCYFY;FAMGRWCYFY;MHIGRWCYFY;PCIGRWCYFY;DPOP_CY;DPOPWRK_CY;DPOPRES_CY&#39;
 </pre></div></div>
 </div>
-</section>
-<section id="Enrich-Variables-for-Local">
+</div>
+<div class="section" id="Enrich-Variables-for-Local">
 <h3>Enrich Variables for Local<a class="headerlink" href="#Enrich-Variables-for-Local" title="Permalink to this headline">¶</a></h3>
 <p>…and if planning to enrich using local (ArcGIS Pro) in the <code class="docutils literal notranslate"><span class="pre">arcpy.ba.EnrichLayer</span></code> method, we need the variable <code class="docutils literal notranslate"><span class="pre">enrich_name</span></code> column joined by semicolon.</p>
 <div class="nbinput docutils container">
@@ -1602,9 +1602,9 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 &#39;KeyUSFacts.TOTPOP_CY;KeyUSFacts.GQPOP_CY;KeyUSFacts.DIVINDX_CY;KeyUSFacts.TOTHH_CY;KeyUSFacts.AVGHHSZ_CY;KeyUSFacts.MEDHINC_CY;KeyUSFacts.AVGHINC_CY;KeyUSFacts.PCI_CY;KeyUSFacts.TOTHU_CY;KeyUSFacts.OWNER_CY;KeyUSFacts.RENTER_CY;KeyUSFacts.VACANT_CY;KeyUSFacts.MEDVAL_CY;KeyUSFacts.AVGVAL_CY;KeyUSFacts.POPGRW10CY;KeyUSFacts.HHGRW10CY;KeyUSFacts.FAMGRW10CY;KeyUSFacts.POPGRWCYFY;KeyUSFacts.HHGRWCYFY;KeyUSFacts.FAMGRWCYFY;KeyUSFacts.MHIGRWCYFY;KeyUSFacts.PCIGRWCYFY;KeyUSFacts.DPOP_CY;KeyUSFacts.DPOPWRK_CY;KeyUSFacts.DPOPRES_CY&#39;
 </pre></div></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
           </div>
@@ -1617,7 +1617,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

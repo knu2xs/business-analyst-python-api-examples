@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notebook Template &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -14,7 +13,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -50,6 +49,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
 </ul>
 
 <div class="relations">
@@ -333,7 +333,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Notebook-Template">
+<div class="section" id="Notebook-Template">
 <h1>Notebook Template<a class="headerlink" href="#Notebook-Template" title="Permalink to this headline">¶</a></h1>
 <p>This Notebook is stubbed out with some project paths, loading of enviroment variables, and common package imports to speed up the process of starting a new project.</p>
 <p>It is highly recommended you copy and rename this notebook following the naming convention outlined in the readme of naming notebooks with a double number such as <code class="docutils literal notranslate"><span class="pre">01-first-thing</span></code>, and <code class="docutils literal notranslate"><span class="pre">02-next-thing</span></code>. This way the order of notebooks is apparent, and each notebook does not need to be needlesssly long, complex, and difficult to follow.</p>
@@ -377,7 +377,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="c1"># import the project package from the project package path - only necessary if you are not using a unique environemnt for this project</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
-<span class="kn">import</span> <span class="nn">ba_ex</span>
+<span class="kn">import</span> <span class="nn">ba_samples</span>
 
 <span class="c1"># load the &quot;autoreload&quot; extension so that code can change, &amp; always reload modules so that as you change code in src, it gets loaded</span>
 <span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -398,21 +398,11 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>                       Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_10936/3084608896.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">     15</span> <span class="ansi-red-intense-fg ansi-bold"># import the project package from the project package path - only necessary if you are not using a unique environemnt for this project</span>
-<span class="ansi-green-fg">     16</span> sys<span class="ansi-yellow-intense-fg ansi-bold">.</span>path<span class="ansi-yellow-intense-fg ansi-bold">.</span>append<span class="ansi-yellow-intense-fg ansi-bold">(</span>str<span class="ansi-yellow-intense-fg ansi-bold">(</span>dir_prj<span class="ansi-yellow-intense-fg ansi-bold">/</span><span class="ansi-blue-intense-fg ansi-bold">&#39;src&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-intense-fg ansi-bold">---&gt; 17</span><span class="ansi-yellow-intense-fg ansi-bold"> </span><span class="ansi-green-intense-fg ansi-bold">import</span> ba_ex
-<span class="ansi-green-fg">     18</span>
-<span class="ansi-green-fg">     19</span> <span class="ansi-red-intense-fg ansi-bold"># load the &#34;autoreload&#34; extension so that code can change, &amp; always reload modules so that as you change code in src, it gets loaded</span>
-
-<span class="ansi-red-intense-fg ansi-bold">ModuleNotFoundError</span>: No module named &#39;ba_ex&#39;
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
 </div>
 <p>Licensing</p>
 <p>Copyright 2020 Esri</p>
@@ -420,7 +410,7 @@ div.rendered_html tbody tr:hover {
 <p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
 <p>A copy of the license is available in the repository’s LICENSE file.</p>
-</section>
+</div>
 
 
           </div>
@@ -433,7 +423,7 @@ div.rendered_html tbody tr:hover {
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "aaf3efb8",
+   "id": "d0ec1aa8",
    "metadata": {},
    "source": [
     "# Interesting Facts"
@@ -11,7 +11,7 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "5e6da917",
+   "id": "d1e97cc5",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -19,7 +19,7 @@
     "from pathlib import Path\n",
     "\n",
     "from arcgis.features import GeoAccessor\n",
-    "from arcgis.geoenrichment._business_analyst import BusinessAnalyst\n",
+    "from arcgis.geoenrichment import Country\n",
     "from arcgis.gis import GIS\n",
     "from dotenv import load_dotenv, find_dotenv\n",
     "import pandas as pd"
@@ -27,7 +27,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c43cfd09",
+   "id": "610de985",
    "metadata": {},
    "source": [
     "Next, we need some test data to work with. Hence, here we are accessing two files with pickled exports from Spatially Enabled Pandas Data Frames. One is of postal codes (zip codes) in Portland, Oregon, and the other is for block groups in Portland."
@@ -36,7 +36,7 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "3ed3a5c9",
+   "id": "d437ebf9",
    "metadata": {},
    "outputs": [],
    "source": [
@@ -55,8 +55,8 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
-   "id": "05b9a708",
+   "execution_count": 3,
+   "id": "98c40176",
    "metadata": {},
    "outputs": [
     {
@@ -68,7 +68,7 @@
        "GIS @ https://baqa.mapsqa.arcgis.com version:9.4"
       ]
      },
-     "execution_count": 5,
+     "execution_count": 3,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -85,65 +85,14 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
-   "id": "fefbc6f4",
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "<BusinessAnalyst (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)>"
-      ]
-     },
-     "execution_count": 6,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "ba = BusinessAnalyst(gis_agol)\n",
-    "\n",
-    "ba"
-   ]
-  },
-  {
-   "cell_type": "code",
    "execution_count": 7,
-   "id": "0dc3728b",
+   "id": "fd28a9e2",
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "{'_source': GIS @ https://baqa.mapsqa.arcgis.com version:9.4,\n",
-       " '_base_url': 'https://geoenrichqa.arcgis.com/arcgis/rest/services/World/GeoenrichmentServer',\n",
-       " '_lazy_countries':     iso2 iso3    country_name        datasets default_dataset  \\\n",
-       " 0     AL  ALB         Albania  [ALB_MBR_2020]    ALB_MBR_2020   \n",
-       " 1     DZ  DZA         Algeria  [DZA_MBR_2019]    DZA_MBR_2019   \n",
-       " 2     AD  AND         Andorra  [AND_MBR_2020]    AND_MBR_2020   \n",
-       " 3     AO  AGO          Angola  [AGO_MBR_2019]    AGO_MBR_2019   \n",
-       " 4     AI  AIA        Anguilla  [AIA_MBR_2020]    AIA_MBR_2020   \n",
-       " ..   ...  ...             ...             ...             ...   \n",
-       " 149   UZ  UZB      Uzbekistan  [UZB_MBR_2020]    UZB_MBR_2020   \n",
-       " 150   VE  VEN       Venezuela  [VEN_MBR_2020]    VEN_MBR_2020   \n",
-       " 151   VN  VNM         Vietnam  [VNM_MBR_2020]    VNM_MBR_2020   \n",
-       " 152   VI  VIR  Virgin Islands  [VIR_MBR_2020]    VIR_MBR_2020   \n",
-       " 153   ZM  ZMB          Zambia  [ZMB_MBR_2019]    ZMB_MBR_2019   \n",
-       " \n",
-       "                               alt_name      continent  \n",
-       " 0                              ALBANIA         Europe  \n",
-       " 1                              ALGERIA         Africa  \n",
-       " 2                              ANDORRA         Europe  \n",
-       " 3                               ANGOLA         Africa  \n",
-       " 4                             ANGUILLA  North America  \n",
-       " ..                                 ...            ...  \n",
-       " 149                         UZBEKISTAN           Asia  \n",
-       " 150  VENEZUELA, BOLIVARIAN REPUBLIC OF  South America  \n",
-       " 151                           VIET NAM           Asia  \n",
-       " 152       UNITED STATES VIRGIN ISLANDS  North America  \n",
-       " 153                             ZAMBIA         Africa  \n",
-       " \n",
-       " [154 rows x 7 columns]}"
+       "<Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)>"
       ]
      },
      "execution_count": 7,
@@ -152,44 +101,252 @@
     }
    ],
    "source": [
-    "ba.__dict__"
+    "self = Country('usa')\n",
+    "\n",
+    "self"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
-   "id": "d23c31c5",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "usa = ba.get_country('usa')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "id": "c9a7805e",
+   "execution_count": 11,
+   "id": "6e61435c",
    "metadata": {},
    "outputs": [
     {
      "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>alias</th>\n",
+       "      <th>data_collection</th>\n",
+       "      <th>enrich_name</th>\n",
+       "      <th>enrich_field_name</th>\n",
+       "      <th>description</th>\n",
+       "      <th>vintage</th>\n",
+       "      <th>units</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>AGE0_CY</td>\n",
+       "      <td>2021 Population Age &lt;1</td>\n",
+       "      <td>1yearincrements</td>\n",
+       "      <td>1yearincrements.AGE0_CY</td>\n",
+       "      <td>F1yearincrements_AGE0_CY</td>\n",
+       "      <td>2021 Total Population Age &lt;1 (Esri)</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>AGE1_CY</td>\n",
+       "      <td>2021 Population Age 1</td>\n",
+       "      <td>1yearincrements</td>\n",
+       "      <td>1yearincrements.AGE1_CY</td>\n",
+       "      <td>F1yearincrements_AGE1_CY</td>\n",
+       "      <td>2021 Total Population Age 1 (Esri)</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>AGE2_CY</td>\n",
+       "      <td>2021 Population Age 2</td>\n",
+       "      <td>1yearincrements</td>\n",
+       "      <td>1yearincrements.AGE2_CY</td>\n",
+       "      <td>F1yearincrements_AGE2_CY</td>\n",
+       "      <td>2021 Total Population Age 2 (Esri)</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>AGE3_CY</td>\n",
+       "      <td>2021 Population Age 3</td>\n",
+       "      <td>1yearincrements</td>\n",
+       "      <td>1yearincrements.AGE3_CY</td>\n",
+       "      <td>F1yearincrements_AGE3_CY</td>\n",
+       "      <td>2021 Total Population Age 3 (Esri)</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>AGE4_CY</td>\n",
+       "      <td>2021 Population Age 4</td>\n",
+       "      <td>1yearincrements</td>\n",
+       "      <td>1yearincrements.AGE4_CY</td>\n",
+       "      <td>F1yearincrements_AGE4_CY</td>\n",
+       "      <td>2021 Total Population Age 4 (Esri)</td>\n",
+       "      <td>2021</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19148</th>\n",
+       "      <td>MOEMEDYRMV</td>\n",
+       "      <td>2019 Median Year Householder Moved In MOE (ACS...</td>\n",
+       "      <td>yearmovedin</td>\n",
+       "      <td>yearmovedin.MOEMEDYRMV</td>\n",
+       "      <td>yearmovedin_MOEMEDYRMV</td>\n",
+       "      <td>2019 Median Year Householder Moved into Unit M...</td>\n",
+       "      <td>2015-2019</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19149</th>\n",
+       "      <td>RELMEDYRMV</td>\n",
+       "      <td>2019 Median Year Householder Moved In REL (ACS...</td>\n",
+       "      <td>yearmovedin</td>\n",
+       "      <td>yearmovedin.RELMEDYRMV</td>\n",
+       "      <td>yearmovedin_RELMEDYRMV</td>\n",
+       "      <td>2019 Median Year Householder Moved into Unit R...</td>\n",
+       "      <td>2015-2019</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19150</th>\n",
+       "      <td>ACSOWNER</td>\n",
+       "      <td>2019 Owner Households (ACS 5-Yr)</td>\n",
+       "      <td>yearmovedin</td>\n",
+       "      <td>yearmovedin.ACSOWNER</td>\n",
+       "      <td>yearmovedin_ACSOWNER</td>\n",
+       "      <td>2019 Owner Households (ACS 5-Yr)</td>\n",
+       "      <td>2015-2019</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19151</th>\n",
+       "      <td>MOEOWNER</td>\n",
+       "      <td>2019 Owner Households MOE (ACS 5-Yr)</td>\n",
+       "      <td>yearmovedin</td>\n",
+       "      <td>yearmovedin.MOEOWNER</td>\n",
+       "      <td>yearmovedin_MOEOWNER</td>\n",
+       "      <td>2019 Owner Households MOE (ACS 5-Yr)</td>\n",
+       "      <td>2015-2019</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19152</th>\n",
+       "      <td>RELOWNER</td>\n",
+       "      <td>2019 Owner Households REL (ACS 5-Yr)</td>\n",
+       "      <td>yearmovedin</td>\n",
+       "      <td>yearmovedin.RELOWNER</td>\n",
+       "      <td>yearmovedin_RELOWNER</td>\n",
+       "      <td>2019 Owner Households REL (ACS 5-Yr)</td>\n",
+       "      <td>2015-2019</td>\n",
+       "      <td>count</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>19153 rows × 8 columns</p>\n",
+       "</div>"
+      ],
       "text/plain": [
-       "'US.BlockGroups'"
+       "             name                                              alias  \\\n",
+       "0         AGE0_CY                             2021 Population Age <1   \n",
+       "1         AGE1_CY                              2021 Population Age 1   \n",
+       "2         AGE2_CY                              2021 Population Age 2   \n",
+       "3         AGE3_CY                              2021 Population Age 3   \n",
+       "4         AGE4_CY                              2021 Population Age 4   \n",
+       "...           ...                                                ...   \n",
+       "19148  MOEMEDYRMV  2019 Median Year Householder Moved In MOE (ACS...   \n",
+       "19149  RELMEDYRMV  2019 Median Year Householder Moved In REL (ACS...   \n",
+       "19150    ACSOWNER                   2019 Owner Households (ACS 5-Yr)   \n",
+       "19151    MOEOWNER               2019 Owner Households MOE (ACS 5-Yr)   \n",
+       "19152    RELOWNER               2019 Owner Households REL (ACS 5-Yr)   \n",
+       "\n",
+       "       data_collection              enrich_name         enrich_field_name  \\\n",
+       "0      1yearincrements  1yearincrements.AGE0_CY  F1yearincrements_AGE0_CY   \n",
+       "1      1yearincrements  1yearincrements.AGE1_CY  F1yearincrements_AGE1_CY   \n",
+       "2      1yearincrements  1yearincrements.AGE2_CY  F1yearincrements_AGE2_CY   \n",
+       "3      1yearincrements  1yearincrements.AGE3_CY  F1yearincrements_AGE3_CY   \n",
+       "4      1yearincrements  1yearincrements.AGE4_CY  F1yearincrements_AGE4_CY   \n",
+       "...                ...                      ...                       ...   \n",
+       "19148      yearmovedin   yearmovedin.MOEMEDYRMV    yearmovedin_MOEMEDYRMV   \n",
+       "19149      yearmovedin   yearmovedin.RELMEDYRMV    yearmovedin_RELMEDYRMV   \n",
+       "19150      yearmovedin     yearmovedin.ACSOWNER      yearmovedin_ACSOWNER   \n",
+       "19151      yearmovedin     yearmovedin.MOEOWNER      yearmovedin_MOEOWNER   \n",
+       "19152      yearmovedin     yearmovedin.RELOWNER      yearmovedin_RELOWNER   \n",
+       "\n",
+       "                                             description    vintage  units  \n",
+       "0                    2021 Total Population Age <1 (Esri)       2021  count  \n",
+       "1                     2021 Total Population Age 1 (Esri)       2021  count  \n",
+       "2                     2021 Total Population Age 2 (Esri)       2021  count  \n",
+       "3                     2021 Total Population Age 3 (Esri)       2021  count  \n",
+       "4                     2021 Total Population Age 4 (Esri)       2021  count  \n",
+       "...                                                  ...        ...    ...  \n",
+       "19148  2019 Median Year Householder Moved into Unit M...  2015-2019  count  \n",
+       "19149  2019 Median Year Householder Moved into Unit R...  2015-2019  count  \n",
+       "19150                   2019 Owner Households (ACS 5-Yr)  2015-2019  count  \n",
+       "19151               2019 Owner Households MOE (ACS 5-Yr)  2015-2019  count  \n",
+       "19152               2019 Owner Households REL (ACS 5-Yr)  2015-2019  count  \n",
+       "\n",
+       "[19153 rows x 8 columns]"
       ]
      },
-     "execution_count": 12,
+     "execution_count": 11,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "usa.geography_levels[usa.geography_levels['level_name'] == 'block_groups']['level_id'][0]"
+    "self.enrich_variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "a2c9c4a8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<bound method AOI.get_enrich_variables_from_iterable of <Country - USA (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)>>"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "usa._ba_cntry.get_enrich_variables_from_iterable"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "995d0267",
+   "id": "de30c175",
    "metadata": {},
    "outputs": [],
    "source": []
