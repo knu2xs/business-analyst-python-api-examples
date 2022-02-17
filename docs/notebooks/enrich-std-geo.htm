@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Enrich Using Standard Geographies &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -13,7 +14,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -361,7 +362,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<div class="section" id="Enrich-Using-Standard-Geographies">
+<section id="Enrich-Using-Standard-Geographies">
 <h1>Enrich Using Standard Geographies<a class="headerlink" href="#Enrich-Using-Standard-Geographies" title="Permalink to this headline">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput nblast docutils container">
@@ -533,7 +534,7 @@ memory usage: 1.7+ KB
 <div class="output_area rendered_html docutils container">
 GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
 </div>
-<div class="section" id="Standard-Geography-From-a-List">
+<section id="Standard-Geography-From-a-List">
 <h2>Standard Geography From a List<a class="headerlink" href="#Standard-Geography-From-a-List" title="Permalink to this headline">¶</a></h2>
 <p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Online.</p>
 <div class="nbinput docutils container">
@@ -1373,8 +1374,8 @@ memory usage: 3.1+ KB
 <p>5 rows × 29 columns</p>
 </div></div>
 </div>
-</div>
-<div class="section" id="Standard-Geography-From-a-Data-Frame">
+</section>
+<section id="Standard-Geography-From-a-Data-Frame">
 <h2>Standard Geography From a Data Frame<a class="headerlink" href="#Standard-Geography-From-a-Data-Frame" title="Permalink to this headline">¶</a></h2>
 <p>For the sake of efficiency, it is possible to provide the dataframe directly as input to the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method, and use the <code class="docutils literal notranslate"><span class="pre">standard_geography_id_column</span></code> parameter to specify the column. Also, in the following example, we are going to use a local source (ArcGIS Pro with Business Analyst and the USA data pack) and consolidate the steps above.</p>
 <p>Previously, we loaded a dataframe from memory to use for enrichment consisting of all the block groups in Portland, OR. The values we will be using are located in the <code class="docutils literal notranslate"><span class="pre">ID</span></code> column.</p>
@@ -2072,8 +2073,8 @@ memory usage: 14.0+ KB
 <p>5 rows × 27 columns</p>
 </div></div>
 </div>
-</div>
-<div class="section" id="Consolidating-into-a-Function">
+</section>
+<section id="Consolidating-into-a-Function">
 <h2>Consolidating into a Function<a class="headerlink" href="#Consolidating-into-a-Function" title="Permalink to this headline">¶</a></h2>
 <p>All of the above steps, if consolidated into a succicent function only containing the logic necessary to run, can look like the following. Also, although some of the imports below are redundant, I include everything needed in this cell soy you can easily copy this and modify it to suit your needs.</p>
 <div class="nbinput nblast docutils container">
@@ -2111,8 +2112,8 @@ memory usage: 14.0+ KB
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Switching-Sources">
+</section>
+<section id="Switching-Sources">
 <h2>Switching Sources<a class="headerlink" href="#Switching-Sources" title="Permalink to this headline">¶</a></h2>
 <p>Using the above function we can easily accomplish all the steps detailed above in one succicent step. Based on this, we can quickly switch between sources by swapping out the <code class="docutils literal notranslate"><span class="pre">Country</span></code> instance. As is evident below, switching sources requires little more than changing the country object. Everything else works the same, and <em>this is the point</em>. This API is designed to enable you to easily work with Business Analyst data.</p>
 <div class="nbinput docutils container">
@@ -2573,8 +2574,8 @@ memory usage: 3.1+ KB
 </pre></div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -2587,7 +2588,7 @@ memory usage: 3.1+ KB
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

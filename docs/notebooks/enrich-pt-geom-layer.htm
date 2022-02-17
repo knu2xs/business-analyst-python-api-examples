@@ -1,0 +1,2470 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Enrich Using Point Geometries &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <link rel="index" title="Index" href="../genindex.htm" />
+    <link rel="search" title="Search" href="../search.htm" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=knu2xs&repo=business-analyst-python-api-examples&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.htm">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Enrich-Using-Point-Geometries">
+<h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this headline">¶</a></h1>
+<p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">arcgis.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
+<span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<p>Now, we are going to need a connection to ArcGIS Online to demonstrate the abiliy to use ArcGIS Online for geoenrichment. This is accomplished by instantiating a <code class="docutils literal notranslate"><span class="pre">GIS</span></code> object instance with valid credentials read from environment variables.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span>
+    <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">),</span>
+    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">gis_agol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
+</div>
+<p>Next, we need some test data to work with. We are pulling business locations from an ArcGIS Online layer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt_itm_id</span> <span class="o">=</span> <span class="s1">&#39;581de875ae96477298f7b5ac598b1dec&#39;</span>
+<span class="n">pt_lyr</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">()</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pt_itm_id</span><span class="p">)</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pt_df</span> <span class="o">=</span> <span class="n">pt_lyr</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">sdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;OBJECTID&#39;</span><span class="p">)</span>
+<span class="n">pt_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">pt_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">pt_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 251 entries, 0 to 250
+Data columns (total 2 columns):
+ #   Column  Non-Null Count  Dtype
+---  ------  --------------  -----
+ 0   LOCNUM  251 non-null    object
+ 1   SHAPE   251 non-null    geometry
+dtypes: geometry(1), object(1)
+memory usage: 4.0+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>LOCNUM</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use a local instance of ArcGIS Pro with Business Analyst and the United States data pack.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
+
+<span class="n">usa_agol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
+</pre></div></div>
+</div>
+<section id="Select-Variables">
+<h2>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this headline">¶</a></h2>
+<p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich_variables</span>
+
+<span class="n">ev</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+      <th>description</th>
+      <th>vintage</th>
+      <th>units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AGE0_CY</td>
+      <td>2021 Population Age &lt;1</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE0_CY</td>
+      <td>F1yearincrements_AGE0_CY</td>
+      <td>2021 Total Population Age &lt;1 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AGE1_CY</td>
+      <td>2021 Population Age 1</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE1_CY</td>
+      <td>F1yearincrements_AGE1_CY</td>
+      <td>2021 Total Population Age 1 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AGE2_CY</td>
+      <td>2021 Population Age 2</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE2_CY</td>
+      <td>F1yearincrements_AGE2_CY</td>
+      <td>2021 Total Population Age 2 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AGE3_CY</td>
+      <td>2021 Population Age 3</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE3_CY</td>
+      <td>F1yearincrements_AGE3_CY</td>
+      <td>2021 Total Population Age 3 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AGE4_CY</td>
+      <td>2021 Population Age 4</td>
+      <td>1yearincrements</td>
+      <td>1yearincrements.AGE4_CY</td>
+      <td>F1yearincrements_AGE4_CY</td>
+      <td>2021 Total Population Age 4 (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>19148</th>
+      <td>MOEMEDYRMV</td>
+      <td>2019 Median Year Householder Moved In MOE (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEMEDYRMV</td>
+      <td>yearmovedin_MOEMEDYRMV</td>
+      <td>2019 Median Year Householder Moved into Unit M...</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19149</th>
+      <td>RELMEDYRMV</td>
+      <td>2019 Median Year Householder Moved In REL (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELMEDYRMV</td>
+      <td>yearmovedin_RELMEDYRMV</td>
+      <td>2019 Median Year Householder Moved into Unit R...</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19150</th>
+      <td>ACSOWNER</td>
+      <td>2019 Owner Households (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.ACSOWNER</td>
+      <td>yearmovedin_ACSOWNER</td>
+      <td>2019 Owner Households (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19151</th>
+      <td>MOEOWNER</td>
+      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEOWNER</td>
+      <td>yearmovedin_MOEOWNER</td>
+      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19152</th>
+      <td>RELOWNER</td>
+      <td>2019 Owner Households REL (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELOWNER</td>
+      <td>yearmovedin_RELOWNER</td>
+      <td>2019 Owner Households REL (ACS 5-Yr)</td>
+      <td>2015-2019</td>
+      <td>count</td>
+    </tr>
+  </tbody>
+</table>
+<p>19153 rows × 8 columns</p>
+</div></div>
+</div>
+<p>Tens of thousands of variables is just a few too many to deal with, so we can parse this down a bit using some Pandas Data Frame filtering to get just key United States variables for the current year.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
+<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">kv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+      <th>description</th>
+      <th>vintage</th>
+      <th>units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTPOP_CY</td>
+      <td>KeyUSFacts_TOTPOP_CY</td>
+      <td>2021 Total Population (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GQPOP_CY</td>
+      <td>2021 Group Quarters Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.GQPOP_CY</td>
+      <td>KeyUSFacts_GQPOP_CY</td>
+      <td>2021 Group Quarters Population (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DIVINDX_CY</td>
+      <td>KeyUSFacts_DIVINDX_CY</td>
+      <td>2021 Diversity Index (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>TOTHH_CY</td>
+      <td>2021 Total Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHH_CY</td>
+      <td>KeyUSFacts_TOTHH_CY</td>
+      <td>2021 Total Households (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AVGHHSZ_CY</td>
+      <td>2021 Average Household Size</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHHSZ_CY</td>
+      <td>KeyUSFacts_AVGHHSZ_CY</td>
+      <td>2021 Average Household Size (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDHINC_CY</td>
+      <td>KeyUSFacts_MEDHINC_CY</td>
+      <td>2021 Median Household Income (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>AVGHINC_CY</td>
+      <td>2021 Average Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHINC_CY</td>
+      <td>KeyUSFacts_AVGHINC_CY</td>
+      <td>2021 Average Household Income (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>PCI_CY</td>
+      <td>2021 Per Capita Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.PCI_CY</td>
+      <td>KeyUSFacts_PCI_CY</td>
+      <td>2021 Per Capita Income (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>TOTHU_CY</td>
+      <td>2021 Total Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHU_CY</td>
+      <td>KeyUSFacts_TOTHU_CY</td>
+      <td>2021 Total Housing Units (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>OWNER_CY</td>
+      <td>2021 Owner Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.OWNER_CY</td>
+      <td>KeyUSFacts_OWNER_CY</td>
+      <td>2021 Owner Occupied Housing Units (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>RENTER_CY</td>
+      <td>2021 Renter Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.RENTER_CY</td>
+      <td>KeyUSFacts_RENTER_CY</td>
+      <td>2021 Renter Occupied Housing Units (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>VACANT_CY</td>
+      <td>2021 Vacant Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.VACANT_CY</td>
+      <td>KeyUSFacts_VACANT_CY</td>
+      <td>2021 Vacant Housing Units (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MEDVAL_CY</td>
+      <td>2021 Median Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDVAL_CY</td>
+      <td>KeyUSFacts_MEDVAL_CY</td>
+      <td>2021 Median Home Value (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>AVGVAL_CY</td>
+      <td>2021 Average Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGVAL_CY</td>
+      <td>KeyUSFacts_AVGVAL_CY</td>
+      <td>2021 Average Home Value (Esri)</td>
+      <td>2021</td>
+      <td>currency</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.POPGRW10CY</td>
+      <td>KeyUSFacts_POPGRW10CY</td>
+      <td>2010-2021 Population: Compound Annual Growth R...</td>
+      <td>2021</td>
+      <td>pct</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>HHGRW10CY</td>
+      <td>2010-2021 Growth Rate: Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.HHGRW10CY</td>
+      <td>KeyUSFacts_HHGRW10CY</td>
+      <td>2010-2021 Households: Compound Annual Growth R...</td>
+      <td>2021</td>
+      <td>pct</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>FAMGRW10CY</td>
+      <td>2010-2021 Growth Rate: Families</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.FAMGRW10CY</td>
+      <td>KeyUSFacts_FAMGRW10CY</td>
+      <td>2010-2021 Families: Compound Annual Growth Rat...</td>
+      <td>2021</td>
+      <td>pct</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>DPOP_CY</td>
+      <td>2021 Total Daytime Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOP_CY</td>
+      <td>KeyUSFacts_DPOP_CY</td>
+      <td>2021 Total Daytime Population (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>DPOPWRK_CY</td>
+      <td>2021 Daytime Pop: Workers</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPWRK_CY</td>
+      <td>KeyUSFacts_DPOPWRK_CY</td>
+      <td>2021 Daytime Population: Workers (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>DPOPRES_CY</td>
+      <td>2021 Daytime Pop: Residents</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPRES_CY</td>
+      <td>KeyUSFacts_DPOPRES_CY</td>
+      <td>2021 Daytime Population: Residents (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Enrich-with-Defaults">
+<h2>Enrich with Defaults<a class="headerlink" href="#Enrich-with-Defaults" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we can enrich using the points and variables collected above. Please notice, we are not specifying the area around the input points, so the proximity defaults are being used - a straight line distance of one kilometer around the points. This circular area is then used to apportion data to the locations specified by the point geometries.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>LOCNUM</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt1_enrich_df</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span>
+    <span class="n">geographies</span><span class="o">=</span><span class="n">pt_df</span><span class="p">,</span>
+    <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span>
+<span class="p">)</span>
+
+<span class="n">pt1_enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">pt1_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 251 entries, 0 to 250
+Data columns (total 31 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   locnum                             251 non-null    object
+ 1   source_country                     251 non-null    object
+ 2   area_type                          251 non-null    object
+ 3   buffer_units                       251 non-null    object
+ 4   buffer_units_alias                 251 non-null    object
+ 5   buffer_radii                       251 non-null    int64
+ 6   aggregation_method                 251 non-null    object
+ 7   population_to_polygon_size_rating  251 non-null    float64
+ 8   apportionment_confidence           251 non-null    float64
+ 9   has_data                           251 non-null    int64
+ 10  totpop_cy                          251 non-null    int64
+ 11  gqpop_cy                           251 non-null    int64
+ 12  divindx_cy                         251 non-null    float64
+ 13  tothh_cy                           251 non-null    int64
+ 14  avghhsz_cy                         251 non-null    float64
+ 15  medhinc_cy                         251 non-null    int64
+ 16  avghinc_cy                         251 non-null    int64
+ 17  pci_cy                             251 non-null    int64
+ 18  tothu_cy                           251 non-null    int64
+ 19  owner_cy                           251 non-null    int64
+ 20  renter_cy                          251 non-null    int64
+ 21  vacant_cy                          251 non-null    int64
+ 22  medval_cy                          251 non-null    int64
+ 23  avgval_cy                          251 non-null    int64
+ 24  popgrw10_cy                        251 non-null    float64
+ 25  hhgrw10_cy                         251 non-null    float64
+ 26  famgrw10_cy                        251 non-null    float64
+ 27  dpop_cy                            251 non-null    int64
+ 28  dpopwrk_cy                         251 non-null    int64
+ 29  dpopres_cy                         251 non-null    int64
+ 30  SHAPE                              251 non-null    geometry
+dtypes: float64(7), geometry(1), int64(17), object(6)
+memory usage: 60.9+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>...</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrw10_cy</th>
+      <th>hhgrw10_cy</th>
+      <th>famgrw10_cy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>348</td>
+      <td>390413</td>
+      <td>429594</td>
+      <td>0.43</td>
+      <td>0.41</td>
+      <td>0.19</td>
+      <td>11715</td>
+      <td>4849</td>
+      <td>6866</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>420</td>
+      <td>394983</td>
+      <td>441629</td>
+      <td>0.81</td>
+      <td>0.67</td>
+      <td>0.61</td>
+      <td>20885</td>
+      <td>8823</td>
+      <td>12062</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3773</td>
+      <td>628835</td>
+      <td>706736</td>
+      <td>2.86</td>
+      <td>2.81</td>
+      <td>3.17</td>
+      <td>91264</td>
+      <td>75188</td>
+      <td>16076</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>94</td>
+      <td>376746</td>
+      <td>403178</td>
+      <td>2.64</td>
+      <td>2.52</td>
+      <td>2.44</td>
+      <td>5727</td>
+      <td>2799</td>
+      <td>2928</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>158</td>
+      <td>575127</td>
+      <td>605756</td>
+      <td>0.41</td>
+      <td>0.47</td>
+      <td>0.20</td>
+      <td>22915</td>
+      <td>18367</td>
+      <td>4548</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 31 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Specify-Proximity-Value">
+<h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this headline">¶</a></h2>
+<p>If wanting to use a value different from the default (highly recommended) of one kilometer, this can easily be specified using the <code class="docutils literal notranslate"><span class="pre">proximity_value</span></code> parameter.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt2_enrich_df</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span>
+    <span class="n">geographies</span><span class="o">=</span><span class="n">pt_df</span><span class="p">,</span>
+    <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span>
+    <span class="n">proximity_value</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+
+<span class="n">pt2_enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">pt2_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 251 entries, 0 to 250
+Data columns (total 31 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   locnum                             251 non-null    object
+ 1   source_country                     251 non-null    object
+ 2   area_type                          251 non-null    object
+ 3   buffer_units                       251 non-null    object
+ 4   buffer_units_alias                 251 non-null    object
+ 5   buffer_radii                       251 non-null    int64
+ 6   aggregation_method                 251 non-null    object
+ 7   population_to_polygon_size_rating  251 non-null    float64
+ 8   apportionment_confidence           251 non-null    float64
+ 9   has_data                           251 non-null    int64
+ 10  totpop_cy                          251 non-null    int64
+ 11  gqpop_cy                           251 non-null    int64
+ 12  divindx_cy                         251 non-null    float64
+ 13  tothh_cy                           251 non-null    int64
+ 14  avghhsz_cy                         251 non-null    float64
+ 15  medhinc_cy                         251 non-null    int64
+ 16  avghinc_cy                         251 non-null    int64
+ 17  pci_cy                             251 non-null    int64
+ 18  tothu_cy                           251 non-null    int64
+ 19  owner_cy                           251 non-null    int64
+ 20  renter_cy                          251 non-null    int64
+ 21  vacant_cy                          251 non-null    int64
+ 22  medval_cy                          251 non-null    int64
+ 23  avgval_cy                          251 non-null    int64
+ 24  popgrw10_cy                        251 non-null    float64
+ 25  hhgrw10_cy                         251 non-null    float64
+ 26  famgrw10_cy                        251 non-null    float64
+ 27  dpop_cy                            251 non-null    int64
+ 28  dpopwrk_cy                         251 non-null    int64
+ 29  dpopres_cy                         251 non-null    int64
+ 30  SHAPE                              251 non-null    geometry
+dtypes: float64(7), geometry(1), int64(17), object(6)
+memory usage: 60.9+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>...</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrw10_cy</th>
+      <th>hhgrw10_cy</th>
+      <th>famgrw10_cy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>348</td>
+      <td>390413</td>
+      <td>429594</td>
+      <td>0.43</td>
+      <td>0.41</td>
+      <td>0.19</td>
+      <td>11715</td>
+      <td>4849</td>
+      <td>6866</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>420</td>
+      <td>394983</td>
+      <td>441629</td>
+      <td>0.81</td>
+      <td>0.67</td>
+      <td>0.61</td>
+      <td>20885</td>
+      <td>8823</td>
+      <td>12062</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3773</td>
+      <td>628835</td>
+      <td>706736</td>
+      <td>2.86</td>
+      <td>2.81</td>
+      <td>3.17</td>
+      <td>91264</td>
+      <td>75188</td>
+      <td>16076</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>94</td>
+      <td>376746</td>
+      <td>403178</td>
+      <td>2.64</td>
+      <td>2.52</td>
+      <td>2.44</td>
+      <td>5727</td>
+      <td>2799</td>
+      <td>2928</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>158</td>
+      <td>575127</td>
+      <td>605756</td>
+      <td>0.41</td>
+      <td>0.47</td>
+      <td>0.20</td>
+      <td>22915</td>
+      <td>18367</td>
+      <td>4548</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 31 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Specify-Proximity-Value-and-Metric">
+<h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this headline">¶</a></h2>
+<p>If desiring to use a different measure of distance, such as miles, this can be specified as well using the <code class="docutils literal notranslate"><span class="pre">proximity_metric</span></code> parameter.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt3_enrich_df</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span>
+    <span class="n">geographies</span><span class="o">=</span><span class="n">pt_df</span><span class="p">,</span>
+    <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span>
+    <span class="n">proximity_value</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">proximity_metric</span><span class="o">=</span><span class="s1">&#39;miles&#39;</span>
+<span class="p">)</span>
+
+<span class="n">pt3_enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">pt3_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 251 entries, 0 to 250
+Data columns (total 31 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   locnum                             251 non-null    object
+ 1   source_country                     251 non-null    object
+ 2   area_type                          251 non-null    object
+ 3   buffer_units                       251 non-null    object
+ 4   buffer_units_alias                 251 non-null    object
+ 5   buffer_radii                       251 non-null    int64
+ 6   aggregation_method                 251 non-null    object
+ 7   population_to_polygon_size_rating  251 non-null    float64
+ 8   apportionment_confidence           251 non-null    float64
+ 9   has_data                           251 non-null    int64
+ 10  totpop_cy                          251 non-null    int64
+ 11  gqpop_cy                           251 non-null    int64
+ 12  divindx_cy                         251 non-null    float64
+ 13  tothh_cy                           251 non-null    int64
+ 14  avghhsz_cy                         251 non-null    float64
+ 15  medhinc_cy                         251 non-null    int64
+ 16  avghinc_cy                         251 non-null    int64
+ 17  pci_cy                             251 non-null    int64
+ 18  tothu_cy                           251 non-null    int64
+ 19  owner_cy                           251 non-null    int64
+ 20  renter_cy                          251 non-null    int64
+ 21  vacant_cy                          251 non-null    int64
+ 22  medval_cy                          251 non-null    int64
+ 23  avgval_cy                          251 non-null    int64
+ 24  popgrw10_cy                        251 non-null    float64
+ 25  hhgrw10_cy                         251 non-null    float64
+ 26  famgrw10_cy                        251 non-null    float64
+ 27  dpop_cy                            251 non-null    int64
+ 28  dpopwrk_cy                         251 non-null    int64
+ 29  dpopres_cy                         251 non-null    int64
+ 30  SHAPE                              251 non-null    geometry
+dtypes: float64(7), geometry(1), int64(17), object(6)
+memory usage: 60.9+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>...</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrw10_cy</th>
+      <th>hhgrw10_cy</th>
+      <th>famgrw10_cy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>348</td>
+      <td>390413</td>
+      <td>429594</td>
+      <td>0.43</td>
+      <td>0.41</td>
+      <td>0.19</td>
+      <td>11715</td>
+      <td>4849</td>
+      <td>6866</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>420</td>
+      <td>394983</td>
+      <td>441629</td>
+      <td>0.81</td>
+      <td>0.67</td>
+      <td>0.61</td>
+      <td>20885</td>
+      <td>8823</td>
+      <td>12062</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3773</td>
+      <td>628835</td>
+      <td>706736</td>
+      <td>2.86</td>
+      <td>2.81</td>
+      <td>3.17</td>
+      <td>91264</td>
+      <td>75188</td>
+      <td>16076</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>94</td>
+      <td>376746</td>
+      <td>403178</td>
+      <td>2.64</td>
+      <td>2.52</td>
+      <td>2.44</td>
+      <td>5727</td>
+      <td>2799</td>
+      <td>2928</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>158</td>
+      <td>575127</td>
+      <td>605756</td>
+      <td>0.41</td>
+      <td>0.47</td>
+      <td>0.20</td>
+      <td>22915</td>
+      <td>18367</td>
+      <td>4548</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 31 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Determine-Proximity-Type">
+<h2>Determine Proximity Type<a class="headerlink" href="#Determine-Proximity-Type" title="Permalink to this headline">¶</a></h2>
+<p>The above examples all use the default <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> of <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>. However, based on what transportation network you have available with the GIS source you are using, other methods are also available. These can be discovered using the <code class="docutils literal notranslate"><span class="pre">travel_modes</span></code> property of the <code class="docutils literal notranslate"><span class="pre">Country</span></code>. Any of the vaues in the <code class="docutils literal notranslate"><span class="pre">names</span></code> column are valid values for <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> in addition to the default <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span><span class="o">.</span><span class="n">travel_modes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14548</span>                     dictdata = self._con.post(
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14549</span><span class="ansi-yellow-intense-fg ansi-bold">                         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params
+<span class="ansi-green-fg">  14550</span>                     )  # , token=self._lazy_token)
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_hydrate</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14584</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14585</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_refresh<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14586</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14556</span>                 <span class="ansi-green-intense-fg ansi-bold">elif</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>lower<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>find<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;token required&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-yellow-intense-fg ansi-bold">-</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14557</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>dictdata <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14558</span>                 <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, **kwargs)</span>
+<span class="ansi-green-fg">    696</span>             force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 697</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">=</span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">    698</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14548</span>                     dictdata = self._con.post(
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14549</span><span class="ansi-yellow-intense-fg ansi-bold">                         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params
+<span class="ansi-green-fg">  14550</span>                     )  # , token=self._lazy_token)
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoprocessing\_support.py</span> in <span class="ansi-cyan-fg">_execute_gp_tool</span><span class="ansi-blue-intense-fg ansi-bold">(gis, task_name, params, param_db, return_values, use_async, url, webtool, add_token, return_messages, future)</span>
+<span class="ansi-green-fg">    516</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 517</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">,</span> token<span class="ansi-yellow-intense-fg ansi-bold">=</span>gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_token<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    518</span>             <span class="ansi-green-intense-fg ansi-bold">except</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_token</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14630</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14631</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_hydrate<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14632</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_lazy_token
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_hydrate</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14607</span>                     self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_lazy_token <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-green-intense-fg ansi-bold">None</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14608</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_refresh<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14609</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14556</span>                 <span class="ansi-green-intense-fg ansi-bold">elif</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>lower<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>find<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;token required&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-yellow-intense-fg ansi-bold">-</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14557</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>dictdata <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14558</span>                 <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, **kwargs)</span>
+<span class="ansi-green-fg">    696</span>             force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 697</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">=</span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">    698</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_12992/1559509281.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>usa_agol<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\enrichment.py</span> in <span class="ansi-cyan-fg">travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">   1027</span>
+<span class="ansi-green-fg">   1028</span>         &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1029</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_ba_cntry<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes
+<span class="ansi-green-fg">   1030</span>
+<span class="ansi-green-fg">   1031</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_utils.py</span> in <span class="ansi-cyan-fg">wrapped</span><span class="ansi-blue-intense-fg ansi-bold">(self, *args, **kwargs)</span>
+<span class="ansi-green-fg">     70</span>             <span class="ansi-green-intense-fg ansi-bold">raise</span> NotImplementedError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">f&#34;&#39;{self.source}&#39; is not a recognized source.&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     71</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 72</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> fn_to_call<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     73</span>
+<span class="ansi-green-fg">     74</span>     <span class="ansi-green-intense-fg ansi-bold">return</span> wrapped
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_main.py</span> in <span class="ansi-cyan-fg">_travel_modes_gis</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    601</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Web GIS implementation of travel modes.&#34;&#34;&#34;</span>
+<span class="ansi-green-fg">    602</span>         <span class="ansi-red-intense-fg ansi-bold"># get the travel modes FeatureSet</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 603</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>trvl_df <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_ba<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes
+<span class="ansi-green-fg">    604</span>
+<span class="ansi-green-fg">    605</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> trvl_df
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_utils.py</span> in <span class="ansi-cyan-fg">wrapped</span><span class="ansi-blue-intense-fg ansi-bold">(self, *args, **kwargs)</span>
+<span class="ansi-green-fg">     70</span>             <span class="ansi-green-intense-fg ansi-bold">raise</span> NotImplementedError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">f&#34;&#39;{self.source}&#39; is not a recognized source.&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     71</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 72</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> fn_to_call<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     73</span>
+<span class="ansi-green-fg">     74</span>     <span class="ansi-green-intense-fg ansi-bold">return</span> wrapped
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_main.py</span> in <span class="ansi-cyan-fg">_travel_modes_gis</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">   1222</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Web GIS implementation of travel modes.&#34;&#34;&#34;</span>
+<span class="ansi-green-fg">   1223</span>         <span class="ansi-red-intense-fg ansi-bold"># get the travel modes FeatureSet</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1224</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>trvl_fs <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_travel_modes<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>source<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>supported_travel_modes
+<span class="ansi-green-fg">   1225</span>
+<span class="ansi-green-fg">   1226</span>         <span class="ansi-red-intense-fg ansi-bold"># pluck out the travel modes metadata from the TravelMode attribute in the FeatureSet</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\network\_routing_utils.py</span> in <span class="ansi-cyan-fg">get_travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(gis)</span>
+<span class="ansi-green-fg">     42</span>     url <span class="ansi-yellow-intense-fg ansi-bold">=</span> _validate_url<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gis<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     43</span>     tbx <span class="ansi-yellow-intense-fg ansi-bold">=</span> _create_toolbox<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gis<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 44</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> tbx<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_travel_modes<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     45</span>
+<span class="ansi-green-fg">     46</span>
+
+<span class="ansi-green-intense-fg ansi-bold">&lt;string&gt;</span> in <span class="ansi-cyan-fg">get_travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(gis, future)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoprocessing\_support.py</span> in <span class="ansi-cyan-fg">_execute_gp_tool</span><span class="ansi-blue-intense-fg ansi-bold">(gis, task_name, params, param_db, return_values, use_async, url, webtool, add_token, return_messages, future)</span>
+<span class="ansi-green-fg">    517</span>                 resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">,</span> token<span class="ansi-yellow-intense-fg ansi-bold">=</span>gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_token<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    518</span>             <span class="ansi-green-intense-fg ansi-bold">except</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 519</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    520</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    521</span>             resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1258</span>             file_name<span class="ansi-yellow-intense-fg ansi-bold">=</span>file_name<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+<span class="ansi-green-fg">   1262</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    814</span>                     <span class="ansi-green-intense-fg ansi-bold">return</span> data
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+<span class="ansi-green-fg">    818</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    837</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+<span class="ansi-green-fg">    841</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> post_multipart<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> path<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> files<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+</pre></div></div>
+</div>
+<p>Hence, if we want to use both paved <em>and</em> gravel roads (because gravel roads are <em>fun</em>), we can use <code class="docutils literal notranslate"><span class="pre">rural_driving_time</span></code>. Before selecting, we can investigate the details of the method by looking at the description.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span><span class="o">.</span><span class="n">travel_modes</span><span class="p">[</span><span class="n">usa_agol</span><span class="o">.</span><span class="n">travel_modes</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;rural_driving_distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14548</span>                     dictdata = self._con.post(
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14549</span><span class="ansi-yellow-intense-fg ansi-bold">                         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params
+<span class="ansi-green-fg">  14550</span>                     )  # , token=self._lazy_token)
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_hydrate</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14584</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14585</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_refresh<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14586</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14556</span>                 <span class="ansi-green-intense-fg ansi-bold">elif</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>lower<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>find<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;token required&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-yellow-intense-fg ansi-bold">-</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14557</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>dictdata <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14558</span>                 <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, **kwargs)</span>
+<span class="ansi-green-fg">    696</span>             force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 697</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">=</span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">    698</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14548</span>                     dictdata = self._con.post(
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14549</span><span class="ansi-yellow-intense-fg ansi-bold">                         </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params
+<span class="ansi-green-fg">  14550</span>                     )  # , token=self._lazy_token)
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoprocessing\_support.py</span> in <span class="ansi-cyan-fg">_execute_gp_tool</span><span class="ansi-blue-intense-fg ansi-bold">(gis, task_name, params, param_db, return_values, use_async, url, webtool, add_token, return_messages, future)</span>
+<span class="ansi-green-fg">    516</span>             <span class="ansi-green-intense-fg ansi-bold">try</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 517</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">,</span> token<span class="ansi-yellow-intense-fg ansi-bold">=</span>gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_token<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    518</span>             <span class="ansi-green-intense-fg ansi-bold">except</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_token</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14630</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14631</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_hydrate<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14632</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_lazy_token
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_hydrate</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14607</span>                     self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_lazy_token <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-green-intense-fg ansi-bold">None</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14608</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_refresh<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14609</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\__init__.py</span> in <span class="ansi-cyan-fg">_refresh</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">  14556</span>                 <span class="ansi-green-intense-fg ansi-bold">elif</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>lower<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>find<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;token required&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-yellow-intense-fg ansi-bold">-</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">&gt; 14557</span><span class="ansi-yellow-intense-fg ansi-bold">                     </span>dictdata <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>get<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">  14558</span>                 <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, **kwargs)</span>
+<span class="ansi-green-fg">    696</span>             force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 697</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">=</span>ignore_error_key<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">    698</span>         )
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_12992/1285024206.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 1</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>usa_agol<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes<span class="ansi-yellow-intense-fg ansi-bold">[</span>usa_agol<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes<span class="ansi-yellow-intense-fg ansi-bold">.</span>name <span class="ansi-yellow-intense-fg ansi-bold">==</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;rural_driving_distance&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>iloc<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#39;description&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\enrichment.py</span> in <span class="ansi-cyan-fg">travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">   1027</span>
+<span class="ansi-green-fg">   1028</span>         &#34;&#34;&#34;
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1029</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_ba_cntry<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes
+<span class="ansi-green-fg">   1030</span>
+<span class="ansi-green-fg">   1031</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_utils.py</span> in <span class="ansi-cyan-fg">wrapped</span><span class="ansi-blue-intense-fg ansi-bold">(self, *args, **kwargs)</span>
+<span class="ansi-green-fg">     70</span>             <span class="ansi-green-intense-fg ansi-bold">raise</span> NotImplementedError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">f&#34;&#39;{self.source}&#39; is not a recognized source.&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     71</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 72</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> fn_to_call<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     73</span>
+<span class="ansi-green-fg">     74</span>     <span class="ansi-green-intense-fg ansi-bold">return</span> wrapped
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_main.py</span> in <span class="ansi-cyan-fg">_travel_modes_gis</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    601</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Web GIS implementation of travel modes.&#34;&#34;&#34;</span>
+<span class="ansi-green-fg">    602</span>         <span class="ansi-red-intense-fg ansi-bold"># get the travel modes FeatureSet</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 603</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>trvl_df <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_ba<span class="ansi-yellow-intense-fg ansi-bold">.</span>travel_modes
+<span class="ansi-green-fg">    604</span>
+<span class="ansi-green-fg">    605</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> trvl_df
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\_impl\common\_utils.py</span> in <span class="ansi-cyan-fg">_lazy_property</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">    220</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> _lazy_property<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    221</span>         <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-green-intense-fg ansi-bold">not</span> hasattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 222</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>setattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">,</span> fn<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    223</span>         <span class="ansi-green-intense-fg ansi-bold">return</span> getattr<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> attr_name<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    224</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_utils.py</span> in <span class="ansi-cyan-fg">wrapped</span><span class="ansi-blue-intense-fg ansi-bold">(self, *args, **kwargs)</span>
+<span class="ansi-green-fg">     70</span>             <span class="ansi-green-intense-fg ansi-bold">raise</span> NotImplementedError<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">f&#34;&#39;{self.source}&#39; is not a recognized source.&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     71</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 72</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">return</span> fn_to_call<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">*</span>args<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     73</span>
+<span class="ansi-green-fg">     74</span>     <span class="ansi-green-intense-fg ansi-bold">return</span> wrapped
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_main.py</span> in <span class="ansi-cyan-fg">_travel_modes_gis</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">   1222</span>         <span class="ansi-blue-intense-fg ansi-bold">&#34;&#34;&#34;Web GIS implementation of travel modes.&#34;&#34;&#34;</span>
+<span class="ansi-green-fg">   1223</span>         <span class="ansi-red-intense-fg ansi-bold"># get the travel modes FeatureSet</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1224</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>trvl_fs <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_travel_modes<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>source<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">.</span>supported_travel_modes
+<span class="ansi-green-fg">   1225</span>
+<span class="ansi-green-fg">   1226</span>         <span class="ansi-red-intense-fg ansi-bold"># pluck out the travel modes metadata from the TravelMode attribute in the FeatureSet</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\network\_routing_utils.py</span> in <span class="ansi-cyan-fg">get_travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(gis)</span>
+<span class="ansi-green-fg">     42</span>     url <span class="ansi-yellow-intense-fg ansi-bold">=</span> _validate_url<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gis<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     43</span>     tbx <span class="ansi-yellow-intense-fg ansi-bold">=</span> _create_toolbox<span class="ansi-yellow-intense-fg ansi-bold">(</span>url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gis<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 44</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> tbx<span class="ansi-yellow-intense-fg ansi-bold">.</span>get_travel_modes<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     45</span>
+<span class="ansi-green-fg">     46</span>
+
+<span class="ansi-green-intense-fg ansi-bold">&lt;string&gt;</span> in <span class="ansi-cyan-fg">get_travel_modes</span><span class="ansi-blue-intense-fg ansi-bold">(gis, future)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\geoprocessing\_support.py</span> in <span class="ansi-cyan-fg">_execute_gp_tool</span><span class="ansi-blue-intense-fg ansi-bold">(gis, task_name, params, param_db, return_values, use_async, url, webtool, add_token, return_messages, future)</span>
+<span class="ansi-green-fg">    517</span>                 resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">,</span> token<span class="ansi-yellow-intense-fg ansi-bold">=</span>gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_token<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    518</span>             <span class="ansi-green-intense-fg ansi-bold">except</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 519</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    520</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">    521</span>             resp <span class="ansi-yellow-intense-fg ansi-bold">=</span> gptool<span class="ansi-yellow-intense-fg ansi-bold">.</span>_con<span class="ansi-yellow-intense-fg ansi-bold">.</span>post<span class="ansi-yellow-intense-fg ansi-bold">(</span>exec_url<span class="ansi-yellow-intense-fg ansi-bold">,</span> gp_params<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">post</span><span class="ansi-blue-intense-fg ansi-bold">(self, path, params, files, **kwargs)</span>
+<span class="ansi-green-fg">   1258</span>             file_name<span class="ansi-yellow-intense-fg ansi-bold">=</span>file_name<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1259</span>             try_json<span class="ansi-yellow-intense-fg ansi-bold">=</span>try_json<span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1260</span><span class="ansi-yellow-intense-fg ansi-bold">             </span>force_bytes<span class="ansi-yellow-intense-fg ansi-bold">=</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">.</span>pop<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-blue-intense-fg ansi-bold">&#34;force_bytes&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">,</span>
+<span class="ansi-green-fg">   1261</span>         )
+<span class="ansi-green-fg">   1262</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_response</span><span class="ansi-blue-intense-fg ansi-bold">(self, resp, file_name, out_path, try_json, force_bytes, ignore_error_key)</span>
+<span class="ansi-green-fg">    814</span>                     <span class="ansi-green-intense-fg ansi-bold">return</span> data
+<span class="ansi-green-fg">    815</span>                 errorcode <span class="ansi-yellow-intense-fg ansi-bold">=</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">if</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;code&#34;</span> <span class="ansi-green-intense-fg ansi-bold">in</span> data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span> <span class="ansi-green-intense-fg ansi-bold">else</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 816</span><span class="ansi-yellow-intense-fg ansi-bold">                 </span>self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_handle_json_error<span class="ansi-yellow-intense-fg ansi-bold">(</span>data<span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">&#34;error&#34;</span><span class="ansi-yellow-intense-fg ansi-bold">]</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    817</span>             <span class="ansi-green-intense-fg ansi-bold">return</span> data
+<span class="ansi-green-fg">    818</span>         <span class="ansi-green-intense-fg ansi-bold">else</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-green-intense-fg ansi-bold">d:\projects\geosaurus\src\arcgis\gis\_impl\_con\_connection.py</span> in <span class="ansi-cyan-fg">_handle_json_error</span><span class="ansi-blue-intense-fg ansi-bold">(self, error, errorcode)</span>
+<span class="ansi-green-fg">    837</span>
+<span class="ansi-green-fg">    838</span>         errormessage <span class="ansi-yellow-intense-fg ansi-bold">=</span> errormessage <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;\n(Error Code: &#34;</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> str<span class="ansi-yellow-intense-fg ansi-bold">(</span>errorcode<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">+</span> <span class="ansi-blue-intense-fg ansi-bold">&#34;)&#34;</span>
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 839</span><span class="ansi-yellow-intense-fg ansi-bold">         </span><span class="ansi-green-intense-fg ansi-bold">raise</span> Exception<span class="ansi-yellow-intense-fg ansi-bold">(</span>errormessage<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">    840</span>
+<span class="ansi-green-fg">    841</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> post_multipart<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> path<span class="ansi-yellow-intense-fg ansi-bold">,</span> params<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> files<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-yellow-intense-fg ansi-bold">**</span>kwargs<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+
+<span class="ansi-red-intense-fg ansi-bold">Exception</span>: Token Required
+(Error Code: 499)
+</pre></div></div>
+</div>
+<section id="Enrich-using-Proximity-Parameters">
+<h3>Enrich using Proximity Parameters<a class="headerlink" href="#Enrich-using-Proximity-Parameters" title="Permalink to this headline">¶</a></h3>
+<p><em>Most</em> people aren’t going to be driving as fast on a gravel road as they are on an interstate. This enables us to take into consideration the differences in speed based on the road type. Using drive time as a method to define proximity around a location is a much better represenation of how people actually move around and interact with their surrouding environemnt…such as finding food at a grocery store.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt4_enrich_df</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span>
+    <span class="n">geographies</span><span class="o">=</span><span class="n">pt_df</span><span class="p">,</span>
+    <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span>
+    <span class="n">proximity_type</span><span class="o">=</span><span class="s1">&#39;rural_driving_time&#39;</span><span class="p">,</span>
+    <span class="n">proximity_value</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+    <span class="n">proximity_metric</span><span class="o">=</span><span class="s1">&#39;minutes&#39;</span>
+<span class="p">)</span>
+
+<span class="n">pt4_enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">pt4_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 251 entries, 0 to 250
+Data columns (total 31 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   locnum                             251 non-null    object
+ 1   source_country                     251 non-null    object
+ 2   area_type                          251 non-null    object
+ 3   buffer_units                       251 non-null    object
+ 4   buffer_units_alias                 251 non-null    object
+ 5   buffer_radii                       251 non-null    int64
+ 6   aggregation_method                 251 non-null    object
+ 7   population_to_polygon_size_rating  251 non-null    float64
+ 8   apportionment_confidence           251 non-null    float64
+ 9   has_data                           251 non-null    int64
+ 10  totpop_cy                          251 non-null    int64
+ 11  gqpop_cy                           251 non-null    int64
+ 12  divindx_cy                         251 non-null    float64
+ 13  tothh_cy                           251 non-null    int64
+ 14  avghhsz_cy                         251 non-null    float64
+ 15  medhinc_cy                         251 non-null    int64
+ 16  avghinc_cy                         251 non-null    int64
+ 17  pci_cy                             251 non-null    int64
+ 18  tothu_cy                           251 non-null    int64
+ 19  owner_cy                           251 non-null    int64
+ 20  renter_cy                          251 non-null    int64
+ 21  vacant_cy                          251 non-null    int64
+ 22  medval_cy                          251 non-null    int64
+ 23  avgval_cy                          251 non-null    int64
+ 24  popgrw10_cy                        251 non-null    float64
+ 25  hhgrw10_cy                         251 non-null    float64
+ 26  famgrw10_cy                        251 non-null    float64
+ 27  dpop_cy                            251 non-null    int64
+ 28  dpopwrk_cy                         251 non-null    int64
+ 29  dpopres_cy                         251 non-null    int64
+ 30  SHAPE                              251 non-null    geometry
+dtypes: float64(7), geometry(1), int64(17), object(6)
+memory usage: 60.9+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>...</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrw10_cy</th>
+      <th>hhgrw10_cy</th>
+      <th>famgrw10_cy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>177692910</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>348</td>
+      <td>390413</td>
+      <td>429594</td>
+      <td>0.43</td>
+      <td>0.41</td>
+      <td>0.19</td>
+      <td>11715</td>
+      <td>4849</td>
+      <td>6866</td>
+      <td>{"x": -122.63332499999997, "y": 45.41751900000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>207178880</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>420</td>
+      <td>394983</td>
+      <td>441629</td>
+      <td>0.81</td>
+      <td>0.67</td>
+      <td>0.61</td>
+      <td>20885</td>
+      <td>8823</td>
+      <td>12062</td>
+      <td>{"x": -122.578461, "y": 45.49077900000012, "sp...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>213604069</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>3773</td>
+      <td>628835</td>
+      <td>706736</td>
+      <td>2.86</td>
+      <td>2.81</td>
+      <td>3.17</td>
+      <td>91264</td>
+      <td>75188</td>
+      <td>16076</td>
+      <td>{"x": -122.68257749999998, "y": 45.52993800000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>214402802</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>94</td>
+      <td>376746</td>
+      <td>403178</td>
+      <td>2.64</td>
+      <td>2.52</td>
+      <td>2.44</td>
+      <td>5727</td>
+      <td>2799</td>
+      <td>2928</td>
+      <td>{"x": -122.28194789999999, "y": 45.40177785000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>215047911</td>
+      <td>US</td>
+      <td>RingBuffer</td>
+      <td>esriMiles</td>
+      <td>Miles</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>...</td>
+      <td>158</td>
+      <td>575127</td>
+      <td>605756</td>
+      <td>0.41</td>
+      <td>0.47</td>
+      <td>0.20</td>
+      <td>22915</td>
+      <td>18367</td>
+      <td>4548</td>
+      <td>{"x": -122.73786899999999, "y": 45.41748299999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 31 columns</p>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/notebooks/enrich-pt-geom-layer.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

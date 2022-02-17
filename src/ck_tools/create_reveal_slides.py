@@ -4,6 +4,7 @@ import re
 
 dir_prj = dir_prj = Path(__file__).parent.parent.parent
 
+
 def create_slides(notebook_source:Path=None):
     
     sld_dir = dir_prj/'reports'/'presentations'
@@ -15,8 +16,7 @@ def create_slides(notebook_source:Path=None):
         nb_pth_lst = [notebook_source]
         
     else:
-        regex = re.compile(r'\d{2,6}-.*\.ipynb')
-        nb_pth_lst = [pth for pth in notebook_source.glob('*.ipynb') if regex.match(pth.name)]
+        nb_pth_lst = [pth for pth in notebook_source.glob('*.ipynb')]
 
     if not sld_dir.exists():
         sld_dir.mkdir(parents=True)

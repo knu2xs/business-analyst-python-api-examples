@@ -1,0 +1,2156 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "# Integrating into Pipelines for Clustering"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Starting off, we import a few required Python resources. While there are quite a few in there, notice we are grabbing the `make_pipeline` method from Sci-Kit Learn. We are going to be building pipelines!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "from pathlib import Path\n",
+    "import sys\n",
+    "\n",
+    "from arcgis.features import GeoAccessor\n",
+    "from arcgis.geoenrichment import Country\n",
+    "from arcgis.gis import GIS\n",
+    "from dotenv import find_dotenv, load_dotenv\n",
+    "from matplotlib import pyplot as plt\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "from sklearn.pipeline import make_pipeline\n",
+    "\n",
+    "# load the \"autoreload\" extension so that code can change, & always reload modules so that as you change code in src, it gets loaded\n",
+    "%load_ext autoreload\n",
+    "%autoreload 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# load environment variables from .env\n",
+    "load_dotenv(find_dotenv())\n",
+    "\n",
+    "# paths to input data\n",
+    "dir_prj = Path.cwd().parent\n",
+    "dir_data = dir_prj/'data'\n",
+    "dir_raw = dir_data/'raw'\n",
+    "\n",
+    "# import the two preprocessors from the examples\n",
+    "sys.path.append(str(dir_prj/'src'))\n",
+    "from ba_samples.preprocessing import EnrichStandardGeography, KeepOnlyEnrichColumns, ArrayToDataFrame\n",
+    "\n",
+    "# specifically, the data being used for this example - pickled dataframes\n",
+    "postal_codes_pth = dir_raw/'postal_codes.pkl'\n",
+    "block_groups_pth = dir_raw/'block_groups.pkl'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Pipeline for Zip Codes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We start by getting a list of standard geography codes to use from the demonstration postal code data, just a list of zip codes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['83801', '83803', '83810', '83814', '83815', '83833', '83835', '83842', '83854', '83858', '83861', '83869', '83876']\n"
+     ]
+    }
+   ],
+   "source": [
+    "postal_code_df = pd.read_pickle(postal_codes_pth)\n",
+    "postal_code_lst = list(postal_code_df['ID'])\n",
+    "\n",
+    "print(postal_code_lst)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Get a Local Country\n",
+    "\n",
+    "To enrich, we need a `Country` object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the `gis` parameter. In this case, we are telling the object to use ArcGIS Pro with Business Analyst and local data for the United States."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<Country - United States 2021 ('local')>"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "usa_local = Country('usa', gis=GIS('pro'))\n",
+    "\n",
+    "usa_local"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Select Variables\n",
+    "\n",
+    "Next, we need to get some enrich variables to use. We can discover what is available using the `enrich_variables` property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>alias</th>\n",
+       "      <th>data_collection</th>\n",
+       "      <th>enrich_name</th>\n",
+       "      <th>enrich_field_name</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>TOTPOP_CY</td>\n",
+       "      <td>2021 Total Population</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.TOTPOP_CY</td>\n",
+       "      <td>KeyUSFacts_TOTPOP_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>GQPOP_CY</td>\n",
+       "      <td>2021 Group Quarters Population</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.GQPOP_CY</td>\n",
+       "      <td>KeyUSFacts_GQPOP_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>DIVINDX_CY</td>\n",
+       "      <td>2021 Diversity Index</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.DIVINDX_CY</td>\n",
+       "      <td>KeyUSFacts_DIVINDX_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>TOTHH_CY</td>\n",
+       "      <td>2021 Total Households</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.TOTHH_CY</td>\n",
+       "      <td>KeyUSFacts_TOTHH_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>AVGHHSZ_CY</td>\n",
+       "      <td>2021 Average Household Size</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.AVGHHSZ_CY</td>\n",
+       "      <td>KeyUSFacts_AVGHHSZ_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>MEDHINC_CY</td>\n",
+       "      <td>2021 Median Household Income</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.MEDHINC_CY</td>\n",
+       "      <td>KeyUSFacts_MEDHINC_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>AVGHINC_CY</td>\n",
+       "      <td>2021 Average Household Income</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.AVGHINC_CY</td>\n",
+       "      <td>KeyUSFacts_AVGHINC_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>PCI_CY</td>\n",
+       "      <td>2021 Per Capita Income</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.PCI_CY</td>\n",
+       "      <td>KeyUSFacts_PCI_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>TOTHU_CY</td>\n",
+       "      <td>2021 Total Housing Units</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.TOTHU_CY</td>\n",
+       "      <td>KeyUSFacts_TOTHU_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>OWNER_CY</td>\n",
+       "      <td>2021 Owner Occupied HUs</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.OWNER_CY</td>\n",
+       "      <td>KeyUSFacts_OWNER_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>RENTER_CY</td>\n",
+       "      <td>2021 Renter Occupied HUs</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.RENTER_CY</td>\n",
+       "      <td>KeyUSFacts_RENTER_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>VACANT_CY</td>\n",
+       "      <td>2021 Vacant Housing Units</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.VACANT_CY</td>\n",
+       "      <td>KeyUSFacts_VACANT_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>12</th>\n",
+       "      <td>MEDVAL_CY</td>\n",
+       "      <td>2021 Median Home Value</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.MEDVAL_CY</td>\n",
+       "      <td>KeyUSFacts_MEDVAL_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>13</th>\n",
+       "      <td>AVGVAL_CY</td>\n",
+       "      <td>2021 Average Home Value</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.AVGVAL_CY</td>\n",
+       "      <td>KeyUSFacts_AVGVAL_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>14</th>\n",
+       "      <td>POPGRW10CY</td>\n",
+       "      <td>2010-2021 Growth Rate: Population</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.POPGRW10CY</td>\n",
+       "      <td>KeyUSFacts_POPGRW10CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>15</th>\n",
+       "      <td>HHGRW10CY</td>\n",
+       "      <td>2010-2021 Growth Rate: Households</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.HHGRW10CY</td>\n",
+       "      <td>KeyUSFacts_HHGRW10CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>16</th>\n",
+       "      <td>FAMGRW10CY</td>\n",
+       "      <td>2010-2021 Growth Rate: Families</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.FAMGRW10CY</td>\n",
+       "      <td>KeyUSFacts_FAMGRW10CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>17</th>\n",
+       "      <td>DPOP_CY</td>\n",
+       "      <td>2021 Total Daytime Population</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.DPOP_CY</td>\n",
+       "      <td>KeyUSFacts_DPOP_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>18</th>\n",
+       "      <td>DPOPWRK_CY</td>\n",
+       "      <td>2021 Daytime Pop: Workers</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.DPOPWRK_CY</td>\n",
+       "      <td>KeyUSFacts_DPOPWRK_CY</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>19</th>\n",
+       "      <td>DPOPRES_CY</td>\n",
+       "      <td>2021 Daytime Pop: Residents</td>\n",
+       "      <td>KeyUSFacts</td>\n",
+       "      <td>KeyUSFacts.DPOPRES_CY</td>\n",
+       "      <td>KeyUSFacts_DPOPRES_CY</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          name                              alias data_collection  \\\n",
+       "0    TOTPOP_CY              2021 Total Population      KeyUSFacts   \n",
+       "1     GQPOP_CY     2021 Group Quarters Population      KeyUSFacts   \n",
+       "2   DIVINDX_CY               2021 Diversity Index      KeyUSFacts   \n",
+       "3     TOTHH_CY              2021 Total Households      KeyUSFacts   \n",
+       "4   AVGHHSZ_CY        2021 Average Household Size      KeyUSFacts   \n",
+       "5   MEDHINC_CY       2021 Median Household Income      KeyUSFacts   \n",
+       "6   AVGHINC_CY      2021 Average Household Income      KeyUSFacts   \n",
+       "7       PCI_CY             2021 Per Capita Income      KeyUSFacts   \n",
+       "8     TOTHU_CY           2021 Total Housing Units      KeyUSFacts   \n",
+       "9     OWNER_CY            2021 Owner Occupied HUs      KeyUSFacts   \n",
+       "10   RENTER_CY           2021 Renter Occupied HUs      KeyUSFacts   \n",
+       "11   VACANT_CY          2021 Vacant Housing Units      KeyUSFacts   \n",
+       "12   MEDVAL_CY             2021 Median Home Value      KeyUSFacts   \n",
+       "13   AVGVAL_CY            2021 Average Home Value      KeyUSFacts   \n",
+       "14  POPGRW10CY  2010-2021 Growth Rate: Population      KeyUSFacts   \n",
+       "15   HHGRW10CY  2010-2021 Growth Rate: Households      KeyUSFacts   \n",
+       "16  FAMGRW10CY    2010-2021 Growth Rate: Families      KeyUSFacts   \n",
+       "17     DPOP_CY      2021 Total Daytime Population      KeyUSFacts   \n",
+       "18  DPOPWRK_CY          2021 Daytime Pop: Workers      KeyUSFacts   \n",
+       "19  DPOPRES_CY        2021 Daytime Pop: Residents      KeyUSFacts   \n",
+       "\n",
+       "              enrich_name      enrich_field_name  \n",
+       "0    KeyUSFacts.TOTPOP_CY   KeyUSFacts_TOTPOP_CY  \n",
+       "1     KeyUSFacts.GQPOP_CY    KeyUSFacts_GQPOP_CY  \n",
+       "2   KeyUSFacts.DIVINDX_CY  KeyUSFacts_DIVINDX_CY  \n",
+       "3     KeyUSFacts.TOTHH_CY    KeyUSFacts_TOTHH_CY  \n",
+       "4   KeyUSFacts.AVGHHSZ_CY  KeyUSFacts_AVGHHSZ_CY  \n",
+       "5   KeyUSFacts.MEDHINC_CY  KeyUSFacts_MEDHINC_CY  \n",
+       "6   KeyUSFacts.AVGHINC_CY  KeyUSFacts_AVGHINC_CY  \n",
+       "7       KeyUSFacts.PCI_CY      KeyUSFacts_PCI_CY  \n",
+       "8     KeyUSFacts.TOTHU_CY    KeyUSFacts_TOTHU_CY  \n",
+       "9     KeyUSFacts.OWNER_CY    KeyUSFacts_OWNER_CY  \n",
+       "10   KeyUSFacts.RENTER_CY   KeyUSFacts_RENTER_CY  \n",
+       "11   KeyUSFacts.VACANT_CY   KeyUSFacts_VACANT_CY  \n",
+       "12   KeyUSFacts.MEDVAL_CY   KeyUSFacts_MEDVAL_CY  \n",
+       "13   KeyUSFacts.AVGVAL_CY   KeyUSFacts_AVGVAL_CY  \n",
+       "14  KeyUSFacts.POPGRW10CY  KeyUSFacts_POPGRW10CY  \n",
+       "15   KeyUSFacts.HHGRW10CY   KeyUSFacts_HHGRW10CY  \n",
+       "16  KeyUSFacts.FAMGRW10CY  KeyUSFacts_FAMGRW10CY  \n",
+       "17     KeyUSFacts.DPOP_CY     KeyUSFacts_DPOP_CY  \n",
+       "18  KeyUSFacts.DPOPWRK_CY  KeyUSFacts_DPOPWRK_CY  \n",
+       "19  KeyUSFacts.DPOPRES_CY  KeyUSFacts_DPOPRES_CY  "
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ev = usa_local.enrich_variables\n",
+    "kv = ev[\n",
+    "    (ev.data_collection.str.lower().str.contains('key'))\n",
+    "    & (ev.name.str.lower().str.endswith('cy'))\n",
+    "].reset_index(drop=True)\n",
+    "\n",
+    "kv"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "### Get Standard Geography Name\n",
+    "\n",
+    "Using the `levels` property, we can see the value we need to use for specifying the specfic zip code level, `zip5`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>level_name</th>\n",
+       "      <th>alias</th>\n",
+       "      <th>level_id</th>\n",
+       "      <th>id_field</th>\n",
+       "      <th>name_field</th>\n",
+       "      <th>singular_name</th>\n",
+       "      <th>plural_name</th>\n",
+       "      <th>admin_level</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>block_groups</td>\n",
+       "      <td>Block Groups</td>\n",
+       "      <td>US.BlockGroups</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>Block Group</td>\n",
+       "      <td>Block Groups</td>\n",
+       "      <td>Admin11</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>tracts</td>\n",
+       "      <td>Census Tracts</td>\n",
+       "      <td>US.Tracts</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>Census Tract</td>\n",
+       "      <td>Census Tracts</td>\n",
+       "      <td>Admin10</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>places</td>\n",
+       "      <td>Cities and Towns (Places)</td>\n",
+       "      <td>US.Places</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>Place</td>\n",
+       "      <td>Places</td>\n",
+       "      <td>Admin9</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>zip5</td>\n",
+       "      <td>ZIP Codes</td>\n",
+       "      <td>US.ZIP5</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>ZIP Code</td>\n",
+       "      <td>ZIP Codes</td>\n",
+       "      <td>Admin4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>csd</td>\n",
+       "      <td>County Subdivisions</td>\n",
+       "      <td>US.CSD</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>County Subdivision</td>\n",
+       "      <td>County Subdivisions</td>\n",
+       "      <td>Admin7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>counties</td>\n",
+       "      <td>Counties</td>\n",
+       "      <td>US.Counties</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>County</td>\n",
+       "      <td>Counties</td>\n",
+       "      <td>Admin3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>cbsa</td>\n",
+       "      <td>CBSAs</td>\n",
+       "      <td>US.CBSA</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>CBSA</td>\n",
+       "      <td>CBSAs</td>\n",
+       "      <td>Admin5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>cd</td>\n",
+       "      <td>Congressional Districts</td>\n",
+       "      <td>US.CD</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>Congressional District</td>\n",
+       "      <td>Congressional Districts</td>\n",
+       "      <td>Admin8</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>dma</td>\n",
+       "      <td>DMAs</td>\n",
+       "      <td>US.DMA</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>DMA</td>\n",
+       "      <td>DMAs</td>\n",
+       "      <td>Admin6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>states</td>\n",
+       "      <td>States</td>\n",
+       "      <td>US.States</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>State</td>\n",
+       "      <td>States</td>\n",
+       "      <td>Admin2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>whole_usa</td>\n",
+       "      <td>Entire Country</td>\n",
+       "      <td>US.WholeUSA</td>\n",
+       "      <td>ID</td>\n",
+       "      <td>NAME</td>\n",
+       "      <td>United States of America</td>\n",
+       "      <td>United States of America</td>\n",
+       "      <td>Admin1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      level_name                      alias        level_id id_field  \\\n",
+       "0   block_groups               Block Groups  US.BlockGroups       ID   \n",
+       "1         tracts              Census Tracts       US.Tracts       ID   \n",
+       "2         places  Cities and Towns (Places)       US.Places       ID   \n",
+       "3           zip5                  ZIP Codes         US.ZIP5       ID   \n",
+       "4            csd        County Subdivisions          US.CSD       ID   \n",
+       "5       counties                   Counties     US.Counties       ID   \n",
+       "6           cbsa                      CBSAs         US.CBSA       ID   \n",
+       "7             cd    Congressional Districts           US.CD       ID   \n",
+       "8            dma                       DMAs          US.DMA       ID   \n",
+       "9         states                     States       US.States       ID   \n",
+       "10     whole_usa             Entire Country     US.WholeUSA       ID   \n",
+       "\n",
+       "   name_field             singular_name               plural_name admin_level  \n",
+       "0        NAME               Block Group              Block Groups     Admin11  \n",
+       "1        NAME              Census Tract             Census Tracts     Admin10  \n",
+       "2        NAME                     Place                    Places      Admin9  \n",
+       "3        NAME                  ZIP Code                 ZIP Codes      Admin4  \n",
+       "4        NAME        County Subdivision       County Subdivisions      Admin7  \n",
+       "5        NAME                    County                  Counties      Admin3  \n",
+       "6        NAME                      CBSA                     CBSAs      Admin5  \n",
+       "7        NAME    Congressional District   Congressional Districts      Admin8  \n",
+       "8        NAME                       DMA                      DMAs      Admin6  \n",
+       "9        NAME                     State                    States      Admin2  \n",
+       "10       NAME  United States of America  United States of America      Admin1  "
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "usa_local.levels"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Enrich Preprocessor\n",
+    "\n",
+    "The `enrich` method can be wrapped into the `transform` method of a SciKit-Learn Transformer, specifically a preprocessor, to function just like any other preprocessor. In this case, not only have I wrapped the preprocessor, I also have created this preprocessor for specific inputs, standard geographies."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 13 entries, 0 to 12\n",
+      "Data columns (total 26 columns):\n",
+      " #   Column                 Non-Null Count  Dtype  \n",
+      "---  ------                 --------------  -----  \n",
+      " 0   id_field               13 non-null     object \n",
+      " 1   area_desc              13 non-null     object \n",
+      " 2   ta_desc                13 non-null     object \n",
+      " 3   names                  13 non-null     object \n",
+      " 4   has_data               13 non-null     int64  \n",
+      " 5   aggregation_method     13 non-null     object \n",
+      " 6   keyusfacts_totpop_cy   13 non-null     float64\n",
+      " 7   keyusfacts_gqpop_cy    13 non-null     float64\n",
+      " 8   keyusfacts_divindx_cy  13 non-null     float64\n",
+      " 9   keyusfacts_tothh_cy    13 non-null     float64\n",
+      " 10  keyusfacts_avghhsz_cy  13 non-null     float64\n",
+      " 11  keyusfacts_medhinc_cy  13 non-null     float64\n",
+      " 12  keyusfacts_avghinc_cy  13 non-null     float64\n",
+      " 13  keyusfacts_pci_cy      13 non-null     float64\n",
+      " 14  keyusfacts_tothu_cy    13 non-null     float64\n",
+      " 15  keyusfacts_owner_cy    13 non-null     float64\n",
+      " 16  keyusfacts_renter_cy   13 non-null     float64\n",
+      " 17  keyusfacts_vacant_cy   13 non-null     float64\n",
+      " 18  keyusfacts_medval_cy   13 non-null     float64\n",
+      " 19  keyusfacts_avgval_cy   13 non-null     float64\n",
+      " 20  keyusfacts_popgrw10cy  13 non-null     float64\n",
+      " 21  keyusfacts_hhgrw10cy   13 non-null     float64\n",
+      " 22  keyusfacts_famgrw10cy  13 non-null     float64\n",
+      " 23  keyusfacts_dpop_cy     13 non-null     float64\n",
+      " 24  keyusfacts_dpopwrk_cy  13 non-null     float64\n",
+      " 25  keyusfacts_dpopres_cy  13 non-null     float64\n",
+      "dtypes: float64(20), int64(1), object(5)\n",
+      "memory usage: 2.8+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ba_samples.preprocessing import EnrichStandardGeography\n",
+    "\n",
+    "enrich_preprocessor = EnrichStandardGeography(usa_local, enrich_variables=kv, standard_geography_level='zip5', return_geometry=False)\n",
+    "\n",
+    "enrich_df = enrich_preprocessor.fit_transform(postal_code_lst)\n",
+    "\n",
+    "enrich_df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id_field</th>\n",
+       "      <th>area_desc</th>\n",
+       "      <th>ta_desc</th>\n",
+       "      <th>names</th>\n",
+       "      <th>has_data</th>\n",
+       "      <th>aggregation_method</th>\n",
+       "      <th>keyusfacts_totpop_cy</th>\n",
+       "      <th>keyusfacts_gqpop_cy</th>\n",
+       "      <th>keyusfacts_divindx_cy</th>\n",
+       "      <th>keyusfacts_tothh_cy</th>\n",
+       "      <th>...</th>\n",
+       "      <th>keyusfacts_renter_cy</th>\n",
+       "      <th>keyusfacts_vacant_cy</th>\n",
+       "      <th>keyusfacts_medval_cy</th>\n",
+       "      <th>keyusfacts_avgval_cy</th>\n",
+       "      <th>keyusfacts_popgrw10cy</th>\n",
+       "      <th>keyusfacts_hhgrw10cy</th>\n",
+       "      <th>keyusfacts_famgrw10cy</th>\n",
+       "      <th>keyusfacts_dpop_cy</th>\n",
+       "      <th>keyusfacts_dpopwrk_cy</th>\n",
+       "      <th>keyusfacts_dpopres_cy</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>83801</td>\n",
+       "      <td>83801</td>\n",
+       "      <td>TA from geography Layer: 83801</td>\n",
+       "      <td>Athol</td>\n",
+       "      <td>1</td>\n",
+       "      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>\n",
+       "      <td>8497.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>13.6</td>\n",
+       "      <td>3142.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>482.0</td>\n",
+       "      <td>421.0</td>\n",
+       "      <td>382542.0</td>\n",
+       "      <td>391184.0</td>\n",
+       "      <td>2.07</td>\n",
+       "      <td>2.09</td>\n",
+       "      <td>1.92</td>\n",
+       "      <td>6502.0</td>\n",
+       "      <td>1962.0</td>\n",
+       "      <td>4540.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>83803</td>\n",
+       "      <td>83803</td>\n",
+       "      <td>TA from geography Layer: 83803</td>\n",
+       "      <td>Bayview</td>\n",
+       "      <td>1</td>\n",
+       "      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>\n",
+       "      <td>656.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>10.5</td>\n",
+       "      <td>341.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>76.0</td>\n",
+       "      <td>318.0</td>\n",
+       "      <td>391333.0</td>\n",
+       "      <td>403113.0</td>\n",
+       "      <td>1.76</td>\n",
+       "      <td>1.80</td>\n",
+       "      <td>1.56</td>\n",
+       "      <td>499.0</td>\n",
+       "      <td>145.0</td>\n",
+       "      <td>354.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>83810</td>\n",
+       "      <td>83810</td>\n",
+       "      <td>TA from geography Layer: 83810</td>\n",
+       "      <td>Cataldo</td>\n",
+       "      <td>1</td>\n",
+       "      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>\n",
+       "      <td>1090.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>11.7</td>\n",
+       "      <td>479.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>72.0</td>\n",
+       "      <td>100.0</td>\n",
+       "      <td>437903.0</td>\n",
+       "      <td>464383.0</td>\n",
+       "      <td>0.94</td>\n",
+       "      <td>0.96</td>\n",
+       "      <td>0.76</td>\n",
+       "      <td>762.0</td>\n",
+       "      <td>246.0</td>\n",
+       "      <td>516.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>83814</td>\n",
+       "      <td>83814</td>\n",
+       "      <td>TA from geography Layer: 83814</td>\n",
+       "      <td>Coeur D Alene</td>\n",
+       "      <td>1</td>\n",
+       "      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>\n",
+       "      <td>28546.0</td>\n",
+       "      <td>609.0</td>\n",
+       "      <td>21.2</td>\n",
+       "      <td>12454.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>5599.0</td>\n",
+       "      <td>2600.0</td>\n",
+       "      <td>377722.0</td>\n",
+       "      <td>508589.0</td>\n",
+       "      <td>1.86</td>\n",
+       "      <td>1.91</td>\n",
+       "      <td>1.72</td>\n",
+       "      <td>38178.0</td>\n",
+       "      <td>23011.0</td>\n",
+       "      <td>15167.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>83815</td>\n",
+       "      <td>83815</td>\n",
+       "      <td>TA from geography Layer: 83815</td>\n",
+       "      <td>Coeur D Alene</td>\n",
+       "      <td>1</td>\n",
+       "      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>\n",
+       "      <td>38614.0</td>\n",
+       "      <td>617.0</td>\n",
+       "      <td>24.1</td>\n",
+       "      <td>15247.0</td>\n",
+       "      <td>...</td>\n",
+       "      <td>5598.0</td>\n",
+       "      <td>1146.0</td>\n",
+       "      <td>308198.0</td>\n",
+       "      <td>374194.0</td>\n",
+       "      <td>1.79</td>\n",
+       "      <td>1.78</td>\n",
+       "      <td>1.51</td>\n",
+       "      <td>37345.0</td>\n",
+       "      <td>15891.0</td>\n",
+       "      <td>21454.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 26 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  id_field area_desc                         ta_desc          names  has_data  \\\n",
+       "0    83801     83801  TA from geography Layer: 83801          Athol         1   \n",
+       "1    83803     83803  TA from geography Layer: 83803        Bayview         1   \n",
+       "2    83810     83810  TA from geography Layer: 83810        Cataldo         1   \n",
+       "3    83814     83814  TA from geography Layer: 83814  Coeur D Alene         1   \n",
+       "4    83815     83815  TA from geography Layer: 83815  Coeur D Alene         1   \n",
+       "\n",
+       "                                  aggregation_method  keyusfacts_totpop_cy  \\\n",
+       "0  BlockApportionment:US.BlockGroups;PointsLayer:...                8497.0   \n",
+       "1  BlockApportionment:US.BlockGroups;PointsLayer:...                 656.0   \n",
+       "2  BlockApportionment:US.BlockGroups;PointsLayer:...                1090.0   \n",
+       "3  BlockApportionment:US.BlockGroups;PointsLayer:...               28546.0   \n",
+       "4  BlockApportionment:US.BlockGroups;PointsLayer:...               38614.0   \n",
+       "\n",
+       "   keyusfacts_gqpop_cy  keyusfacts_divindx_cy  keyusfacts_tothh_cy  ...  \\\n",
+       "0                  0.0                   13.6               3142.0  ...   \n",
+       "1                  0.0                   10.5                341.0  ...   \n",
+       "2                  4.0                   11.7                479.0  ...   \n",
+       "3                609.0                   21.2              12454.0  ...   \n",
+       "4                617.0                   24.1              15247.0  ...   \n",
+       "\n",
+       "   keyusfacts_renter_cy  keyusfacts_vacant_cy  keyusfacts_medval_cy  \\\n",
+       "0                 482.0                 421.0              382542.0   \n",
+       "1                  76.0                 318.0              391333.0   \n",
+       "2                  72.0                 100.0              437903.0   \n",
+       "3                5599.0                2600.0              377722.0   \n",
+       "4                5598.0                1146.0              308198.0   \n",
+       "\n",
+       "   keyusfacts_avgval_cy  keyusfacts_popgrw10cy  keyusfacts_hhgrw10cy  \\\n",
+       "0              391184.0                   2.07                  2.09   \n",
+       "1              403113.0                   1.76                  1.80   \n",
+       "2              464383.0                   0.94                  0.96   \n",
+       "3              508589.0                   1.86                  1.91   \n",
+       "4              374194.0                   1.79                  1.78   \n",
+       "\n",
+       "   keyusfacts_famgrw10cy  keyusfacts_dpop_cy  keyusfacts_dpopwrk_cy  \\\n",
+       "0                   1.92              6502.0                 1962.0   \n",
+       "1                   1.56               499.0                  145.0   \n",
+       "2                   0.76               762.0                  246.0   \n",
+       "3                   1.72             38178.0                23011.0   \n",
+       "4                   1.51             37345.0                15891.0   \n",
+       "\n",
+       "   keyusfacts_dpopres_cy  \n",
+       "0                 4540.0  \n",
+       "1                  354.0  \n",
+       "2                  516.0  \n",
+       "3                15167.0  \n",
+       "4                21454.0  \n",
+       "\n",
+       "[5 rows x 26 columns]"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "enrich_df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Filtering Columns\n",
+    "\n",
+    "The output from `enrich` includes a number of metadata columns. If performing subsequent analysis, we need to prune these columns. We can use another preprocessor for this as well, one only keeping columns with enriched values."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "Index: 13 entries, 83801 to 83876\n",
+      "Data columns (total 20 columns):\n",
+      " #   Column                 Non-Null Count  Dtype  \n",
+      "---  ------                 --------------  -----  \n",
+      " 0   keyusfacts_totpop_cy   13 non-null     float64\n",
+      " 1   keyusfacts_gqpop_cy    13 non-null     float64\n",
+      " 2   keyusfacts_divindx_cy  13 non-null     float64\n",
+      " 3   keyusfacts_tothh_cy    13 non-null     float64\n",
+      " 4   keyusfacts_avghhsz_cy  13 non-null     float64\n",
+      " 5   keyusfacts_medhinc_cy  13 non-null     float64\n",
+      " 6   keyusfacts_avghinc_cy  13 non-null     float64\n",
+      " 7   keyusfacts_pci_cy      13 non-null     float64\n",
+      " 8   keyusfacts_tothu_cy    13 non-null     float64\n",
+      " 9   keyusfacts_owner_cy    13 non-null     float64\n",
+      " 10  keyusfacts_renter_cy   13 non-null     float64\n",
+      " 11  keyusfacts_vacant_cy   13 non-null     float64\n",
+      " 12  keyusfacts_medval_cy   13 non-null     float64\n",
+      " 13  keyusfacts_avgval_cy   13 non-null     float64\n",
+      " 14  keyusfacts_popgrw10cy  13 non-null     float64\n",
+      " 15  keyusfacts_hhgrw10cy   13 non-null     float64\n",
+      " 16  keyusfacts_famgrw10cy  13 non-null     float64\n",
+      " 17  keyusfacts_dpop_cy     13 non-null     float64\n",
+      " 18  keyusfacts_dpopwrk_cy  13 non-null     float64\n",
+      " 19  keyusfacts_dpopres_cy  13 non-null     float64\n",
+      "dtypes: float64(20)\n",
+      "memory usage: 2.1+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "from ba_samples.preprocessing import KeepOnlyEnrichColumns\n",
+    "\n",
+    "enrich_zip_pipe =  make_pipeline(\n",
+    "    EnrichStandardGeography(usa_local, enrich_variables=kv, standard_geography_level='zip5', return_geometry=False),\n",
+    "    KeepOnlyEnrichColumns(usa_local, id_column='id_field', keep_geometry=False)\n",
+    ")\n",
+    "\n",
+    "enrich_df = enrich_zip_pipe.fit_transform(postal_code_lst)\n",
+    "\n",
+    "enrich_df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>keyusfacts_totpop_cy</th>\n",
+       "      <th>keyusfacts_gqpop_cy</th>\n",
+       "      <th>keyusfacts_divindx_cy</th>\n",
+       "      <th>keyusfacts_tothh_cy</th>\n",
+       "      <th>keyusfacts_avghhsz_cy</th>\n",
+       "      <th>keyusfacts_medhinc_cy</th>\n",
+       "      <th>keyusfacts_avghinc_cy</th>\n",
+       "      <th>keyusfacts_pci_cy</th>\n",
+       "      <th>keyusfacts_tothu_cy</th>\n",
+       "      <th>keyusfacts_owner_cy</th>\n",
+       "      <th>keyusfacts_renter_cy</th>\n",
+       "      <th>keyusfacts_vacant_cy</th>\n",
+       "      <th>keyusfacts_medval_cy</th>\n",
+       "      <th>keyusfacts_avgval_cy</th>\n",
+       "      <th>keyusfacts_popgrw10cy</th>\n",
+       "      <th>keyusfacts_hhgrw10cy</th>\n",
+       "      <th>keyusfacts_famgrw10cy</th>\n",
+       "      <th>keyusfacts_dpop_cy</th>\n",
+       "      <th>keyusfacts_dpopwrk_cy</th>\n",
+       "      <th>keyusfacts_dpopres_cy</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>id_field</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>83801</th>\n",
+       "      <td>8497.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>13.6</td>\n",
+       "      <td>3142.0</td>\n",
+       "      <td>2.70</td>\n",
+       "      <td>62413.0</td>\n",
+       "      <td>78746.0</td>\n",
+       "      <td>30156.0</td>\n",
+       "      <td>3563.0</td>\n",
+       "      <td>2660.0</td>\n",
+       "      <td>482.0</td>\n",
+       "      <td>421.0</td>\n",
+       "      <td>382542.0</td>\n",
+       "      <td>391184.0</td>\n",
+       "      <td>2.07</td>\n",
+       "      <td>2.09</td>\n",
+       "      <td>1.92</td>\n",
+       "      <td>6502.0</td>\n",
+       "      <td>1962.0</td>\n",
+       "      <td>4540.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>83803</th>\n",
+       "      <td>656.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>10.5</td>\n",
+       "      <td>341.0</td>\n",
+       "      <td>1.92</td>\n",
+       "      <td>43344.0</td>\n",
+       "      <td>61732.0</td>\n",
+       "      <td>29472.0</td>\n",
+       "      <td>659.0</td>\n",
+       "      <td>264.0</td>\n",
+       "      <td>76.0</td>\n",
+       "      <td>318.0</td>\n",
+       "      <td>391333.0</td>\n",
+       "      <td>403113.0</td>\n",
+       "      <td>1.76</td>\n",
+       "      <td>1.80</td>\n",
+       "      <td>1.56</td>\n",
+       "      <td>499.0</td>\n",
+       "      <td>145.0</td>\n",
+       "      <td>354.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>83810</th>\n",
+       "      <td>1090.0</td>\n",
+       "      <td>4.0</td>\n",
+       "      <td>11.7</td>\n",
+       "      <td>479.0</td>\n",
+       "      <td>2.27</td>\n",
+       "      <td>60088.0</td>\n",
+       "      <td>89006.0</td>\n",
+       "      <td>38340.0</td>\n",
+       "      <td>579.0</td>\n",
+       "      <td>406.0</td>\n",
+       "      <td>72.0</td>\n",
+       "      <td>100.0</td>\n",
+       "      <td>437903.0</td>\n",
+       "      <td>464383.0</td>\n",
+       "      <td>0.94</td>\n",
+       "      <td>0.96</td>\n",
+       "      <td>0.76</td>\n",
+       "      <td>762.0</td>\n",
+       "      <td>246.0</td>\n",
+       "      <td>516.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>83814</th>\n",
+       "      <td>28546.0</td>\n",
+       "      <td>609.0</td>\n",
+       "      <td>21.2</td>\n",
+       "      <td>12454.0</td>\n",
+       "      <td>2.24</td>\n",
+       "      <td>57487.0</td>\n",
+       "      <td>80524.0</td>\n",
+       "      <td>34960.0</td>\n",
+       "      <td>15054.0</td>\n",
+       "      <td>6855.0</td>\n",
+       "      <td>5599.0</td>\n",
+       "      <td>2600.0</td>\n",
+       "      <td>377722.0</td>\n",
+       "      <td>508589.0</td>\n",
+       "      <td>1.86</td>\n",
+       "      <td>1.91</td>\n",
+       "      <td>1.72</td>\n",
+       "      <td>38178.0</td>\n",
+       "      <td>23011.0</td>\n",
+       "      <td>15167.0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>83815</th>\n",
+       "      <td>38614.0</td>\n",
+       "      <td>617.0</td>\n",
+       "      <td>24.1</td>\n",
+       "      <td>15247.0</td>\n",
+       "      <td>2.49</td>\n",
+       "      <td>56872.0</td>\n",
+       "      <td>73431.0</td>\n",
+       "      <td>29323.0</td>\n",
+       "      <td>16393.0</td>\n",
+       "      <td>9649.0</td>\n",
+       "      <td>5598.0</td>\n",
+       "      <td>1146.0</td>\n",
+       "      <td>308198.0</td>\n",
+       "      <td>374194.0</td>\n",
+       "      <td>1.79</td>\n",
+       "      <td>1.78</td>\n",
+       "      <td>1.51</td>\n",
+       "      <td>37345.0</td>\n",
+       "      <td>15891.0</td>\n",
+       "      <td>21454.0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          keyusfacts_totpop_cy  keyusfacts_gqpop_cy  keyusfacts_divindx_cy  \\\n",
+       "id_field                                                                     \n",
+       "83801                   8497.0                  0.0                   13.6   \n",
+       "83803                    656.0                  0.0                   10.5   \n",
+       "83810                   1090.0                  4.0                   11.7   \n",
+       "83814                  28546.0                609.0                   21.2   \n",
+       "83815                  38614.0                617.0                   24.1   \n",
+       "\n",
+       "          keyusfacts_tothh_cy  keyusfacts_avghhsz_cy  keyusfacts_medhinc_cy  \\\n",
+       "id_field                                                                      \n",
+       "83801                  3142.0                   2.70                62413.0   \n",
+       "83803                   341.0                   1.92                43344.0   \n",
+       "83810                   479.0                   2.27                60088.0   \n",
+       "83814                 12454.0                   2.24                57487.0   \n",
+       "83815                 15247.0                   2.49                56872.0   \n",
+       "\n",
+       "          keyusfacts_avghinc_cy  keyusfacts_pci_cy  keyusfacts_tothu_cy  \\\n",
+       "id_field                                                                  \n",
+       "83801                   78746.0            30156.0               3563.0   \n",
+       "83803                   61732.0            29472.0                659.0   \n",
+       "83810                   89006.0            38340.0                579.0   \n",
+       "83814                   80524.0            34960.0              15054.0   \n",
+       "83815                   73431.0            29323.0              16393.0   \n",
+       "\n",
+       "          keyusfacts_owner_cy  keyusfacts_renter_cy  keyusfacts_vacant_cy  \\\n",
+       "id_field                                                                    \n",
+       "83801                  2660.0                 482.0                 421.0   \n",
+       "83803                   264.0                  76.0                 318.0   \n",
+       "83810                   406.0                  72.0                 100.0   \n",
+       "83814                  6855.0                5599.0                2600.0   \n",
+       "83815                  9649.0                5598.0                1146.0   \n",
+       "\n",
+       "          keyusfacts_medval_cy  keyusfacts_avgval_cy  keyusfacts_popgrw10cy  \\\n",
+       "id_field                                                                      \n",
+       "83801                 382542.0              391184.0                   2.07   \n",
+       "83803                 391333.0              403113.0                   1.76   \n",
+       "83810                 437903.0              464383.0                   0.94   \n",
+       "83814                 377722.0              508589.0                   1.86   \n",
+       "83815                 308198.0              374194.0                   1.79   \n",
+       "\n",
+       "          keyusfacts_hhgrw10cy  keyusfacts_famgrw10cy  keyusfacts_dpop_cy  \\\n",
+       "id_field                                                                    \n",
+       "83801                     2.09                   1.92              6502.0   \n",
+       "83803                     1.80                   1.56               499.0   \n",
+       "83810                     0.96                   0.76               762.0   \n",
+       "83814                     1.91                   1.72             38178.0   \n",
+       "83815                     1.78                   1.51             37345.0   \n",
+       "\n",
+       "          keyusfacts_dpopwrk_cy  keyusfacts_dpopres_cy  \n",
+       "id_field                                                \n",
+       "83801                    1962.0                 4540.0  \n",
+       "83803                     145.0                  354.0  \n",
+       "83810                     246.0                  516.0  \n",
+       "83814                   23011.0                15167.0  \n",
+       "83815                   15891.0                21454.0  "
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "enrich_df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Clustering Block Groups Using Demographics"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Stepping up our game a little, now we are getting all the US Census Block Groups in Portland because we are interested in what demographic variables have the most differences in Portland, and are going to use a SciKit-Learn pipeline to streamline the process."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Block Group Count: 1,421\n"
+     ]
+    }
+   ],
+   "source": [
+    "block_groups_df = pd.read_pickle(block_groups_pth)\n",
+    "block_groups_lst = list(block_groups_df['ID'])\n",
+    "\n",
+    "print(f'Block Group Count: {len(block_groups_lst):,}')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Source - ArcGIS Online\n",
+    "\n",
+    "This time around, we no longer are using local resources. Now, we are switching to ArcGIS Online."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)>"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "gis_agol = GIS(url=os.getenv('ESRI_GIS_URL'), username=os.getenv('ESRI_GIS_USERNAME'), password=os.getenv('ESRI_GIS_PASSWORD'))\n",
+    "usa_agol = Country('usa', gis=gis_agol)\n",
+    "\n",
+    "usa_agol"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Selecting Variables"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This time around, we are going big. By just grabbing a lot of categories, we are selecting a wide swath of demographic varaiables. There wasn not a tremenedously emperical method used to retrieve these categories. I just grabbed quite a few. Below, please notice how I used some naming conventions to filter out some values to exclude."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1686 entries, 0 to 1685\n",
+      "Data columns (total 8 columns):\n",
+      " #   Column             Non-Null Count  Dtype \n",
+      "---  ------             --------------  ----- \n",
+      " 0   name               1686 non-null   object\n",
+      " 1   alias              1686 non-null   object\n",
+      " 2   data_collection    1686 non-null   object\n",
+      " 3   enrich_name        1686 non-null   object\n",
+      " 4   enrich_field_name  1686 non-null   object\n",
+      " 5   description        1686 non-null   object\n",
+      " 6   vintage            1686 non-null   object\n",
+      " 7   units              1686 non-null   object\n",
+      "dtypes: object(8)\n",
+      "memory usage: 105.5+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "collections = ['classofworker', 'commute', 'disability', 'disposableincome', 'disposableincome', 'educationalattainment', \n",
+    "               'financial', 'foodstampssnap', 'gender', 'generations', 'groupquarters', 'health', 'healthinsurancecoverage', \n",
+    "               'homevalue', 'householdincome', 'households', 'householdsbyageofhouseholder', 'householdsbysize', \n",
+    "               'householdtotals', 'householdtype', 'housingbyageofhouseholder', 'housingbysize', 'housingcosts', \n",
+    "               'housinghousehold', 'housingunittotals', 'industry', 'internetcomputerusage', 'keyusfacts',\n",
+    "               'language', 'network', 'occupation', 'wealth', 'veterans']\n",
+    "\n",
+    "\n",
+    "ev = usa_agol.enrich_variables\n",
+    "\n",
+    "enrich_vars = ev[\n",
+    "    (ev.data_collection.isin(collections))\n",
+    "    & (~ev.alias.str.lower().str.contains('index'))  # exclude calculated indexes\n",
+    "    & (~ev.name.str.lower().str.endswith('_a'))      # exclude averages\n",
+    "    & (~ev.name.str.lower().str.contains('_fy'))     # exclude future year\n",
+    "    & (~ev.name.str.lower().str.contains('fy_'))     # exclude another future year pattern\n",
+    "    & (~ev.alias.str.contains('2010'))               # exclude 2010 census variables - we're not living in the past anymore\n",
+    "].drop_duplicates('name').reset_index(drop=True)\n",
+    "\n",
+    "enrich_vars.info()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "source": [
+    "Just double checking, we can quickly see the correct value we need to use for United States Census Block Groups is `block_groups`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>level_name</th>\n",
+       "      <th>singular_name</th>\n",
+       "      <th>plural_name</th>\n",
+       "      <th>alias</th>\n",
+       "      <th>level_id</th>\n",
+       "      <th>admin_level</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>block_groups</td>\n",
+       "      <td>Block Group</td>\n",
+       "      <td>Block Groups</td>\n",
+       "      <td>Block Groups</td>\n",
+       "      <td>US.BlockGroups</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>tracts</td>\n",
+       "      <td>Census Tract</td>\n",
+       "      <td>Census Tracts</td>\n",
+       "      <td>Census Tracts</td>\n",
+       "      <td>US.Tracts</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>places</td>\n",
+       "      <td>Place</td>\n",
+       "      <td>Places</td>\n",
+       "      <td>Cities and Towns (Places)</td>\n",
+       "      <td>US.Places</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>zip5</td>\n",
+       "      <td>ZIP Code</td>\n",
+       "      <td>ZIP Codes</td>\n",
+       "      <td>ZIP Codes</td>\n",
+       "      <td>US.ZIP5</td>\n",
+       "      <td>Admin4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>csd</td>\n",
+       "      <td>County Subdivision</td>\n",
+       "      <td>County Subdivisions</td>\n",
+       "      <td>County Subdivisions</td>\n",
+       "      <td>US.CSD</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>counties</td>\n",
+       "      <td>County</td>\n",
+       "      <td>Counties</td>\n",
+       "      <td>Counties</td>\n",
+       "      <td>US.Counties</td>\n",
+       "      <td>Admin3</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>cbsa</td>\n",
+       "      <td>CBSA</td>\n",
+       "      <td>CBSAs</td>\n",
+       "      <td>CBSAs</td>\n",
+       "      <td>US.CBSA</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>cd</td>\n",
+       "      <td>Congressional District</td>\n",
+       "      <td>Congressional Districts</td>\n",
+       "      <td>Congressional Districts</td>\n",
+       "      <td>US.CD</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>dma</td>\n",
+       "      <td>DMA</td>\n",
+       "      <td>DMAs</td>\n",
+       "      <td>DMAs</td>\n",
+       "      <td>US.DMA</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>states</td>\n",
+       "      <td>State</td>\n",
+       "      <td>States</td>\n",
+       "      <td>States</td>\n",
+       "      <td>US.States</td>\n",
+       "      <td>Admin2</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>whole_usa</td>\n",
+       "      <td>United States of America</td>\n",
+       "      <td>United States of America</td>\n",
+       "      <td>Entire Country</td>\n",
+       "      <td>US.WholeUSA</td>\n",
+       "      <td>Admin1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      level_name             singular_name               plural_name  \\\n",
+       "0   block_groups               Block Group              Block Groups   \n",
+       "1         tracts              Census Tract             Census Tracts   \n",
+       "2         places                     Place                    Places   \n",
+       "3           zip5                  ZIP Code                 ZIP Codes   \n",
+       "4            csd        County Subdivision       County Subdivisions   \n",
+       "5       counties                    County                  Counties   \n",
+       "6           cbsa                      CBSA                     CBSAs   \n",
+       "7             cd    Congressional District   Congressional Districts   \n",
+       "8            dma                       DMA                      DMAs   \n",
+       "9         states                     State                    States   \n",
+       "10     whole_usa  United States of America  United States of America   \n",
+       "\n",
+       "                        alias        level_id admin_level  \n",
+       "0                Block Groups  US.BlockGroups              \n",
+       "1               Census Tracts       US.Tracts              \n",
+       "2   Cities and Towns (Places)       US.Places              \n",
+       "3                   ZIP Codes         US.ZIP5      Admin4  \n",
+       "4         County Subdivisions          US.CSD              \n",
+       "5                    Counties     US.Counties      Admin3  \n",
+       "6                       CBSAs         US.CBSA              \n",
+       "7     Congressional Districts           US.CD              \n",
+       "8                        DMAs          US.DMA              \n",
+       "9                      States       US.States      Admin2  \n",
+       "10             Entire Country     US.WholeUSA      Admin1  "
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "usa_agol.levels"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Get Demographics\n",
+    "\n",
+    "Just like before, we are going to enrich, but this time around we are using a LOT of data - over 1,500 variables. This time around, we are including the geometry so we can use it later."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1421 entries, 0 to 1420\n",
+      "Columns: 1324 entries, acscivemp to SHAPE\n",
+      "dtypes: float64(67), geometry(1), int64(1256)\n",
+      "memory usage: 14.4 MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "# run the enrich steps autonomously so we can access the keeper properties in later steps\n",
+    "enrich_pipe = make_pipeline(\n",
+    "    EnrichStandardGeography(usa_agol, enrich_variables=enrich_vars, standard_geography_level='block_groups', return_geometry=True),\n",
+    "    KeepOnlyEnrichColumns(usa_agol, keep_geometry=True)\n",
+    ")\n",
+    "enrich_df = enrich_pipe.fit_transform(block_groups_lst)\n",
+    "\n",
+    "enrich_df.info()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Get Just the Enriched Columns\n",
+    "\n",
+    "Following enrichment, now we are getting just the columns _not_ containing the geometry, the polygon shapes of the Block Groups. Notice the `geometry` date type is no longer listed."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1421 entries, 0 to 1420\n",
+      "Columns: 1323 entries, acscivemp to acstotpop\n",
+      "dtypes: float64(67), int64(1256)\n",
+      "memory usage: 14.3 MB\n"
+     ]
+    }
+   ],
+   "source": [
+    "demographic_cols = [c for c in enrich_df.columns if c != enrich_df.spatial.name]\n",
+    "training_df = enrich_df.loc[:,demographic_cols]\n",
+    "\n",
+    "training_df.info()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Data Cleanup\n",
+    "\n",
+    "Since subsequent steps need standard scaled data and have difficulty with zero variance and missing values, we use tools from Sci-Kit Learn to clean up the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,\n",
+       "        0.19456258],\n",
+       "       [0.1832379 , 0.17342657, 0.33333333, ..., 0.        , 0.        ,\n",
+       "        0.23329283],\n",
+       "       [0.07105674, 0.18881119, 0.66666667, ..., 0.        , 0.        ,\n",
+       "        0.1240887 ],\n",
+       "       ...,\n",
+       "       [0.15955232, 0.12167832, 0.33333333, ..., 0.        , 0.        ,\n",
+       "        0.20990279],\n",
+       "       [0.0840708 , 0.23636364, 0.66666667, ..., 0.        , 0.        ,\n",
+       "        0.13456865],\n",
+       "       [0.26106195, 0.21818182, 0.33333333, ..., 0.        , 0.        ,\n",
+       "        0.30726002]])"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.cluster import KMeans\n",
+    "\n",
+    "from sklearn.feature_selection import VarianceThreshold\n",
+    "from sklearn.impute import SimpleImputer\n",
+    "from sklearn.preprocessing import MinMaxScaler\n",
+    "\n",
+    "scale_pipe = make_pipeline(\n",
+    "    MinMaxScaler(),                         # get on same scale - just using because it is simple\n",
+    "    VarianceThreshold(threshold=0.0),       # drop zero variance variables\n",
+    "    SimpleImputer()                         # using defaults, filling nulls with mean\n",
+    ")\n",
+    "\n",
+    "scaled_arr = scale_pipe.fit_transform(training_df)\n",
+    "\n",
+    "scaled_arr"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Dimensionalty Reduction\n",
+    "\n",
+    "Over 1,000 variables is a lot to process. To speed up the process, we first are going to use Principal Component Analysis (PCA) for dimensionality reduction, using a scree plot to ascertain how many components to create. In this case, we are going with 200 to retain roughly 90% of the variation in the data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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v39/XX/99ZLoWWMRyAAAAFzGJUsAAACXEcgAAABcRiADAABwGYEMAADAZQQyAAAAlxHIAMTNzTffrE8//dSVc5eWluree+/Vtddeq+eee86VGgCgPqzUD6BNyMvLU0pKip599lnWPvqauXPnyu/36/vf/77bpQBtFiNkAFqc2traqF9TXFyszMxMwhiAZokRMqCNu/nmm3XxxRfr3XffVVFRkYYMGaKbb75ZiYmJevvtt/XWW2/pt7/9beT4733ve3r00UeVnp6uuXPnKikpSYWFhVq3bp169+6tn//853rttdf0zjvvKDU1VT/96U/Vp0+fyOs3bdqkBQsWqLS0VMOHD9d1112nxMRESeEbsb/44osqKipSZmamfvKTn6hXr16ROi+66CK9//772rVrl/785z8rISGhzmdZv369nnnmGe3atUsZGRmaMGGCBgwYoLlz5+r999+XJP3rX//SHXfcobPOOqvOa6urq/Xiiy/qww8/1IEDB3TyySfr7rvvVmJiopYvX66//OUvKikpUe/evXXdddcpMzPzqP7t2bNHOTk5uvrqqzVv3jx98cUX6t+/f2Tl98LCQk2ZMkXXX3+9XnnlFRlj9O1vf1uXXnqpJKmmpkbPP/+8PvjgA0nSueeeq2uuuUbt2rXT559/rj/+8Y/61re+pddff10ej0dXX321Ro8eHXntCy+8oA8++EChUEjDhw/XhAkTlJiYeNzX5uXl1enN6aefrmnTpum1117T//3f/6miokJdu3bVddddpzPPPLNp/tABOJoB0KZNnjzZTJs2zQSDQVNeXm5uu+0285///McYY8zixYvNjBkz6hx/5ZVXmoKCAmOMMXPmzDGTJk0ymzZtMlVVVeZXv/qVmTx5snn77bdNbW2teeGFF8yvfvWrOuf62c9+ZoqKikx5ebmZMWOGeeGFF4wxxmzevNn8+Mc/Nhs2bDC1tbVm8eLFZvLkyaa6ujry2qlTp5qioiJTVVV11OcoLy83EyZMMO+8844JhULmvffeMxMmTDBlZWWRWg+f61iefPJJc++995pgMGhqa2vNF198Yaqrq83OnTvND3/4Q/PJJ5+Ympoa89prr5kpU6aYmpqaSF133nmn2bt3rwkGg+bHP/6x+cUvfmE2b94c6cnLL79sjDFmz5495sorrzSzZ882FRUVZtu2bWbSpEnmk08+McYY8+KLL5o777zTlJaWmn379pm77rorUvOaNWvMVVddZV588UVTU1NjVqxYYa655hpTXl5ujDFmwYIFZtasWaa8vNwcPHjQ/P73vzfPP/+8o9d+vTc7d+40N954owkGg5G6D/8zBxAbXLIEoG984xvy+Xzq1KmThg0bpq1btzp+7fDhw3XKKacoMTFRZ599thITE3XhhRfK4/EoJydHW7ZsqXP8xRdfrEAgoE6dOun//b//pyVLlkgKz/HKzc1V//795fF4NGrUKHm9Xm3cuLFOnYFAIDKidqSVK1cqPT1dI0eOVEJCgs4//3xlZGRoxYoVDX4G27a1ePFiTZgwQT6fTx6PRwMGDFC7du20dOlSDR06VGeddZa8Xq++853vqLq6WuvXr4+8/pJLLlGXLl3k8/k0cOBA9evXT3369In05Os9uPLKK5WcnKyTTz5Zo0ePjvTg/fff1+WXX67U1FR17txZV1xxhd57773I6xISEnTFFVfI6/UqKytLycnJ2rVrl4wxeuutt/SjH/1InTp1Uvv27XXZZZdF3vd4rz0Wj8ejmpoa7dixI3Iv0fT09Ab7CKDxuGQJQF26dIk8TkxMVElJSaNfm5qaWme7srKyzvGBQCDyuFu3bpFzFRcX65133tEbb7wReT4UCtWp5cjXfl1JSYm6detWZ9+R73885eXlqqmpOWbo2Lt3b5339Xg8CgQCdd7365/569tVVVV13tPv99f5TF9++eUxP8PX609JSalzmTYpKUmVlZUqKytTVVWVpk2bFnnOGCPbtht87bGkp6drwoQJeuWVV7Rjxw4NHjxY1157rXw+3zGPB3DiCGQA6pWUlKTq6urIdmlp6Qm/Z3FxcZ3Hh/+S9/v9uuyyy3TZZZc16n19Pp8++uijo841ZMiQBl+bkpKidu3aaffu3erdu3ed57p27RoJTFI46BxZd2MEg0H16NEjUmPXrl0jn6GoqEg9e/aMPOfkPCkpKUpMTNTDDz/cqLqO9UWH888/X+eff74OHjyoP/3pT3r++ed1yy23RP3eAJzhkiWAevXq1Uvbt2/X1q1bVV1drZdffvmE3/M///mPgsGg9u/fr7/97W8699xzJUljx47Vm2++qY0bN8oYo8rKSq1cuVIVFRWO3nfo0KEqKCjQ+++/r9raWi1dulQ7duxQVlZWg6/1eDwaPXq0nnvuOZWUlMi2bW3YsEE1NTXKycnRqlWr9NlnnykUCukf//iH2rVrpwEDBjS6B//7v/+rqqoqbd++XW+//bZycnIkSeedd57+9re/qaysTGVlZfrrX/+qCy64wFH9Y8eO1TPPPKN9+/ZJCo+2rV692lE9qamp2rNnT2R7165dWrNmjWpqapSYmKjExES+nQrEGCNkAOqVkZGhK664Qr/97W+VmJioq6++Wnl5eSf0nueff75+97vfae/evcrOztbll18uSerbt69uuOEGPf300yooKFBiYqIGDhyo0047zdH7pqSkaNq0aVqwYIGefPJJpaena9q0aercubOj11977bX6y1/+ounTp6uyslK9e/fWXXfdpYyMDN1yyy16+umnI9+y/OUvfymvt/H/+Rw0aJBuvfVW2bat73znOxo8eLAk6bLLLtPBgwc1depUSdI555zjeMTwmmuu0V//+lfdddddKi8vl8/n00UXXeRohHDMmDF6+OGHNWHCBA0aNEhXXXWVnn/+ee3cuVMJCQkaMGCArr/++kZ/XgANs4wxxu0iAKAtOLzsxQsvvHDUkh0A2jYuWQIAALiMQAYAAOAyLlkCAAC4jBEyAAAAlxHIAAAAXEYgAwAAcBmBDAAAwGUEMgAAAJcRyAAAAFz2/wHiIFRs2GWtzQAAAABJRU5ErkJggg==\n",
+      "text/plain": [
+       "<Figure size 720x576 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "from sklearn.decomposition import PCA\n",
+    "\n",
+    "pca = PCA().fit(scaled_arr)\n",
+    "\n",
+    "plt.style.use('ggplot')\n",
+    "plt.figure(figsize=(10,8))\n",
+    "plt.plot(np.cumsum(pca.explained_variance_ratio_))\n",
+    "plt.xlabel('number of components')\n",
+    "plt.ylabel('cumulative explained variance')\n",
+    "plt.yticks([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Clustering\n",
+    "\n",
+    "From the scree plot we know the number of clusters to use with PCA, so we are now going to combine this with K-Means Clustering in a succinct pipeline. Once we have the clusters created, we then will create a new spatially enabled Pandas data frame by combining the output clusters with the geometry returned from geoenrichment earlier."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 1421 entries, 0 to 1420\n",
+      "Data columns (total 3 columns):\n",
+      " #   Column      Non-Null Count  Dtype   \n",
+      "---  ------      --------------  -----   \n",
+      " 0   fips        1421 non-null   object  \n",
+      " 1   cluster_id  1421 non-null   int32   \n",
+      " 2   SHAPE       1421 non-null   geometry\n",
+      "dtypes: geometry(1), int32(1), object(1)\n",
+      "memory usage: 27.9+ KB\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>fips</th>\n",
+       "      <th>cluster_id</th>\n",
+       "      <th>SHAPE</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>410710305021</td>\n",
+       "      <td>2</td>\n",
+       "      <td>{\"rings\": [[[-123.56601700006303, 45.216389999...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>410050237001</td>\n",
+       "      <td>1</td>\n",
+       "      <td>{\"rings\": [[[-122.61617099963205, 45.267457999...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>410050237002</td>\n",
+       "      <td>4</td>\n",
+       "      <td>{\"rings\": [[[-122.5704800001157, 45.2375169997...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>410050237003</td>\n",
+       "      <td>1</td>\n",
+       "      <td>{\"rings\": [[[-122.5111050007072, 45.2601139996...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>410050237004</td>\n",
+       "      <td>1</td>\n",
+       "      <td>{\"rings\": [[[-122.50749899966338, 45.230098999...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "           fips  cluster_id                                              SHAPE\n",
+       "0  410710305021           2  {\"rings\": [[[-123.56601700006303, 45.216389999...\n",
+       "1  410050237001           1  {\"rings\": [[[-122.61617099963205, 45.267457999...\n",
+       "2  410050237002           4  {\"rings\": [[[-122.5704800001157, 45.2375169997...\n",
+       "3  410050237003           1  {\"rings\": [[[-122.5111050007072, 45.2601139996...\n",
+       "4  410050237004           1  {\"rings\": [[[-122.50749899966338, 45.230098999..."
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.cluster import KMeans\n",
+    "\n",
+    "cluster_pipe = make_pipeline(\n",
+    "    PCA(n_components=200),\n",
+    "    KMeans(n_clusters=5)\n",
+    ")\n",
+    "cluster_pipe.fit_transform(scaled_arr)\n",
+    "\n",
+    "cluster_df = pd.DataFrame(zip(block_groups_lst, cluster_pipe.named_steps.kmeans.labels_, enrich_df['SHAPE']), \n",
+    "                          columns=['fips', 'cluster_id', 'SHAPE'])\n",
+    "cluster_df.spatial.set_geometry('SHAPE')\n",
+    "\n",
+    "cluster_df.info()\n",
+    "cluster_df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "### Dissolve Clusters\n",
+    "\n",
+    "For visualization on a map and also for further investigation using Inforgaphics, we need the geometries consolidated into a single geometry per cluster. The ArcGIS Online Geometry engine can be used through the `arcgis.geometry.union` method to accomplish this."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from arcgis.geometry import union\n",
+    "\n",
+    "def dissolve_by_cluster_id(cluster_id):\n",
+    "    \"\"\"Helper to dissolve geometries based on the cluster_id.\"\"\"\n",
+    "    # pull all the geometries out of the cluster dataframe matching the cluster id as a list\n",
+    "    cluster_geom_lst = list(cluster_df[cluster_df['cluster_id'] == cluster_id]['SHAPE'])\n",
+    "    \n",
+    "    # use the ArcGIS Online geometry service to combine all the geometeries into one\n",
+    "    dissolved_cluster_geom = union(cluster_geom_lst, gis=gis_agol)\n",
+    "    \n",
+    "    return dissolved_cluster_geom"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Created geometry for cluster id 0\n",
+      "Created geometry for cluster id 1\n",
+      "Created geometry for cluster id 2\n",
+      "Created geometry for cluster id 3\n",
+      "Created geometry for cluster id 4\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>cluster_id</th>\n",
+       "      <th>SHAPE</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>{\"rings\": [[[-122.58948899999996, 45.181993000...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>{\"rings\": [[[-122.61984599899995, 45.118054999...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2</td>\n",
+       "      <td>{\"rings\": [[[-123.38401899999997, 45.110430000...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>3</td>\n",
+       "      <td>{\"rings\": [[[-123.45598799999999, 45.125803999...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>4</td>\n",
+       "      <td>{\"rings\": [[[-123.37559099899994, 45.094734000...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   cluster_id                                              SHAPE\n",
+       "0           0  {\"rings\": [[[-122.58948899999996, 45.181993000...\n",
+       "1           1  {\"rings\": [[[-122.61984599899995, 45.118054999...\n",
+       "2           2  {\"rings\": [[[-123.38401899999997, 45.110430000...\n",
+       "3           3  {\"rings\": [[[-123.45598799999999, 45.125803999...\n",
+       "4           4  {\"rings\": [[[-123.37559099899994, 45.094734000..."
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "uniq_cluster_id_lst = cluster_df['cluster_id'].unique()\n",
+    "uniq_cluster_id_lst.sort()\n",
+    "\n",
+    "cluster_geom_lst = []\n",
+    "for c_id in uniq_cluster_id_lst:\n",
+    "    c_geom = dissolve_by_cluster_id(c_id)\n",
+    "    cluster_geom_lst.append(c_geom)\n",
+    "    print(f'Created geometry for cluster id {c_id}')\n",
+    "\n",
+    "dissolved_cluster_df = pd.DataFrame(zip(uniq_cluster_id_lst, cluster_geom_lst), columns=['cluster_id', 'SHAPE'])\n",
+    "dissolved_cluster_df.spatial.set_geometry('SHAPE')\n",
+    "\n",
+    "dissolved_cluster_df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "slideshow": {
+     "slide_type": "slide"
+    }
+   },
+   "source": [
+    "## Visualizing, Sharing and Interrogating\n",
+    "\n",
+    "Both outputs from the clustering are spatially enabled Pandas data frames, and can easily be shared with ArcGIS Online. From there, the results of these analyses can be quickly visualized in maps and mapping applications, shared to communicate results, and further interrogated through Infographics."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div class=\"item_container\" style=\"height: auto; overflow: hidden; border: 1px solid #cfcfcf; border-radius: 2px; background: #f6fafa; line-height: 1.21429em; padding: 10px;\">\n",
+       "                    <div class=\"item_left\" style=\"width: 210px; float: left;\">\n",
+       "                       <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=d896c4c45de9441a8cef28669ec20485' target='_blank'>\n",
+       "                        <img src='http://static.arcgis.com/images/desktopapp.png' class=\"itemThumbnail\">\n",
+       "                       </a>\n",
+       "                    </div>\n",
+       "\n",
+       "                    <div class=\"item_right\"     style=\"float: none; width: auto; overflow: hidden;\">\n",
+       "                        <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=d896c4c45de9441a8cef28669ec20485' target='_blank'><b>pdx_cluster_block_groups</b>\n",
+       "                        </a>\n",
+       "                        <br/><img src='https://baqa.mapsqa.arcgis.com/home/js/jsapi/esri/css/images/item_type_icons/featureshosted16.png' style=\"vertical-align:middle;\">Feature Layer Collection by jmccune_baqa\n",
+       "                        <br/>Last Modified: February 16, 2022\n",
+       "                        <br/>0 comments, 0 views\n",
+       "                    </div>\n",
+       "                </div>\n",
+       "                "
+      ],
+      "text/plain": [
+       "<Item title:\"pdx_cluster_block_groups\" type:Feature Layer Collection owner:jmccune_baqa>"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bg_lyr = cluster_df.spatial.to_featurelayer('pdx_cluster_block_groups', \n",
+    "                                            gis=gis_agol, \n",
+    "                                            tags=['pdx', 'machine learning', 'clustering'],\n",
+    "                                            service_name='pdx_cluster_block_groups')\n",
+    "\n",
+    "bg_lyr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "slideshow": {
+     "slide_type": "subslide"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div class=\"item_container\" style=\"height: auto; overflow: hidden; border: 1px solid #cfcfcf; border-radius: 2px; background: #f6fafa; line-height: 1.21429em; padding: 10px;\">\n",
+       "                    <div class=\"item_left\" style=\"width: 210px; float: left;\">\n",
+       "                       <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=4777aec91420441dbb39e672ef4529d1' target='_blank'>\n",
+       "                        <img src='http://static.arcgis.com/images/desktopapp.png' class=\"itemThumbnail\">\n",
+       "                       </a>\n",
+       "                    </div>\n",
+       "\n",
+       "                    <div class=\"item_right\"     style=\"float: none; width: auto; overflow: hidden;\">\n",
+       "                        <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=4777aec91420441dbb39e672ef4529d1' target='_blank'><b>pdx_clusters</b>\n",
+       "                        </a>\n",
+       "                        <br/><img src='https://baqa.mapsqa.arcgis.com/home/js/jsapi/esri/css/images/item_type_icons/featureshosted16.png' style=\"vertical-align:middle;\">Feature Layer Collection by jmccune_baqa\n",
+       "                        <br/>Last Modified: February 16, 2022\n",
+       "                        <br/>0 comments, 0 views\n",
+       "                    </div>\n",
+       "                </div>\n",
+       "                "
+      ],
+      "text/plain": [
+       "<Item title:\"pdx_clusters\" type:Feature Layer Collection owner:jmccune_baqa>"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "clstr_lyr = dissolved_cluster_df.spatial.to_featurelayer('pdx_clusters', \n",
+    "                                                         gis=gis_agol, \n",
+    "                                                         tags=['pdx', 'machine learning', 'clustering'], \n",
+    "                                                         service_name='pdx_clusters')\n",
+    "\n",
+    "clstr_lyr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.11"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

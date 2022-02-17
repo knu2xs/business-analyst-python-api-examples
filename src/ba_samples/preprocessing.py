@@ -1,4 +1,4 @@
-from functools import lru_cache, wraps
+from functools import lru_cache
 from typing import Union, List, Optional
 
 from arcgis.geoenrichment import Country
@@ -6,9 +6,8 @@ from arcgis.geometry import Polygon
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.preprocessing import PowerTransformer as PwrTrns
 
-__all__ = ['EnrichBase', 'EnrichPolygon', 'EnrichStandardGeography', 'KeepOnlyEnrichColumns']
+__all__ = ['EnrichBase', 'EnrichPolygon', 'EnrichStandardGeography', 'KeepOnlyEnrichColumns', 'ArrayToDataFrame']
 
 
 class EnrichBase(BaseEstimator, TransformerMixin):
@@ -261,22 +260,82 @@ class KeepOnlyEnrichColumns(BaseEstimator, TransformerMixin):
             assert self.id_column in X.columns, "The id_column must be a column in the input_dataframe."
             X = X.set_index(self.id_column, drop=True)
 
-        # if geometry is desired in the output, add it to the column name list
+        # if geometry is desired in the output, add it to the column name list, and flat
         keep_cols = self.keep_columns_
+        set_geometry = False
+        geom_col = None
         if self.keep_geometry:
             if X.spatial.validate():
+                set_geometry = True
                 geom_col = X.spatial.name
                 keep_cols.append(geom_col)
 
         # drop any columns not in list
         out_df = X.loc[:, keep_cols]
 
+        # if keeping geometry column, make sure GeoAccessor recognizes it
+        if set_geometry:
+            assert geom_col is not None
+            out_df.spatial.set_geometry(geom_col)
+
         return out_df
 
-@wraps
-class PowerTransform(PwrTrns):
 
-    def transform(self, X):
+class ArrayToDataFrame(BaseEstimator, TransformerMixin):
+    """
+    Helper to convert the output ``np.ndarray`` back into a
+    Pandas DataFrame.
+    """
+    def __init__(self, columns_template: Union[pd.DataFrame, List[str]], index: Optional[list] = None) -> None:
+        """
+        Args:
+            columns_template: Template of columns to use when creating the data frame.
+            index: Index to add on data frame.
+        """
 
-        out_arr = super(PwrTrns).transform(X)
+        self.columns_template = columns_template
+        self.index = index
 
+        self.n_features_in_ = None
+
+        if isinstance(columns_template, pd.DataFrame):
+            self.feature_names_in_ = columns_template.columns
+        else:
+            self.feature_names_in_ = columns_template
+
+    def fit(self, X: np.ndarray):
+        """
+        Fit method, which just sets properties.
+        Args:
+            X: ``np.ndarray`` to be converted into a Pandas Data Frame.
+        """
+        self.n_features_in_ = len(X)
+        assert X.shape[1] == len(self.feature_names_in_), (
+            f'X column count: {X.shape[1]} != column name count: {len(self.feature_names_in_)}'
+        )
+
+        if self.index is not None:
+            assert X.shape[0] == len(self.index)
+
+        return self
+
+    def transform(self, X: np.ndarray):
+        """
+        Convert the ``np.ndarray`` into a Pandas DataFrame.
+
+        Args:
+            X: ``np.ndarray`` to be converted into a Pandas Data Frame.
+
+        Returns:
+            Data from the ``nd.ndarray`` in the columns from the Pandas Data Frame.
+        """
+        if isinstance(X, pd.DataFrame):
+            X_df = X
+
+        elif self.index is None:
+            X_df = pd.DataFrame(X, columns=self.feature_names_in_)
+
+        else:
+            X_df = pd.DataFrame(X, columns=self.feature_names_in_, index=self.index)
+
+        return X_df

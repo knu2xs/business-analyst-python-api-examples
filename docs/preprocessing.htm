@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Preprocessing &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
@@ -93,15 +94,53 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="preprocessing">
+  <section id="preprocessing">
 <h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this headline">¶</a></h1>
 <p>With a massive amount of data available through Business Analyst, it is fairly
 straightforward to integrate this into data pipelines for subsequent analysis.
 These examples demonstrate how enrich can be integrated into a SciKit-Learn
 Transformer as a preprocessor.</p>
 <span class="target" id="module-ba_samples.preprocessing"></span><dl class="py class">
+<dt class="sig sig-object py" id="ba_samples.preprocessing.ArrayToDataFrame">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">ArrayToDataFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns_template</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.ArrayToDataFrame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>Helper to convert the output <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> back into a
+Pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>columns_template</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Template of columns to use when creating the data frame.</p></li>
+<li><p><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>]) – Index to add on data frame.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="ba_samples.preprocessing.ArrayToDataFrame.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.ArrayToDataFrame.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit method, which just sets properties.
+:type X: <code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>
+:param X: <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> to be converted into a Pandas Data Frame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ba_samples.preprocessing.ArrayToDataFrame.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.ArrayToDataFrame.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> into a Pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>) – <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code> to be converted into a Pandas Data Frame.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Data from the <code class="docutils literal notranslate"><span class="pre">nd.ndarray</span></code> in the columns from the Pandas Data Frame.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichBase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichBase</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichBase</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">arcpy.geoenrichment.Country.enrich</span></code> method provides access to a massive
 amount of data for analysis, a treasure trove of valuable data you can use
@@ -111,19 +150,19 @@ into a Transformer, specifically a preprocessor, and is used to create
 other transformers performing more specific tasks.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichBase.country">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.country" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.country" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">arcgis.geoenrichment.Country</span></code> object instance being used.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichBase.enrich_var_aliases">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enrich_var_aliases</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.enrich_var_aliases" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">enrich_var_aliases</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.enrich_var_aliases" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of enrich aliases, so you can understand what the variables are.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichBase.enrich_variables">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">enrich_variables</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.enrich_variables" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">enrich_variables</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.enrich_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pandas data frame of variables being used for enrichment.</p>
 </dd></dl>
 
@@ -135,7 +174,7 @@ other transformers performing more specific tasks.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichBase.return_geometry">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">return_geometry</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.return_geometry" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">return_geometry</span></span><a class="headerlink" href="#ba_samples.preprocessing.EnrichBase.return_geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Do you want the geometry when enriching?</p>
 </dd></dl>
 
@@ -143,7 +182,7 @@ other transformers performing more specific tasks.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichPolygon">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.EnrichPolygon" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichPolygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.EnrichPolygon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ba_samples.preprocessing.EnrichBase" title="ba_samples.preprocessing.EnrichBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ba_samples.preprocessing.EnrichBase</span></code></a></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">arcpy.geoenrichment.Country.enrich</span></code> wrapped in a preprocessor
 for enriching input areas delineated with <code class="docutils literal notranslate"><span class="pre">arcgis.geometry.Polygon</span></code>
@@ -179,7 +218,7 @@ to be enriched.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.EnrichStandardGeography">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichStandardGeography</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enrich_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_geography_level=&lt;class</span> <span class="pre">'str'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_geometry=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.EnrichStandardGeography" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">EnrichStandardGeography</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">country</span></em>, <em class="sig-param"><span class="pre">enrich_variables</span></em>, <em class="sig-param"><span class="pre">standard_geography_level=&lt;class</span> <span class="pre">'str'&gt;</span></em>, <em class="sig-param"><span class="pre">return_geometry=True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.EnrichStandardGeography" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ba_samples.preprocessing.EnrichBase" title="ba_samples.preprocessing.EnrichBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ba_samples.preprocessing.EnrichBase</span></code></a></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">arcpy.geoenrichment.Country.enrich</span></code> wrapped in a preprocessor
 for enriching a list of standard geographies identified by their
@@ -215,7 +254,7 @@ unique identifiers. A common example is postal or ZIP codes.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ba_samples.preprocessing.KeepOnlyEnrichColumns">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">KeepOnlyEnrichColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.KeepOnlyEnrichColumns" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">ba_samples.preprocessing.</span></span><span class="sig-name descname"><span class="pre">KeepOnlyEnrichColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ba_samples.preprocessing.KeepOnlyEnrichColumns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
 <p>Remove any non-enrich variable columns from a Pandas data frame.</p>
 <dl class="field-list simple">
@@ -258,7 +297,7 @@ if applicable.</p>
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -271,7 +310,7 @@ if applicable.</p>
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

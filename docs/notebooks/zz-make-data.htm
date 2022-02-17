@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Interesting Facts &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <title>&lt;no title&gt; &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
@@ -334,92 +334,73 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Interesting-Facts">
-<h1>Interesting Facts<a class="headerlink" href="#Interesting-Facts" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
-<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span><span class="p">,</span> <span class="n">GeoSeriesAccessor</span>
 <span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
 <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
-<p>Next, we need some test data to work with. Hence, here we are accessing two files with pickled exports from Spatially Enabled Pandas Data Frames. One is of postal codes (zip codes) in Portland, Oregon, and the other is for block groups in Portland.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load .env file</span>
-<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
-
-<span class="c1"># paths to input data</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># paths to common data locations - NOTE: to convert any path to a raw string, simply use str(path_instance)</span>
 <span class="n">dir_prj</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+
 <span class="n">dir_data</span> <span class="o">=</span> <span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;data&#39;</span>
+
 <span class="n">dir_raw</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;raw&#39;</span>
+<span class="n">dir_ext</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;external&#39;</span>
+<span class="n">dir_int</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;interim&#39;</span>
+<span class="n">dir_out</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;processed&#39;</span>
 
-<span class="c1"># specifically, the data being used for this example - pickled dataframes</span>
-<span class="n">postal_codes_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;postal_codes.pkl&#39;</span>
-<span class="n">block_groups_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;block_groups.pkl&#39;</span>
+<span class="n">gdb_raw</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;raw.gdb&#39;</span>
+<span class="n">gdb_int</span> <span class="o">=</span> <span class="n">dir_int</span><span class="o">/</span><span class="s1">&#39;interim.gdb&#39;</span>
+<span class="n">gdb_out</span> <span class="o">=</span> <span class="n">dir_out</span><span class="o">/</span><span class="s1">&#39;processed.gdb&#39;</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
-    <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span>
-    <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">),</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_fc</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;D:\scratch\geoenrichment-demos\data\interim\interim.gdb\pdx_block_groups&#39;</span>
 
-<span class="n">gis_agol</span>
+<span class="n">bg_fc</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">)</span>
-
-<span class="bp">self</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
+&#39;D:\\scratch\\geoenrichment-demos\\data\\interim\\interim.gdb\\pdx_block_groups&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">enrich_variables</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_df</span> <span class="o">=</span> <span class="n">GeoAccessor</span><span class="o">.</span><span class="n">from_featureclass</span><span class="p">(</span><span class="n">bg_fc</span><span class="p">)</span>
+
+<span class="n">bg_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -441,159 +422,139 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
-      <th>alias</th>
-      <th>data_collection</th>
-      <th>enrich_name</th>
-      <th>enrich_field_name</th>
-      <th>description</th>
-      <th>vintage</th>
-      <th>units</th>
+      <th>OBJECTID</th>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>IDField</th>
+      <th>Area</th>
+      <th>SHAPE</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>AGE0_CY</td>
-      <td>2021 Population Age &lt;1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE0_CY</td>
-      <td>F1yearincrements_AGE0_CY</td>
-      <td>2021 Total Population Age &lt;1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
+      <td>4</td>
+      <td>410710305021</td>
+      <td>410710305.021</td>
+      <td>38900</td>
+      <td>0.999999</td>
+      <td>{"rings": [[[-123.566017000063, 45.21638999908...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>AGE1_CY</td>
-      <td>2021 Population Age 1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE1_CY</td>
-      <td>F1yearincrements_AGE1_CY</td>
-      <td>2021 Total Population Age 1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
+      <td>5</td>
+      <td>410050237001</td>
+      <td>410050237.001</td>
+      <td>38900</td>
+      <td>1.000000</td>
+      <td>{"rings": [[[-122.616170999632, 45.26745799929...</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>AGE2_CY</td>
-      <td>2021 Population Age 2</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE2_CY</td>
-      <td>F1yearincrements_AGE2_CY</td>
-      <td>2021 Total Population Age 2 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
+      <td>6</td>
+      <td>410050237002</td>
+      <td>410050237.002</td>
+      <td>38900</td>
+      <td>1.000000</td>
+      <td>{"rings": [[[-122.57048000011571, 45.237516999...</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>AGE3_CY</td>
-      <td>2021 Population Age 3</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE3_CY</td>
-      <td>F1yearincrements_AGE3_CY</td>
-      <td>2021 Total Population Age 3 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
+      <td>7</td>
+      <td>410050237003</td>
+      <td>410050237.003</td>
+      <td>38900</td>
+      <td>1.000000</td>
+      <td>{"rings": [[[-122.5111050007072, 45.2601139996...</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>AGE4_CY</td>
-      <td>2021 Population Age 4</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE4_CY</td>
-      <td>F1yearincrements_AGE4_CY</td>
-      <td>2021 Total Population Age 4 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>19148</th>
-      <td>MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In MOE (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEMEDYRMV</td>
-      <td>yearmovedin_MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit M...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19149</th>
-      <td>RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In REL (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELMEDYRMV</td>
-      <td>yearmovedin_RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit R...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19150</th>
-      <td>ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.ACSOWNER</td>
-      <td>yearmovedin_ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19151</th>
-      <td>MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEOWNER</td>
-      <td>yearmovedin_MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19152</th>
-      <td>RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELOWNER</td>
-      <td>yearmovedin_RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
+      <td>8</td>
+      <td>410050237004</td>
+      <td>410050237.004</td>
+      <td>38900</td>
+      <td>1.000000</td>
+      <td>{"rings": [[[-122.5074989996634, 45.2300989998...</td>
     </tr>
   </tbody>
 </table>
-<p>19153 rows × 8 columns</p>
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_df</span> <span class="o">=</span> <span class="n">bg_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">]]</span>
+<span class="n">bg_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">bg_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;bound method AOI.get_enrich_variables_from_iterable of &lt;Country - USA (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;&gt;
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>410710305021</td>
+      <td>{"rings": [[[-123.566017000063, 45.21638999908...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>410050237001</td>
+      <td>{"rings": [[[-122.616170999632, 45.26745799929...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>410050237002</td>
+      <td>{"rings": [[[-122.57048000011571, 45.237516999...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>410050237003</td>
+      <td>{"rings": [[[-122.5111050007072, 45.2601139996...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>410050237004</td>
+      <td>{"rings": [[[-122.5074989996634, 45.2300989998...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_df</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;block_groups.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -603,7 +564,6 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
 </pre></div>
 </div>
 </div>
-</section>
 
 
           </div>
@@ -620,7 +580,7 @@ GIS @ <a href="https://baqa.mapsqa.arcgis.com">https://baqa.mapsqa.arcgis.com</a
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/notebooks/interesting-facts.ipynb.txt"
+      <a href="../_sources/notebooks/zz-make-data.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -337,7 +337,7 @@ div.rendered_html tbody tr:hover {
 <h1>Enrich Using Standard Geographies<a class="headerlink" href="#Enrich-Using-Standard-Geographies" title="Permalink to this headline">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -348,13 +348,12 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PowerTransformer</span>
 </pre></div>
 </div>
 </div>
 <p>Next, we need some test data to work with. Hence, here we are accessing two files with pickled exports from Spatially Enabled Pandas Data Frames. One is of postal codes (zip codes) in Portland, Oregon, and the other is for block groups in Portland.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># paths to input data</span>
@@ -374,7 +373,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>For the first example, we are going to get a list of standard geography codes to use from the postal code data, just a list of zip codes.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postal_code_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">postal_codes_pth</span><span class="p">)</span>
@@ -394,7 +393,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>For the latter, we are going to use the Data Frame directly, and tell the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> function which column to look in when we invoke the function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_groups_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">block_groups_pth</span><span class="p">)</span>
@@ -422,7 +421,7 @@ memory usage: 1.7+ KB
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -486,7 +485,7 @@ memory usage: 1.7+ KB
 </div>
 <p>Now, we are going to need a connection to ArcGIS Online to demonstrate the abiliy to use ArcGIS Online for geoenrichment. This is accomplished by instantiating a <code class="docutils literal notranslate"><span class="pre">GIS</span></code> object instance with valid credentials read from environment variables.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_local</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">)</span>
@@ -495,9 +494,9 @@ memory usage: 1.7+ KB
 </div>
 <div class="section" id="Standard-Geography-From-a-List">
 <h2>Standard Geography From a List<a class="headerlink" href="#Standard-Geography-From-a-List" title="Permalink to this headline">¶</a></h2>
-<p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Online.</p>
+<p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Pro with Business Analyst and local data for the United States.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_local</span><span class="p">)</span>
@@ -507,7 +506,7 @@ memory usage: 1.7+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -517,7 +516,7 @@ memory usage: 1.7+ KB
 </div>
 <p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_local</span><span class="o">.</span><span class="n">enrich_variables</span>
@@ -531,7 +530,7 @@ memory usage: 1.7+ KB
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -727,7 +726,7 @@ memory usage: 1.7+ KB
 </div>
 <p>Finally, we are ready to enrich the postal codes using the resources above.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
@@ -777,7 +776,7 @@ memory usage: 2.1+ KB
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -965,14 +964,98 @@ memory usage: 2.1+ KB
 </div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;yeo-johnson&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PowerTransformer</span> <span class="k">as</span> <span class="n">_PowerTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">TransformerMixin</span>
 
-<span class="n">arr</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">trn_df</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">PowerTransformer</span><span class="p">(</span><span class="n">_PowerTransformer</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">trn_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">trn_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_input</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">in_fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">check_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check_shape</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">transform_function</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;box-cox&quot;</span><span class="p">:</span> <span class="n">boxcox</span><span class="p">,</span>
+            <span class="s2">&quot;yeo-johnson&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yeo_johnson_transform</span><span class="p">,</span>
+        <span class="p">}[</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lmbda</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambdas_</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>  <span class="c1"># hide NaN warnings</span>
+                <span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform_function</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">lmbda</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">standardize</span><span class="p">:</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">X_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt_df</span>
+
+<span class="n">ss</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">()</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">trn_df</span><span class="p">)</span>
+
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_11676/455125397.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">     25</span> ss <span class="ansi-yellow-intense-fg ansi-bold">=</span> PowerTransformer<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     26</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 27</span><span class="ansi-yellow-intense-fg ansi-bold"> </span>res <span class="ansi-yellow-intense-fg ansi-bold">=</span> ss<span class="ansi-yellow-intense-fg ansi-bold">.</span>transform<span class="ansi-yellow-intense-fg ansi-bold">(</span>trn_df<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">     28</span>
+<span class="ansi-green-fg">     29</span> res
+
+<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_11676/455125397.py</span> in <span class="ansi-cyan-fg">transform</span><span class="ansi-blue-intense-fg ansi-bold">(self, X)</span>
+<span class="ansi-green-fg">      5</span>     <span class="ansi-green-intense-fg ansi-bold">def</span> transform<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">,</span> X<span class="ansi-yellow-intense-fg ansi-bold">:</span>pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>DataFrame<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
+<span class="ansi-green-fg">      6</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 7</span><span class="ansi-yellow-intense-fg ansi-bold">         </span>check_is_fitted<span class="ansi-yellow-intense-fg ansi-bold">(</span>self<span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      8</span>         X <span class="ansi-yellow-intense-fg ansi-bold">=</span> self<span class="ansi-yellow-intense-fg ansi-bold">.</span>_check_input<span class="ansi-yellow-intense-fg ansi-bold">(</span>X<span class="ansi-yellow-intense-fg ansi-bold">,</span> in_fit<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> check_positive<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">True</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> check_shape<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">True</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
+<span class="ansi-green-fg">      9</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NameError</span>: name &#39;check_is_fitted&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PowerTransformer</span>
+
+<span class="k">class</span> <span class="nc">PowerTransformerDF</span><span class="p">(</span><span class="n">PowerTransformer</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;child&#39;</span><span class="p">)</span>
+
+        <span class="c1"># call the parent transform</span>
+        <span class="n">Xt_arr</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PowerTransformerDF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># put the array back into a Pandas DataFrame</span>
+        <span class="n">Xt_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Xt_arr</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;made it&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span> <span class="o">=</span> <span class="n">PowerTransformerDF</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;yeo-johnson&#39;</span><span class="p">,</span> <span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">trn_df</span><span class="p">)</span>
+
+<span class="n">res</span>
 </pre></div>
 </div>
 </div>
@@ -986,376 +1069,98 @@ D:\Anaconda3\envs\geosaurus\lib\site-packages\sklearn\preprocessing\_data.py:325
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
 </pre></div>
 </div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>keyusfacts_totpop_cy</th>
-      <th>keyusfacts_gqpop_cy</th>
-      <th>keyusfacts_divindx_cy</th>
-      <th>keyusfacts_tothh_cy</th>
-      <th>keyusfacts_avghhsz_cy</th>
-      <th>keyusfacts_medhinc_cy</th>
-      <th>keyusfacts_avghinc_cy</th>
-      <th>keyusfacts_pci_cy</th>
-      <th>keyusfacts_tothu_cy</th>
-      <th>keyusfacts_owner_cy</th>
-      <th>keyusfacts_renter_cy</th>
-      <th>keyusfacts_vacant_cy</th>
-      <th>keyusfacts_medval_cy</th>
-      <th>keyusfacts_avgval_cy</th>
-      <th>keyusfacts_popgrw10cy</th>
-      <th>keyusfacts_hhgrw10cy</th>
-      <th>keyusfacts_famgrw10cy</th>
-      <th>keyusfacts_dpop_cy</th>
-      <th>keyusfacts_dpopwrk_cy</th>
-      <th>keyusfacts_dpopres_cy</th>
-    </tr>
-    <tr>
-      <th>id_field</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>83801</th>
-      <td>0.168550</td>
-      <td>-1.113505</td>
-      <td>-0.542176</td>
-      <td>0.112866</td>
-      <td>1.158966</td>
-      <td>0.240908</td>
-      <td>-0.183587</td>
-      <td>0.0</td>
-      <td>-0.046770</td>
-      <td>0.184312</td>
-      <td>-0.062410</td>
-      <td>-0.603029</td>
-      <td>0.064342</td>
-      <td>-0.460086</td>
-      <td>0.503606</td>
-      <td>0.507008</td>
-      <td>0.525388</td>
-      <td>0.077259</td>
-      <td>0.019262</td>
-      <td>0.136500</td>
-    </tr>
-    <tr>
-      <th>83803</th>
-      <td>-1.196066</td>
-      <td>-1.113505</td>
-      <td>-1.477190</td>
-      <td>-1.118763</td>
-      <td>-1.779359</td>
-      <td>-1.992848</td>
-      <td>-1.686528</td>
-      <td>0.0</td>
-      <td>-1.067416</td>
-      <td>-1.161138</td>
-      <td>-0.966999</td>
-      <td>-0.814751</td>
-      <td>0.173481</td>
-      <td>-0.335440</td>
-      <td>-0.085829</td>
-      <td>-0.061930</td>
-      <td>-0.182166</td>
-      <td>-1.208741</td>
-      <td>-1.222394</td>
-      <td>-1.204427</td>
-    </tr>
-    <tr>
-      <th>83810</th>
-      <td>-0.968891</td>
-      <td>-0.148353</td>
-      <td>-1.060640</td>
-      <td>-0.958105</td>
-      <td>-0.793368</td>
-      <td>-0.072514</td>
-      <td>1.246619</td>
-      <td>0.0</td>
-      <td>-1.130455</td>
-      <td>-0.954738</td>
-      <td>-0.991268</td>
-      <td>-1.439204</td>
-      <td>0.755506</td>
-      <td>0.264172</td>
-      <td>-1.541385</td>
-      <td>-1.598279</td>
-      <td>-1.628419</td>
-      <td>-1.028550</td>
-      <td>-0.993018</td>
-      <td>-1.043046</td>
-    </tr>
-    <tr>
-      <th>83814</th>
-      <td>1.041680</td>
-      <td>1.452413</td>
-      <td>0.638916</td>
-      <td>1.134051</td>
-      <td>-0.896162</td>
-      <td>-0.409677</td>
-      <td>0.032276</td>
-      <td>0.0</td>
-      <td>1.201580</td>
-      <td>0.938856</td>
-      <td>1.381679</td>
-      <td>1.747688</td>
-      <td>0.004606</td>
-      <td>0.660622</td>
-      <td>0.102147</td>
-      <td>0.151729</td>
-      <td>0.128315</td>
-      <td>1.290816</td>
-      <td>1.480525</td>
-      <td>1.019065</td>
-    </tr>
-    <tr>
-      <th>83815</th>
-      <td>1.287525</td>
-      <td>1.455045</td>
-      <td>0.899813</td>
-      <td>1.304346</td>
-      <td>0.085295</td>
-      <td>-0.487317</td>
-      <td>-0.756867</td>
-      <td>0.0</td>
-      <td>1.289198</td>
-      <td>1.247772</td>
-      <td>1.381563</td>
-      <td>0.435298</td>
-      <td>-0.848338</td>
-      <td>-0.642668</td>
-      <td>-0.029658</td>
-      <td>-0.100488</td>
-      <td>-0.277839</td>
-      <td>1.273683</td>
-      <td>1.240551</td>
-      <td>1.310222</td>
-    </tr>
-    <tr>
-      <th>83833</th>
-      <td>-0.758692</td>
-      <td>-1.113505</td>
-      <td>-1.124465</td>
-      <td>-0.707943</td>
-      <td>-1.182468</td>
-      <td>1.972745</td>
-      <td>1.408880</td>
-      <td>0.0</td>
-      <td>-0.371707</td>
-      <td>-0.699530</td>
-      <td>-0.737788</td>
-      <td>0.753802</td>
-      <td>2.302382</td>
-      <td>2.157659</td>
-      <td>1.717922</td>
-      <td>1.781086</td>
-      <td>1.750877</td>
-      <td>-0.648029</td>
-      <td>-0.545851</td>
-      <td>-0.693898</td>
-    </tr>
-    <tr>
-      <th>83835</th>
-      <td>0.907365</td>
-      <td>1.070701</td>
-      <td>0.509690</td>
-      <td>0.905488</td>
-      <td>0.366739</td>
-      <td>1.089360</td>
-      <td>1.227169</td>
-      <td>0.0</td>
-      <td>0.894612</td>
-      <td>0.995110</td>
-      <td>0.762944</td>
-      <td>0.932300</td>
-      <td>-0.046730</td>
-      <td>0.147940</td>
-      <td>0.121060</td>
-      <td>0.093194</td>
-      <td>0.108720</td>
-      <td>0.895797</td>
-      <td>0.904103</td>
-      <td>0.911211</td>
-    </tr>
-    <tr>
-      <th>83842</th>
-      <td>-1.781009</td>
-      <td>-1.113505</td>
-      <td>-1.328926</td>
-      <td>-1.811658</td>
-      <td>-0.576114</td>
-      <td>-0.213199</td>
-      <td>0.915263</td>
-      <td>0.0</td>
-      <td>-1.883583</td>
-      <td>-1.797255</td>
-      <td>-1.863280</td>
-      <td>-1.869657</td>
-      <td>0.767897</td>
-      <td>0.292604</td>
-      <td>-0.636757</td>
-      <td>-0.704894</td>
-      <td>-0.523486</td>
-      <td>-1.773304</td>
-      <td>-1.754636</td>
-      <td>-1.784556</td>
-    </tr>
-    <tr>
-      <th>83854</th>
-      <td>1.503007</td>
-      <td>1.068428</td>
-      <td>0.867499</td>
-      <td>1.463427</td>
-      <td>1.216565</td>
-      <td>-0.300930</td>
-      <td>-0.980865</td>
-      <td>0.0</td>
-      <td>1.501389</td>
-      <td>1.528723</td>
-      <td>1.356819</td>
-      <td>1.006537</td>
-      <td>-0.864607</td>
-      <td>-0.513656</td>
-      <td>1.534478</td>
-      <td>1.361912</td>
-      <td>1.368790</td>
-      <td>1.381439</td>
-      <td>1.261121</td>
-      <td>1.494684</td>
-    </tr>
-    <tr>
-      <th>83858</th>
-      <td>0.658405</td>
-      <td>-0.264944</td>
-      <td>0.298862</td>
-      <td>0.608049</td>
-      <td>1.216565</td>
-      <td>1.164285</td>
-      <td>0.434072</td>
-      <td>0.0</td>
-      <td>0.549686</td>
-      <td>0.668464</td>
-      <td>0.523747</td>
-      <td>0.453478</td>
-      <td>-0.184852</td>
-      <td>-0.081074</td>
-      <td>0.756531</td>
-      <td>0.930047</td>
-      <td>0.993798</td>
-      <td>0.556734</td>
-      <td>0.456443</td>
-      <td>0.653679</td>
-    </tr>
-    <tr>
-      <th>83861</th>
-      <td>0.038323</td>
-      <td>0.904466</td>
-      <td>0.243695</td>
-      <td>0.079765</td>
-      <td>-0.686721</td>
-      <td>-1.378573</td>
-      <td>-1.513232</td>
-      <td>0.0</td>
-      <td>-0.039217</td>
-      <td>0.065839</td>
-      <td>0.164578</td>
-      <td>-0.272289</td>
-      <td>-2.209873</td>
-      <td>-2.245395</td>
-      <td>-1.740171</td>
-      <td>-1.683890</td>
-      <td>-1.695597</td>
-      <td>0.124524</td>
-      <td>0.282361</td>
-      <td>0.029881</td>
-    </tr>
-    <tr>
-      <th>83869</th>
-      <td>-0.142396</td>
-      <td>-0.422864</td>
-      <td>0.079089</td>
-      <td>-0.191287</td>
-      <td>0.880187</td>
-      <td>0.278454</td>
-      <td>-0.399272</td>
-      <td>0.0</td>
-      <td>-0.330651</td>
-      <td>-0.152226</td>
-      <td>-0.288760</td>
-      <td>-0.599201</td>
-      <td>-0.195127</td>
-      <td>-0.457835</td>
-      <td>0.273104</td>
-      <td>0.249722</td>
-      <td>0.305789</td>
-      <td>-0.203957</td>
-      <td>-0.365412</td>
-      <td>-0.110508</td>
-    </tr>
-    <tr>
-      <th>83876</th>
-      <td>-0.757801</td>
-      <td>-0.660874</td>
-      <td>1.995835</td>
-      <td>-0.820235</td>
-      <td>0.989876</td>
-      <td>0.109308</td>
-      <td>0.256071</td>
-      <td>0.0</td>
-      <td>-0.566666</td>
-      <td>-0.864189</td>
-      <td>-0.660827</td>
-      <td>0.269027</td>
-      <td>0.281314</td>
-      <td>1.213157</td>
-      <td>-0.975048</td>
-      <td>-0.925216</td>
-      <td>-0.874170</td>
-      <td>-0.737670</td>
-      <td>-0.763054</td>
-      <td>-0.718807</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[ 0.16855042, -1.11350457, -0.54217628,  0.11286603,  1.15896583,
+         0.24090778, -0.18358702,  0.        , -0.04677022,  0.18431223,
+        -0.06240979, -0.60302857,  0.06434243, -0.46008614,  0.50360584,
+         0.50700755,  0.5253881 ,  0.07725866,  0.01926198,  0.13649968],
+       [-1.19606641, -1.11350457, -1.47718988, -1.11876269, -1.77935893,
+        -1.99284792, -1.68652843,  0.        , -1.06741558, -1.16113791,
+        -0.96699852, -0.81475061,  0.17348101, -0.33543968, -0.08582943,
+        -0.06192985, -0.18216615, -1.20874058, -1.22239441, -1.20442689],
+       [-0.96889112, -0.14835307, -1.06063985, -0.95810529, -0.79336842,
+        -0.07251376,  1.24661914,  0.        , -1.13045506, -0.95473799,
+        -0.99126772, -1.43920363,  0.75550625,  0.26417162, -1.5413854 ,
+        -1.59827938, -1.62841907, -1.02855037, -0.9930183 , -1.0430459 ],
+       [ 1.04167961,  1.45241314,  0.63891596,  1.13405084, -0.89616209,
+        -0.40967738,  0.03227582,  0.        ,  1.20157981,  0.93885596,
+         1.3816789 ,  1.74768757,  0.00460604,  0.66062192,  0.10214702,
+         0.15172907,  0.12831547,  1.29081606,  1.48052535,  1.01906476],
+       [ 1.28752499,  1.4550447 ,  0.89981298,  1.30434606,  0.0852949 ,
+        -0.48731748, -0.75686656,  0.        ,  1.28919827,  1.2477725 ,
+         1.38156256,  0.43529789, -0.84833784, -0.64266844, -0.02965775,
+        -0.10048841, -0.27783917,  1.27368264,  1.24055122,  1.31022225],
+       [-0.75869165, -1.11350457, -1.1244652 , -0.70794344, -1.18246813,
+         1.97274454,  1.40887954,  0.        , -0.37170729, -0.69953006,
+        -0.73778795,  0.75380165,  2.30238152,  2.15765872,  1.71792246,
+         1.7810859 ,  1.75087657, -0.64802936, -0.54585145, -0.69389795],
+       [ 0.90736454,  1.07070124,  0.50968959,  0.90548763,  0.36673942,
+         1.08936041,  1.22716918,  0.        ,  0.89461173,  0.99510966,
+         0.76294388,  0.93229963, -0.04673038,  0.1479401 ,  0.12105982,
+         0.09319424,  0.10872034,  0.89579674,  0.90410273,  0.91121055],
+       [-1.78100868, -1.11350457, -1.32892609, -1.81165784, -0.57611362,
+        -0.21319941,  0.91526347,  0.        , -1.88358275, -1.79725455,
+        -1.86327952, -1.86965694,  0.76789664,  0.29260423, -0.63675688,
+        -0.70489424, -0.52348584, -1.77330394, -1.7546355 , -1.78455596],
+       [ 1.50300697,  1.0684284 ,  0.86749917,  1.46342671,  1.21656466,
+        -0.30093019, -0.98086461,  0.        ,  1.50138896,  1.52872261,
+         1.35681949,  1.00653741, -0.86460664, -0.51365565,  1.53447765,
+         1.36191199,  1.36878954,  1.38143878,  1.26112063,  1.49468379],
+       [ 0.65840462, -0.26494445,  0.29886151,  0.60804928,  1.21656466,
+         1.16428484,  0.43407234,  0.        ,  0.54968561,  0.66846376,
+         0.52374693,  0.45347846, -0.18485228, -0.08107399,  0.75653102,
+         0.93004728,  0.99379798,  0.55673424,  0.45644338,  0.65367903],
+       [ 0.03832337,  0.90446599,  0.24369469,  0.07976468, -0.68672141,
+        -1.37857332, -1.51323234,  0.        , -0.03921687,  0.06583853,
+         0.16457833, -0.27228891, -2.20987326, -2.24539451, -1.74017053,
+        -1.68388975, -1.69559717,  0.12452364,  0.28236108,  0.02988145],
+       [-0.14239615, -0.42286394,  0.07908875, -0.19128744,  0.88018746,
+         0.27845388, -0.39927173,  0.        , -0.33065055, -0.15222551,
+        -0.28875953, -0.59920057, -0.19512706, -0.45783549,  0.27310447,
+         0.24972202,  0.305789  , -0.20395689, -0.36541249, -0.11050751],
+       [-0.75780051, -0.66087372,  1.99583464, -0.82023454,  0.98987568,
+         0.10930802,  0.2560712 ,  0.        , -0.56666606, -0.86418923,
+        -0.66082709,  0.26902662,  0.28131358,  1.21315731, -0.9750483 ,
+        -0.92521641, -0.8741696 , -0.73766963, -0.76305423, -0.7188073 ]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">trn_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(13, 20)
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Standard-Geography-From-a-Data-Frame">

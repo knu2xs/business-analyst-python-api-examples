@@ -1,0 +1,2003 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Integrating into Pipelines for Clustering &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <link rel="index" title="Index" href="../genindex.htm" />
+    <link rel="search" title="Search" href="../search.htm" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=knu2xs&repo=business-analyst-python-api-examples&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.htm">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Integrating-into-Pipelines-for-Clustering">
+<h1>Integrating into Pipelines for Clustering<a class="headerlink" href="#Integrating-into-Pipelines-for-Clustering" title="Permalink to this headline">¶</a></h1>
+<p>Starting off, we import a few required Python resources. While there are quite a few in there, notice we are grabbing the <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> method from Sci-Kit Learn. We are going to be building pipelines!</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">find_dotenv</span><span class="p">,</span> <span class="n">load_dotenv</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+
+<span class="c1"># load the &quot;autoreload&quot; extension so that code can change, &amp; always reload modules so that as you change code in src, it gets loaded</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load environment variables from .env</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="c1"># paths to input data</span>
+<span class="n">dir_prj</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">dir_data</span> <span class="o">=</span> <span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;data&#39;</span>
+<span class="n">dir_raw</span> <span class="o">=</span> <span class="n">dir_data</span><span class="o">/</span><span class="s1">&#39;raw&#39;</span>
+
+<span class="c1"># import the two preprocessors from the examples</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
+<span class="kn">from</span> <span class="nn">ba_samples.preprocessing</span> <span class="kn">import</span> <span class="n">EnrichStandardGeography</span><span class="p">,</span> <span class="n">KeepOnlyEnrichColumns</span><span class="p">,</span> <span class="n">ArrayToDataFrame</span>
+
+<span class="c1"># specifically, the data being used for this example - pickled dataframes</span>
+<span class="n">postal_codes_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;postal_codes.pkl&#39;</span>
+<span class="n">block_groups_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;block_groups.pkl&#39;</span>
+</pre></div>
+</div>
+</div>
+<section id="Pipeline-for-Zip-Codes">
+<h2>Pipeline for Zip Codes<a class="headerlink" href="#Pipeline-for-Zip-Codes" title="Permalink to this headline">¶</a></h2>
+<p>We start by getting a list of standard geography codes to use from the demonstration postal code data, just a list of zip codes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postal_code_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">postal_codes_pth</span><span class="p">)</span>
+<span class="n">postal_code_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">postal_code_df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">postal_code_lst</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;83801&#39;, &#39;83803&#39;, &#39;83810&#39;, &#39;83814&#39;, &#39;83815&#39;, &#39;83833&#39;, &#39;83835&#39;, &#39;83842&#39;, &#39;83854&#39;, &#39;83858&#39;, &#39;83861&#39;, &#39;83869&#39;, &#39;83876&#39;]
+</pre></div></div>
+</div>
+<section id="Get-a-Local-Country">
+<h3>Get a Local Country<a class="headerlink" href="#Get-a-Local-Country" title="Permalink to this headline">¶</a></h3>
+<p>To enrich, we need a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Pro with Business Analyst and local data for the United States.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">))</span>
+
+<span class="n">usa_local</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States 2021 (&#39;local&#39;)&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Select-Variables">
+<h3>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this headline">¶</a></h3>
+<p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa_local</span><span class="o">.</span><span class="n">enrich_variables</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
+<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">kv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTPOP_CY</td>
+      <td>KeyUSFacts_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GQPOP_CY</td>
+      <td>2021 Group Quarters Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.GQPOP_CY</td>
+      <td>KeyUSFacts_GQPOP_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DIVINDX_CY</td>
+      <td>KeyUSFacts_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>TOTHH_CY</td>
+      <td>2021 Total Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHH_CY</td>
+      <td>KeyUSFacts_TOTHH_CY</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AVGHHSZ_CY</td>
+      <td>2021 Average Household Size</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHHSZ_CY</td>
+      <td>KeyUSFacts_AVGHHSZ_CY</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDHINC_CY</td>
+      <td>KeyUSFacts_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>AVGHINC_CY</td>
+      <td>2021 Average Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHINC_CY</td>
+      <td>KeyUSFacts_AVGHINC_CY</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>PCI_CY</td>
+      <td>2021 Per Capita Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.PCI_CY</td>
+      <td>KeyUSFacts_PCI_CY</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>TOTHU_CY</td>
+      <td>2021 Total Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHU_CY</td>
+      <td>KeyUSFacts_TOTHU_CY</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>OWNER_CY</td>
+      <td>2021 Owner Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.OWNER_CY</td>
+      <td>KeyUSFacts_OWNER_CY</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>RENTER_CY</td>
+      <td>2021 Renter Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.RENTER_CY</td>
+      <td>KeyUSFacts_RENTER_CY</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>VACANT_CY</td>
+      <td>2021 Vacant Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.VACANT_CY</td>
+      <td>KeyUSFacts_VACANT_CY</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MEDVAL_CY</td>
+      <td>2021 Median Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDVAL_CY</td>
+      <td>KeyUSFacts_MEDVAL_CY</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>AVGVAL_CY</td>
+      <td>2021 Average Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGVAL_CY</td>
+      <td>KeyUSFacts_AVGVAL_CY</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.POPGRW10CY</td>
+      <td>KeyUSFacts_POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>HHGRW10CY</td>
+      <td>2010-2021 Growth Rate: Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.HHGRW10CY</td>
+      <td>KeyUSFacts_HHGRW10CY</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>FAMGRW10CY</td>
+      <td>2010-2021 Growth Rate: Families</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.FAMGRW10CY</td>
+      <td>KeyUSFacts_FAMGRW10CY</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>DPOP_CY</td>
+      <td>2021 Total Daytime Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOP_CY</td>
+      <td>KeyUSFacts_DPOP_CY</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>DPOPWRK_CY</td>
+      <td>2021 Daytime Pop: Workers</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPWRK_CY</td>
+      <td>KeyUSFacts_DPOPWRK_CY</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>DPOPRES_CY</td>
+      <td>2021 Daytime Pop: Residents</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPRES_CY</td>
+      <td>KeyUSFacts_DPOPRES_CY</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Get-Standard-Geography-Name">
+<h3>Get Standard Geography Name<a class="headerlink" href="#Get-Standard-Geography-Name" title="Permalink to this headline">¶</a></h3>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">levels</span></code> property, we can see the value we need to use for specifying the specfic zip code level, <code class="docutils literal notranslate"><span class="pre">zip5</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_local</span><span class="o">.</span><span class="n">levels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>level_name</th>
+      <th>alias</th>
+      <th>level_id</th>
+      <th>id_field</th>
+      <th>name_field</th>
+      <th>singular_name</th>
+      <th>plural_name</th>
+      <th>admin_level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>block_groups</td>
+      <td>Block Groups</td>
+      <td>US.BlockGroups</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>Block Group</td>
+      <td>Block Groups</td>
+      <td>Admin11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>tracts</td>
+      <td>Census Tracts</td>
+      <td>US.Tracts</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>Census Tract</td>
+      <td>Census Tracts</td>
+      <td>Admin10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>places</td>
+      <td>Cities and Towns (Places)</td>
+      <td>US.Places</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>Place</td>
+      <td>Places</td>
+      <td>Admin9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>zip5</td>
+      <td>ZIP Codes</td>
+      <td>US.ZIP5</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>ZIP Code</td>
+      <td>ZIP Codes</td>
+      <td>Admin4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>csd</td>
+      <td>County Subdivisions</td>
+      <td>US.CSD</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>County Subdivision</td>
+      <td>County Subdivisions</td>
+      <td>Admin7</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>counties</td>
+      <td>Counties</td>
+      <td>US.Counties</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>County</td>
+      <td>Counties</td>
+      <td>Admin3</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>cbsa</td>
+      <td>CBSAs</td>
+      <td>US.CBSA</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>CBSA</td>
+      <td>CBSAs</td>
+      <td>Admin5</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>cd</td>
+      <td>Congressional Districts</td>
+      <td>US.CD</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>Congressional District</td>
+      <td>Congressional Districts</td>
+      <td>Admin8</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>dma</td>
+      <td>DMAs</td>
+      <td>US.DMA</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>DMA</td>
+      <td>DMAs</td>
+      <td>Admin6</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>states</td>
+      <td>States</td>
+      <td>US.States</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>State</td>
+      <td>States</td>
+      <td>Admin2</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>whole_usa</td>
+      <td>Entire Country</td>
+      <td>US.WholeUSA</td>
+      <td>ID</td>
+      <td>NAME</td>
+      <td>United States of America</td>
+      <td>United States of America</td>
+      <td>Admin1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Enrich-Preprocessor">
+<h3>Enrich Preprocessor<a class="headerlink" href="#Enrich-Preprocessor" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method can be wrapped into the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method of a SciKit-Learn Transformer, specifically a preprocessor, to function just like any other preprocessor. In this case, not only have I wrapped the preprocessor, I also have created this preprocessor for specific inputs, standard geographies.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ba_samples.preprocessing</span> <span class="kn">import</span> <span class="n">EnrichStandardGeography</span>
+
+<span class="n">enrich_preprocessor</span> <span class="o">=</span> <span class="n">EnrichStandardGeography</span><span class="p">(</span><span class="n">usa_local</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;zip5&#39;</span><span class="p">,</span> <span class="n">return_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">enrich_df</span> <span class="o">=</span> <span class="n">enrich_preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">postal_code_lst</span><span class="p">)</span>
+
+<span class="n">enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 13 entries, 0 to 12
+Data columns (total 26 columns):
+ #   Column                 Non-Null Count  Dtype
+---  ------                 --------------  -----
+ 0   id_field               13 non-null     object
+ 1   area_desc              13 non-null     object
+ 2   ta_desc                13 non-null     object
+ 3   names                  13 non-null     object
+ 4   has_data               13 non-null     int64
+ 5   aggregation_method     13 non-null     object
+ 6   keyusfacts_totpop_cy   13 non-null     float64
+ 7   keyusfacts_gqpop_cy    13 non-null     float64
+ 8   keyusfacts_divindx_cy  13 non-null     float64
+ 9   keyusfacts_tothh_cy    13 non-null     float64
+ 10  keyusfacts_avghhsz_cy  13 non-null     float64
+ 11  keyusfacts_medhinc_cy  13 non-null     float64
+ 12  keyusfacts_avghinc_cy  13 non-null     float64
+ 13  keyusfacts_pci_cy      13 non-null     float64
+ 14  keyusfacts_tothu_cy    13 non-null     float64
+ 15  keyusfacts_owner_cy    13 non-null     float64
+ 16  keyusfacts_renter_cy   13 non-null     float64
+ 17  keyusfacts_vacant_cy   13 non-null     float64
+ 18  keyusfacts_medval_cy   13 non-null     float64
+ 19  keyusfacts_avgval_cy   13 non-null     float64
+ 20  keyusfacts_popgrw10cy  13 non-null     float64
+ 21  keyusfacts_hhgrw10cy   13 non-null     float64
+ 22  keyusfacts_famgrw10cy  13 non-null     float64
+ 23  keyusfacts_dpop_cy     13 non-null     float64
+ 24  keyusfacts_dpopwrk_cy  13 non-null     float64
+ 25  keyusfacts_dpopres_cy  13 non-null     float64
+dtypes: float64(20), int64(1), object(5)
+memory usage: 2.8+ KB
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id_field</th>
+      <th>area_desc</th>
+      <th>ta_desc</th>
+      <th>names</th>
+      <th>has_data</th>
+      <th>aggregation_method</th>
+      <th>keyusfacts_totpop_cy</th>
+      <th>keyusfacts_gqpop_cy</th>
+      <th>keyusfacts_divindx_cy</th>
+      <th>keyusfacts_tothh_cy</th>
+      <th>...</th>
+      <th>keyusfacts_renter_cy</th>
+      <th>keyusfacts_vacant_cy</th>
+      <th>keyusfacts_medval_cy</th>
+      <th>keyusfacts_avgval_cy</th>
+      <th>keyusfacts_popgrw10cy</th>
+      <th>keyusfacts_hhgrw10cy</th>
+      <th>keyusfacts_famgrw10cy</th>
+      <th>keyusfacts_dpop_cy</th>
+      <th>keyusfacts_dpopwrk_cy</th>
+      <th>keyusfacts_dpopres_cy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>83801</td>
+      <td>83801</td>
+      <td>TA from geography Layer: 83801</td>
+      <td>Athol</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>8497.0</td>
+      <td>0.0</td>
+      <td>13.6</td>
+      <td>3142.0</td>
+      <td>...</td>
+      <td>482.0</td>
+      <td>421.0</td>
+      <td>382542.0</td>
+      <td>391184.0</td>
+      <td>2.07</td>
+      <td>2.09</td>
+      <td>1.92</td>
+      <td>6502.0</td>
+      <td>1962.0</td>
+      <td>4540.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>83803</td>
+      <td>83803</td>
+      <td>TA from geography Layer: 83803</td>
+      <td>Bayview</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>656.0</td>
+      <td>0.0</td>
+      <td>10.5</td>
+      <td>341.0</td>
+      <td>...</td>
+      <td>76.0</td>
+      <td>318.0</td>
+      <td>391333.0</td>
+      <td>403113.0</td>
+      <td>1.76</td>
+      <td>1.80</td>
+      <td>1.56</td>
+      <td>499.0</td>
+      <td>145.0</td>
+      <td>354.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>83810</td>
+      <td>83810</td>
+      <td>TA from geography Layer: 83810</td>
+      <td>Cataldo</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>1090.0</td>
+      <td>4.0</td>
+      <td>11.7</td>
+      <td>479.0</td>
+      <td>...</td>
+      <td>72.0</td>
+      <td>100.0</td>
+      <td>437903.0</td>
+      <td>464383.0</td>
+      <td>0.94</td>
+      <td>0.96</td>
+      <td>0.76</td>
+      <td>762.0</td>
+      <td>246.0</td>
+      <td>516.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>83814</td>
+      <td>83814</td>
+      <td>TA from geography Layer: 83814</td>
+      <td>Coeur D Alene</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>28546.0</td>
+      <td>609.0</td>
+      <td>21.2</td>
+      <td>12454.0</td>
+      <td>...</td>
+      <td>5599.0</td>
+      <td>2600.0</td>
+      <td>377722.0</td>
+      <td>508589.0</td>
+      <td>1.86</td>
+      <td>1.91</td>
+      <td>1.72</td>
+      <td>38178.0</td>
+      <td>23011.0</td>
+      <td>15167.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>83815</td>
+      <td>83815</td>
+      <td>TA from geography Layer: 83815</td>
+      <td>Coeur D Alene</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>38614.0</td>
+      <td>617.0</td>
+      <td>24.1</td>
+      <td>15247.0</td>
+      <td>...</td>
+      <td>5598.0</td>
+      <td>1146.0</td>
+      <td>308198.0</td>
+      <td>374194.0</td>
+      <td>1.79</td>
+      <td>1.78</td>
+      <td>1.51</td>
+      <td>37345.0</td>
+      <td>15891.0</td>
+      <td>21454.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 26 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Filtering-Columns">
+<h3>Filtering Columns<a class="headerlink" href="#Filtering-Columns" title="Permalink to this headline">¶</a></h3>
+<p>The output from <code class="docutils literal notranslate"><span class="pre">enrich</span></code> includes a number of metadata columns. If performing subsequent analysis, we need to prune these columns. We can use another preprocessor for this as well, one only keeping columns with enriched values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ba_samples.preprocessing</span> <span class="kn">import</span> <span class="n">KeepOnlyEnrichColumns</span>
+
+<span class="n">enrich_zip_pipe</span> <span class="o">=</span>  <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">EnrichStandardGeography</span><span class="p">(</span><span class="n">usa_local</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;zip5&#39;</span><span class="p">,</span> <span class="n">return_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">KeepOnlyEnrichColumns</span><span class="p">(</span><span class="n">usa_local</span><span class="p">,</span> <span class="n">id_column</span><span class="o">=</span><span class="s1">&#39;id_field&#39;</span><span class="p">,</span> <span class="n">keep_geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">enrich_df</span> <span class="o">=</span> <span class="n">enrich_zip_pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">postal_code_lst</span><span class="p">)</span>
+
+<span class="n">enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Index: 13 entries, 83801 to 83876
+Data columns (total 20 columns):
+ #   Column                 Non-Null Count  Dtype
+---  ------                 --------------  -----
+ 0   keyusfacts_totpop_cy   13 non-null     float64
+ 1   keyusfacts_gqpop_cy    13 non-null     float64
+ 2   keyusfacts_divindx_cy  13 non-null     float64
+ 3   keyusfacts_tothh_cy    13 non-null     float64
+ 4   keyusfacts_avghhsz_cy  13 non-null     float64
+ 5   keyusfacts_medhinc_cy  13 non-null     float64
+ 6   keyusfacts_avghinc_cy  13 non-null     float64
+ 7   keyusfacts_pci_cy      13 non-null     float64
+ 8   keyusfacts_tothu_cy    13 non-null     float64
+ 9   keyusfacts_owner_cy    13 non-null     float64
+ 10  keyusfacts_renter_cy   13 non-null     float64
+ 11  keyusfacts_vacant_cy   13 non-null     float64
+ 12  keyusfacts_medval_cy   13 non-null     float64
+ 13  keyusfacts_avgval_cy   13 non-null     float64
+ 14  keyusfacts_popgrw10cy  13 non-null     float64
+ 15  keyusfacts_hhgrw10cy   13 non-null     float64
+ 16  keyusfacts_famgrw10cy  13 non-null     float64
+ 17  keyusfacts_dpop_cy     13 non-null     float64
+ 18  keyusfacts_dpopwrk_cy  13 non-null     float64
+ 19  keyusfacts_dpopres_cy  13 non-null     float64
+dtypes: float64(20)
+memory usage: 2.1+ KB
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>keyusfacts_totpop_cy</th>
+      <th>keyusfacts_gqpop_cy</th>
+      <th>keyusfacts_divindx_cy</th>
+      <th>keyusfacts_tothh_cy</th>
+      <th>keyusfacts_avghhsz_cy</th>
+      <th>keyusfacts_medhinc_cy</th>
+      <th>keyusfacts_avghinc_cy</th>
+      <th>keyusfacts_pci_cy</th>
+      <th>keyusfacts_tothu_cy</th>
+      <th>keyusfacts_owner_cy</th>
+      <th>keyusfacts_renter_cy</th>
+      <th>keyusfacts_vacant_cy</th>
+      <th>keyusfacts_medval_cy</th>
+      <th>keyusfacts_avgval_cy</th>
+      <th>keyusfacts_popgrw10cy</th>
+      <th>keyusfacts_hhgrw10cy</th>
+      <th>keyusfacts_famgrw10cy</th>
+      <th>keyusfacts_dpop_cy</th>
+      <th>keyusfacts_dpopwrk_cy</th>
+      <th>keyusfacts_dpopres_cy</th>
+    </tr>
+    <tr>
+      <th>id_field</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>83801</th>
+      <td>8497.0</td>
+      <td>0.0</td>
+      <td>13.6</td>
+      <td>3142.0</td>
+      <td>2.70</td>
+      <td>62413.0</td>
+      <td>78746.0</td>
+      <td>30156.0</td>
+      <td>3563.0</td>
+      <td>2660.0</td>
+      <td>482.0</td>
+      <td>421.0</td>
+      <td>382542.0</td>
+      <td>391184.0</td>
+      <td>2.07</td>
+      <td>2.09</td>
+      <td>1.92</td>
+      <td>6502.0</td>
+      <td>1962.0</td>
+      <td>4540.0</td>
+    </tr>
+    <tr>
+      <th>83803</th>
+      <td>656.0</td>
+      <td>0.0</td>
+      <td>10.5</td>
+      <td>341.0</td>
+      <td>1.92</td>
+      <td>43344.0</td>
+      <td>61732.0</td>
+      <td>29472.0</td>
+      <td>659.0</td>
+      <td>264.0</td>
+      <td>76.0</td>
+      <td>318.0</td>
+      <td>391333.0</td>
+      <td>403113.0</td>
+      <td>1.76</td>
+      <td>1.80</td>
+      <td>1.56</td>
+      <td>499.0</td>
+      <td>145.0</td>
+      <td>354.0</td>
+    </tr>
+    <tr>
+      <th>83810</th>
+      <td>1090.0</td>
+      <td>4.0</td>
+      <td>11.7</td>
+      <td>479.0</td>
+      <td>2.27</td>
+      <td>60088.0</td>
+      <td>89006.0</td>
+      <td>38340.0</td>
+      <td>579.0</td>
+      <td>406.0</td>
+      <td>72.0</td>
+      <td>100.0</td>
+      <td>437903.0</td>
+      <td>464383.0</td>
+      <td>0.94</td>
+      <td>0.96</td>
+      <td>0.76</td>
+      <td>762.0</td>
+      <td>246.0</td>
+      <td>516.0</td>
+    </tr>
+    <tr>
+      <th>83814</th>
+      <td>28546.0</td>
+      <td>609.0</td>
+      <td>21.2</td>
+      <td>12454.0</td>
+      <td>2.24</td>
+      <td>57487.0</td>
+      <td>80524.0</td>
+      <td>34960.0</td>
+      <td>15054.0</td>
+      <td>6855.0</td>
+      <td>5599.0</td>
+      <td>2600.0</td>
+      <td>377722.0</td>
+      <td>508589.0</td>
+      <td>1.86</td>
+      <td>1.91</td>
+      <td>1.72</td>
+      <td>38178.0</td>
+      <td>23011.0</td>
+      <td>15167.0</td>
+    </tr>
+    <tr>
+      <th>83815</th>
+      <td>38614.0</td>
+      <td>617.0</td>
+      <td>24.1</td>
+      <td>15247.0</td>
+      <td>2.49</td>
+      <td>56872.0</td>
+      <td>73431.0</td>
+      <td>29323.0</td>
+      <td>16393.0</td>
+      <td>9649.0</td>
+      <td>5598.0</td>
+      <td>1146.0</td>
+      <td>308198.0</td>
+      <td>374194.0</td>
+      <td>1.79</td>
+      <td>1.78</td>
+      <td>1.51</td>
+      <td>37345.0</td>
+      <td>15891.0</td>
+      <td>21454.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Clustering-Block-Groups-Using-Demographics">
+<h2>Clustering Block Groups Using Demographics<a class="headerlink" href="#Clustering-Block-Groups-Using-Demographics" title="Permalink to this headline">¶</a></h2>
+<p>Stepping up our game a little, now we are getting all the US Census Block Groups in Portland because we are interested in what demographic variables have the most differences in Portland, and are going to use a SciKit-Learn pipeline to streamline the process.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_groups_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">block_groups_pth</span><span class="p">)</span>
+<span class="n">block_groups_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">block_groups_df</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Block Group Count: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">block_groups_lst</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Block Group Count: 1,421
+</pre></div></div>
+</div>
+<section id="Source---ArcGIS-Online">
+<h3>Source - ArcGIS Online<a class="headerlink" href="#Source---ArcGIS-Online" title="Permalink to this headline">¶</a></h3>
+<p>This time around, we no longer are using local resources. Now, we are switching to ArcGIS Online.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span> <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">),</span> <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">))</span>
+<span class="n">usa_agol</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
+
+<span class="n">usa_agol</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Selecting-Variables">
+<h3>Selecting Variables<a class="headerlink" href="#Selecting-Variables" title="Permalink to this headline">¶</a></h3>
+<p>This time around, we are going big. By just grabbing a lot of categories, we are selecting a wide swath of demographic varaiables. There wasn not a tremenedously emperical method used to retrieve these categories. I just grabbed quite a few. Below, please notice how I used some naming conventions to filter out some values to exclude.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collections</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;classofworker&#39;</span><span class="p">,</span> <span class="s1">&#39;commute&#39;</span><span class="p">,</span> <span class="s1">&#39;disability&#39;</span><span class="p">,</span> <span class="s1">&#39;disposableincome&#39;</span><span class="p">,</span> <span class="s1">&#39;disposableincome&#39;</span><span class="p">,</span> <span class="s1">&#39;educationalattainment&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;financial&#39;</span><span class="p">,</span> <span class="s1">&#39;foodstampssnap&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;generations&#39;</span><span class="p">,</span> <span class="s1">&#39;groupquarters&#39;</span><span class="p">,</span> <span class="s1">&#39;health&#39;</span><span class="p">,</span> <span class="s1">&#39;healthinsurancecoverage&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;homevalue&#39;</span><span class="p">,</span> <span class="s1">&#39;householdincome&#39;</span><span class="p">,</span> <span class="s1">&#39;households&#39;</span><span class="p">,</span> <span class="s1">&#39;householdsbyageofhouseholder&#39;</span><span class="p">,</span> <span class="s1">&#39;householdsbysize&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;householdtotals&#39;</span><span class="p">,</span> <span class="s1">&#39;householdtype&#39;</span><span class="p">,</span> <span class="s1">&#39;housingbyageofhouseholder&#39;</span><span class="p">,</span> <span class="s1">&#39;housingbysize&#39;</span><span class="p">,</span> <span class="s1">&#39;housingcosts&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;housinghousehold&#39;</span><span class="p">,</span> <span class="s1">&#39;housingunittotals&#39;</span><span class="p">,</span> <span class="s1">&#39;industry&#39;</span><span class="p">,</span> <span class="s1">&#39;internetcomputerusage&#39;</span><span class="p">,</span> <span class="s1">&#39;keyusfacts&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;language&#39;</span><span class="p">,</span> <span class="s1">&#39;network&#39;</span><span class="p">,</span> <span class="s1">&#39;occupation&#39;</span><span class="p">,</span> <span class="s1">&#39;wealth&#39;</span><span class="p">,</span> <span class="s1">&#39;veterans&#39;</span><span class="p">]</span>
+
+
+<span class="n">ev</span> <span class="o">=</span> <span class="n">usa_agol</span><span class="o">.</span><span class="n">enrich_variables</span>
+
+<span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">collections</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">))</span>  <span class="c1"># exclude calculated indexes</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_a&#39;</span><span class="p">))</span>      <span class="c1"># exclude averages</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;_fy&#39;</span><span class="p">))</span>     <span class="c1"># exclude future year</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;fy_&#39;</span><span class="p">))</span>     <span class="c1"># exclude another future year pattern</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">ev</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;2010&#39;</span><span class="p">))</span>               <span class="c1"># exclude 2010 census variables - we&#39;re not living in the past anymore</span>
+<span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">enrich_vars</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1686 entries, 0 to 1685
+Data columns (total 8 columns):
+ #   Column             Non-Null Count  Dtype
+---  ------             --------------  -----
+ 0   name               1686 non-null   object
+ 1   alias              1686 non-null   object
+ 2   data_collection    1686 non-null   object
+ 3   enrich_name        1686 non-null   object
+ 4   enrich_field_name  1686 non-null   object
+ 5   description        1686 non-null   object
+ 6   vintage            1686 non-null   object
+ 7   units              1686 non-null   object
+dtypes: object(8)
+memory usage: 105.5+ KB
+</pre></div></div>
+</div>
+<p>Just double checking, we can quickly see the correct value we need to use for United States Census Block Groups is <code class="docutils literal notranslate"><span class="pre">block_groups</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa_agol</span><span class="o">.</span><span class="n">levels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>level_name</th>
+      <th>singular_name</th>
+      <th>plural_name</th>
+      <th>alias</th>
+      <th>level_id</th>
+      <th>admin_level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>block_groups</td>
+      <td>Block Group</td>
+      <td>Block Groups</td>
+      <td>Block Groups</td>
+      <td>US.BlockGroups</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>tracts</td>
+      <td>Census Tract</td>
+      <td>Census Tracts</td>
+      <td>Census Tracts</td>
+      <td>US.Tracts</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>places</td>
+      <td>Place</td>
+      <td>Places</td>
+      <td>Cities and Towns (Places)</td>
+      <td>US.Places</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>zip5</td>
+      <td>ZIP Code</td>
+      <td>ZIP Codes</td>
+      <td>ZIP Codes</td>
+      <td>US.ZIP5</td>
+      <td>Admin4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>csd</td>
+      <td>County Subdivision</td>
+      <td>County Subdivisions</td>
+      <td>County Subdivisions</td>
+      <td>US.CSD</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>counties</td>
+      <td>County</td>
+      <td>Counties</td>
+      <td>Counties</td>
+      <td>US.Counties</td>
+      <td>Admin3</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>cbsa</td>
+      <td>CBSA</td>
+      <td>CBSAs</td>
+      <td>CBSAs</td>
+      <td>US.CBSA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>cd</td>
+      <td>Congressional District</td>
+      <td>Congressional Districts</td>
+      <td>Congressional Districts</td>
+      <td>US.CD</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>dma</td>
+      <td>DMA</td>
+      <td>DMAs</td>
+      <td>DMAs</td>
+      <td>US.DMA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>states</td>
+      <td>State</td>
+      <td>States</td>
+      <td>States</td>
+      <td>US.States</td>
+      <td>Admin2</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>whole_usa</td>
+      <td>United States of America</td>
+      <td>United States of America</td>
+      <td>Entire Country</td>
+      <td>US.WholeUSA</td>
+      <td>Admin1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Get-Demographics">
+<h3>Get Demographics<a class="headerlink" href="#Get-Demographics" title="Permalink to this headline">¶</a></h3>
+<p>Just like before, we are going to enrich, but this time around we are using a LOT of data - over 1,500 variables. This time around, we are including the geometry so we can use it later.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run the enrich steps autonomously so we can access the keeper properties in later steps</span>
+<span class="n">enrich_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">EnrichStandardGeography</span><span class="p">(</span><span class="n">usa_agol</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;block_groups&#39;</span><span class="p">,</span> <span class="n">return_geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">KeepOnlyEnrichColumns</span><span class="p">(</span><span class="n">usa_agol</span><span class="p">,</span> <span class="n">keep_geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">enrich_df</span> <span class="o">=</span> <span class="n">enrich_pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">block_groups_lst</span><span class="p">)</span>
+
+<span class="n">enrich_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1421 entries, 0 to 1420
+Columns: 1324 entries, acscivemp to SHAPE
+dtypes: float64(67), geometry(1), int64(1256)
+memory usage: 14.4 MB
+</pre></div></div>
+</div>
+<section id="Get-Just-the-Enriched-Columns">
+<h4>Get Just the Enriched Columns<a class="headerlink" href="#Get-Just-the-Enriched-Columns" title="Permalink to this headline">¶</a></h4>
+<p>Following enrichment, now we are getting just the columns <em>not</em> containing the geometry, the polygon shapes of the Block Groups. Notice the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> date type is no longer listed.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demographic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<span class="n">training_df</span> <span class="o">=</span> <span class="n">enrich_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">demographic_cols</span><span class="p">]</span>
+
+<span class="n">training_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1421 entries, 0 to 1420
+Columns: 1323 entries, acscivemp to acstotpop
+dtypes: float64(67), int64(1256)
+memory usage: 14.3 MB
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Data-Cleanup">
+<h3>Data Cleanup<a class="headerlink" href="#Data-Cleanup" title="Permalink to this headline">¶</a></h3>
+<p>Since subsequent steps need standard scaled data and have difficulty with zero variance and missing values, we use tools from Sci-Kit Learn to clean up the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">VarianceThreshold</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+<span class="n">scale_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">MinMaxScaler</span><span class="p">(),</span>                         <span class="c1"># get on same scale - just using because it is simple</span>
+    <span class="n">VarianceThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>       <span class="c1"># drop zero variance variables</span>
+    <span class="n">SimpleImputer</span><span class="p">()</span>                         <span class="c1"># using defaults, filling nulls with mean</span>
+<span class="p">)</span>
+
+<span class="n">scaled_arr</span> <span class="o">=</span> <span class="n">scale_pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">training_df</span><span class="p">)</span>
+
+<span class="n">scaled_arr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,
+        0.19456258],
+       [0.1832379 , 0.17342657, 0.33333333, ..., 0.        , 0.        ,
+        0.23329283],
+       [0.07105674, 0.18881119, 0.66666667, ..., 0.        , 0.        ,
+        0.1240887 ],
+       ...,
+       [0.15955232, 0.12167832, 0.33333333, ..., 0.        , 0.        ,
+        0.20990279],
+       [0.0840708 , 0.23636364, 0.66666667, ..., 0.        , 0.        ,
+        0.13456865],
+       [0.26106195, 0.21818182, 0.33333333, ..., 0.        , 0.        ,
+        0.30726002]])
+</pre></div></div>
+</div>
+</section>
+<section id="Dimensionalty-Reduction">
+<h3>Dimensionalty Reduction<a class="headerlink" href="#Dimensionalty-Reduction" title="Permalink to this headline">¶</a></h3>
+<p>Over 1,000 variables is a lot to process. To speed up the process, we first are going to use Principal Component Analysis (PCA) for dimensionality reduction, using a scree plot to ascertain how many components to create. In this case, we are going with 200 to retain roughly 90% of the variation in the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">scaled_arr</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;number of components&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;cumulative explained variance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_pipelines-clustering_36_0.png" src="../_images/notebooks_pipelines-clustering_36_0.png" />
+</div>
+</div>
+</section>
+<section id="Clustering">
+<h3>Clustering<a class="headerlink" href="#Clustering" title="Permalink to this headline">¶</a></h3>
+<p>From the scree plot we know the number of clusters to use with PCA, so we are now going to combine this with K-Means Clustering in a succinct pipeline. Once we have the clusters created, we then will create a new spatially enabled Pandas data frame by combining the output clusters with the geometry returned from geoenrichment earlier.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+
+<span class="n">cluster_pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span>
+    <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">cluster_pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">scaled_arr</span><span class="p">)</span>
+
+<span class="n">cluster_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">block_groups_lst</span><span class="p">,</span> <span class="n">cluster_pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="o">.</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">enrich_df</span><span class="p">[</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">]),</span>
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fips&#39;</span><span class="p">,</span> <span class="s1">&#39;cluster_id&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">])</span>
+<span class="n">cluster_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">cluster_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">cluster_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1421 entries, 0 to 1420
+Data columns (total 3 columns):
+ #   Column      Non-Null Count  Dtype
+---  ------      --------------  -----
+ 0   fips        1421 non-null   object
+ 1   cluster_id  1421 non-null   int32
+ 2   SHAPE       1421 non-null   geometry
+dtypes: geometry(1), int32(1), object(1)
+memory usage: 27.9+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fips</th>
+      <th>cluster_id</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>410710305021</td>
+      <td>2</td>
+      <td>{"rings": [[[-123.56601700006303, 45.216389999...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>410050237001</td>
+      <td>1</td>
+      <td>{"rings": [[[-122.61617099963205, 45.267457999...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>410050237002</td>
+      <td>4</td>
+      <td>{"rings": [[[-122.5704800001157, 45.2375169997...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>410050237003</td>
+      <td>1</td>
+      <td>{"rings": [[[-122.5111050007072, 45.2601139996...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>410050237004</td>
+      <td>1</td>
+      <td>{"rings": [[[-122.50749899966338, 45.230098999...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Dissolve-Clusters">
+<h3>Dissolve Clusters<a class="headerlink" href="#Dissolve-Clusters" title="Permalink to this headline">¶</a></h3>
+<p>For visualization on a map and also for further investigation using Inforgaphics, we need the geometries consolidated into a single geometry per cluster. The ArcGIS Online Geometry engine can be used through the <code class="docutils literal notranslate"><span class="pre">arcgis.geometry.union</span></code> method to accomplish this.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arcgis.geometry</span> <span class="kn">import</span> <span class="n">union</span>
+
+<span class="k">def</span> <span class="nf">dissolve_by_cluster_id</span><span class="p">(</span><span class="n">cluster_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper to dissolve geometries based on the cluster_id.&quot;&quot;&quot;</span>
+    <span class="c1"># pull all the geometries out of the cluster dataframe matching the cluster id as a list</span>
+    <span class="n">cluster_geom_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cluster_df</span><span class="p">[</span><span class="n">cluster_df</span><span class="p">[</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">cluster_id</span><span class="p">][</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">])</span>
+
+    <span class="c1"># use the ArcGIS Online geometry service to combine all the geometeries into one</span>
+    <span class="n">dissolved_cluster_geom</span> <span class="o">=</span> <span class="n">union</span><span class="p">(</span><span class="n">cluster_geom_lst</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dissolved_cluster_geom</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uniq_cluster_id_lst</span> <span class="o">=</span> <span class="n">cluster_df</span><span class="p">[</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">uniq_cluster_id_lst</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="n">cluster_geom_lst</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">c_id</span> <span class="ow">in</span> <span class="n">uniq_cluster_id_lst</span><span class="p">:</span>
+    <span class="n">c_geom</span> <span class="o">=</span> <span class="n">dissolve_by_cluster_id</span><span class="p">(</span><span class="n">c_id</span><span class="p">)</span>
+    <span class="n">cluster_geom_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_geom</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Created geometry for cluster id </span><span class="si">{</span><span class="n">c_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">dissolved_cluster_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">uniq_cluster_id_lst</span><span class="p">,</span> <span class="n">cluster_geom_lst</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">])</span>
+<span class="n">dissolved_cluster_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">dissolved_cluster_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Created geometry for cluster id 0
+Created geometry for cluster id 1
+Created geometry for cluster id 2
+Created geometry for cluster id 3
+Created geometry for cluster id 4
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cluster_id</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>{"rings": [[[-122.58948899999996, 45.181993000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>{"rings": [[[-122.61984599899995, 45.118054999...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>{"rings": [[[-123.38401899999997, 45.110430000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>{"rings": [[[-123.45598799999999, 45.125803999...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>{"rings": [[[-123.37559099899994, 45.094734000...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Visualizing,-Sharing-and-Interrogating">
+<h2>Visualizing, Sharing and Interrogating<a class="headerlink" href="#Visualizing,-Sharing-and-Interrogating" title="Permalink to this headline">¶</a></h2>
+<p>Both outputs from the clustering are spatially enabled Pandas data frames, and can easily be shared with ArcGIS Online. From there, the results of these analyses can be quickly visualized in maps and mapping applications, shared to communicate results, and further interrogated through Infographics.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bg_lyr</span> <span class="o">=</span> <span class="n">cluster_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">to_featurelayer</span><span class="p">(</span><span class="s1">&#39;pdx_cluster_block_groups&#39;</span><span class="p">,</span>
+                                            <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">,</span>
+                                            <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pdx&#39;</span><span class="p">,</span> <span class="s1">&#39;machine learning&#39;</span><span class="p">,</span> <span class="s1">&#39;clustering&#39;</span><span class="p">],</span>
+                                            <span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;pdx_cluster_block_groups&#39;</span><span class="p">)</span>
+
+<span class="n">bg_lyr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div class="item_container" style="height: auto; overflow: hidden; border: 1px solid #cfcfcf; border-radius: 2px; background: #f6fafa; line-height: 1.21429em; padding: 10px;">
+                    <div class="item_left" style="width: 210px; float: left;">
+                       <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=d896c4c45de9441a8cef28669ec20485' target='_blank'>
+                        <img src='http://static.arcgis.com/images/desktopapp.png' class="itemThumbnail">
+                       </a>
+                    </div>
+
+                    <div class="item_right"     style="float: none; width: auto; overflow: hidden;">
+                        <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=d896c4c45de9441a8cef28669ec20485' target='_blank'><b>pdx_cluster_block_groups</b>
+                        </a>
+                        <br/><img src='https://baqa.mapsqa.arcgis.com/home/js/jsapi/esri/css/images/item_type_icons/featureshosted16.png' style="vertical-align:middle;">Feature Layer Collection by jmccune_baqa
+                        <br/>Last Modified: February 16, 2022
+                        <br/>0 comments, 0 views
+                    </div>
+                </div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clstr_lyr</span> <span class="o">=</span> <span class="n">dissolved_cluster_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">to_featurelayer</span><span class="p">(</span><span class="s1">&#39;pdx_clusters&#39;</span><span class="p">,</span>
+                                                         <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">,</span>
+                                                         <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pdx&#39;</span><span class="p">,</span> <span class="s1">&#39;machine learning&#39;</span><span class="p">,</span> <span class="s1">&#39;clustering&#39;</span><span class="p">],</span>
+                                                         <span class="n">service_name</span><span class="o">=</span><span class="s1">&#39;pdx_clusters&#39;</span><span class="p">)</span>
+
+<span class="n">clstr_lyr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div class="item_container" style="height: auto; overflow: hidden; border: 1px solid #cfcfcf; border-radius: 2px; background: #f6fafa; line-height: 1.21429em; padding: 10px;">
+                    <div class="item_left" style="width: 210px; float: left;">
+                       <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=4777aec91420441dbb39e672ef4529d1' target='_blank'>
+                        <img src='http://static.arcgis.com/images/desktopapp.png' class="itemThumbnail">
+                       </a>
+                    </div>
+
+                    <div class="item_right"     style="float: none; width: auto; overflow: hidden;">
+                        <a href='https://baqa.mapsqa.arcgis.com/home/item.html?id=4777aec91420441dbb39e672ef4529d1' target='_blank'><b>pdx_clusters</b>
+                        </a>
+                        <br/><img src='https://baqa.mapsqa.arcgis.com/home/js/jsapi/esri/css/images/item_type_icons/featureshosted16.png' style="vertical-align:middle;">Feature Layer Collection by jmccune_baqa
+                        <br/>Last Modified: February 16, 2022
+                        <br/>0 comments, 0 views
+                    </div>
+                </div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/notebooks/pipelines-clustering.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
