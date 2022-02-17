@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Getting Data for Medical Fraud Detection &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -14,11 +13,11 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
-    <link rel="next" title="Tools" href="../tools.htm" />
+    <link rel="next" title="Integrating into Pipelines for Clustering" href="pipelines-clustering.htm" />
     <link rel="prev" title="Workflows" href="../workflows.htm" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -70,6 +69,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Final-Product---Export-to-Excel">Final Product - Export to Excel</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pipelines-clustering.htm">Clustering Block Groups</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
@@ -81,7 +81,7 @@
   <li><a href="../index.htm">Documentation overview</a><ul>
   <li><a href="../workflows.htm">Workflows</a><ul>
       <li>Previous: <a href="../workflows.htm" title="previous chapter">Workflows</a></li>
-      <li>Next: <a href="../tools.htm" title="next chapter">Tools</a></li>
+      <li>Next: <a href="pipelines-clustering.htm" title="next chapter">Integrating into Pipelines for Clustering</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -360,7 +360,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Getting-Data-for-Medical-Fraud-Detection">
+<div class="section" id="Getting-Data-for-Medical-Fraud-Detection">
 <h1>Getting Data for Medical Fraud Detection<a class="headerlink" href="#Getting-Data-for-Medical-Fraud-Detection" title="Permalink to this headline">¶</a></h1>
 <p>The need, in this case, is to get potentially relevant variables to Excel with <em>intelligible</em> column names for follow on analyses for medical fraud detection using Excel.</p>
 <p>This example will run with Python API version 1.9.1 <em>if</em> you are using a Web GIS, but this will use credits (a LOT) if you are using ArcGIS Online. Once the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method is added, this will run locally as well.</p>
@@ -409,7 +409,7 @@ div.rendered_html tbody tr:hover {
 <div class="output_area rendered_html docutils container">
 GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a></div>
 </div>
-<section id="Create-a-Country-Object-Instance">
+<div class="section" id="Create-a-Country-Object-Instance">
 <h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this headline">¶</a></h2>
 <p>The starting point is creation of a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance to work with.</p>
 <div class="nbinput docutils container">
@@ -431,8 +431,8 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 &lt;Country - United States (GIS @ https://bateam.maps.arcgis.com version:9.4)&gt;
 </pre></div></div>
 </div>
-</section>
-<section id="Retrieve-Standard-Geographies-for-Analysis">
+</div>
+<div class="section" id="Retrieve-Standard-Geographies-for-Analysis">
 <h2>Retrieve Standard Geographies for Analysis<a class="headerlink" href="#Retrieve-Standard-Geographies-for-Analysis" title="Permalink to this headline">¶</a></h2>
 <p>Standard geographies can be retrieved from the country object. Especially for the CBSA’s, the exact string can be difficult to figure out. Thankfully, the <code class="docutils literal notranslate"><span class="pre">`standard_geography_query</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query</a>&gt;`__ can be used to search for the exact string to use for retrieving subgeographies.</p>
 <div class="nbinput docutils container">
@@ -466,10 +466,10 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
  &#39;98597&#39;: &lt;NamedArea name:&#34;Yelm&#34; area_id=&#34;98597&#34;, level=&#34;US.ZIP5&#34;, country=&#34;147&#34;&gt;}
 </pre></div></div>
 </div>
-</section>
-<section id="Enrich">
+</div>
+<div class="section" id="Enrich">
 <h2>Enrich<a class="headerlink" href="#Enrich" title="Permalink to this headline">¶</a></h2>
-<section id="Get-Variables-for-Enrichment">
+<div class="section" id="Get-Variables-for-Enrichment">
 <h3>Get Variables for Enrichment<a class="headerlink" href="#Get-Variables-for-Enrichment" title="Permalink to this headline">¶</a></h3>
 <p>Using the filtering capabilities for Pandas data frames, we can quickly create a list of variables to work with. It is useful to note, even though I do not take advantage of it below, the <cite>Pandas ``contains`</cite> &lt;<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html</a>&gt;`__ method supports <a class="reference external" href="https://docs.python.org/3/howto/regex.html">Python regular expression</a> string syntax facilitating very powerful filtering.</p>
 <div class="nbinput docutils container">
@@ -649,8 +649,8 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 <p>68 rows × 8 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Perform-Enrichment">
+</div>
+<div class="section" id="Perform-Enrichment">
 <h3>Perform Enrichment<a class="headerlink" href="#Perform-Enrichment" title="Permalink to this headline">¶</a></h3>
 <p>Enrichment is as straightforward as running the <code class="docutils literal notranslate"><span class="pre">`enrich</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich</a>&gt;`__. Please notice the input for the <code class="docutils literal notranslate"><span class="pre">analysis_variables</span></code> parameter, a list of variable names. In the next release, you will be able to just input the filtered enrichment variables dataframe to make this easier, but for now, we still need to prepare the input for this parameter a bit.</p>
 <div class="nbinput docutils container">
@@ -1027,11 +1027,11 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 <p>13 rows × 78 columns</p>
 </div></div>
 </div>
-</section>
-</section>
-<section id="Add-Aliases">
+</div>
+</div>
+<div class="section" id="Add-Aliases">
 <h2>Add Aliases<a class="headerlink" href="#Add-Aliases" title="Permalink to this headline">¶</a></h2>
-<section id="Create-Pandas-Series-for-Alias-Lookup">
+<div class="section" id="Create-Pandas-Series-for-Alias-Lookup">
 <h3>Create Pandas Series for Alias Lookup<a class="headerlink" href="#Create-Pandas-Series-for-Alias-Lookup" title="Permalink to this headline">¶</a></h3>
 <p>We can create a Pandas series enabling easy column alias lookup by removing duplicate names, set the index to the column name, and just keeping the alias column.</p>
 <div class="nbinput docutils container">
@@ -1065,8 +1065,8 @@ RELOWNER                   2019 Owner Households REL (ACS 5-Yr)
 Name: alias, Length: 16275, dtype: object
 </pre></div></div>
 </div>
-</section>
-<section id="Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">
+</div>
+<div class="section" id="Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">
 <h3>Use Alias List to Look Up Relevant Column Aliases<a class="headerlink" href="#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases" title="Permalink to this headline">¶</a></h3>
 <p>Using a ternerary operator in a list comprehension with the Pandas Series created in the last step enables us to look up aliases if there is a match and keep the existing column name if there is not a match. This enables us to create a list of column names for the output data.</p>
 <div class="nbinput docutils container">
@@ -1165,8 +1165,8 @@ Name: alias, Length: 16275, dtype: object
  &#39;2021 Health Services - Employees (SIC)&#39;]
 </pre></div></div>
 </div>
-</section>
-<section id="Prune-Columns">
+</div>
+<div class="section" id="Prune-Columns">
 <h3>Prune Columns<a class="headerlink" href="#Prune-Columns" title="Permalink to this headline">¶</a></h3>
 <p>If the intention for the output data is for subsequent analysis, it is easier to just have the unique identifier, in this case the zip code, and the enriched columns in the final output. We can create a list of these columns using a list comprehension to filter the column names.</p>
 <div class="nbinput docutils container">
@@ -1355,8 +1355,8 @@ Name: alias, Length: 16275, dtype: object
 <p>5 rows × 69 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Apply-Aliases">
+</div>
+<div class="section" id="Apply-Aliases">
 <h3>Apply Aliases<a class="headerlink" href="#Apply-Aliases" title="Permalink to this headline">¶</a></h3>
 <p>Using the same method as above, we can create a list of aliases. These aliases can then be applied to the output data frame. Also, to faciliate quick retrieval by ID, we can set the index to this ID.</p>
 <div class="nbinput docutils container">
@@ -1569,9 +1569,9 @@ Name: alias, Length: 16275, dtype: object
 <p>5 rows × 68 columns</p>
 </div></div>
 </div>
-</section>
-</section>
-<section id="Final-Product---Export-to-Excel">
+</div>
+</div>
+<div class="section" id="Final-Product---Export-to-Excel">
 <h2>Final Product - Export to Excel<a class="headerlink" href="#Final-Product---Export-to-Excel" title="Permalink to this headline">¶</a></h2>
 <p>For follow on analysis using Excel, Pandas data frames can easily be saved to Excel.</p>
 <div class="nbinput nblast docutils container">
@@ -1582,8 +1582,8 @@ Name: alias, Length: 16275, dtype: object
 </pre></div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -1596,7 +1596,7 @@ Name: alias, Length: 16275, dtype: object
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

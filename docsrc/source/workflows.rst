@@ -9,3 +9,4 @@ with this repository.
 .. toctree::
 
     Variables for Medical Fraud <notebooks/medical-fraud-enrich-aliases-to-excel>
+    Clustering Block Groups <notebooks/pipelines-clustering>

@@ -4,8 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Enrich Using Point Geometries &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -14,7 +13,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -363,7 +362,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<section id="Enrich-Using-Point-Geometries">
+<div class="section" id="Enrich-Using-Point-Geometries">
 <h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this headline">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput nblast docutils container">
@@ -467,7 +466,7 @@ div.rendered_html tbody tr:hover {
 <div class="output_area rendered_html docutils container">
 GIS @ <a href="https://www.arcgis.com">https://www.arcgis.com</a></div>
 </div>
-<section id="Point-List-Using-Defaults">
+<div class="section" id="Point-List-Using-Defaults">
 <h2>Point List Using Defaults<a class="headerlink" href="#Point-List-Using-Defaults" title="Permalink to this headline">¶</a></h2>
 <p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use a local instance of ArcGIS Pro with Business Analyst and the United States data pack.</p>
 <div class="nbinput docutils container">
@@ -989,8 +988,8 @@ memory usage: 560.0+ bytes
 <p>2 rows × 27 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Specify-Proximity-Value">
+</div>
+<div class="section" id="Specify-Proximity-Value">
 <h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this headline">¶</a></h2>
 <p>If wanting to use a value different from the default of one kilometer (highly recommended), this can easily be specified using the <code class="docutils literal notranslate"><span class="pre">proximity_value</span></code> parameter.</p>
 <div class="nbinput docutils container">
@@ -1149,8 +1148,8 @@ memory usage: 560.0+ bytes
 <p>2 rows × 27 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Specify-Proximity-Value-and-Metric">
+</div>
+<div class="section" id="Specify-Proximity-Value-and-Metric">
 <h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this headline">¶</a></h2>
 <p>If desiring to use a different measure of distance, such as miles, this can be specified as well using the <code class="docutils literal notranslate"><span class="pre">proximity_metric</span></code> parameter.</p>
 <div class="nbinput docutils container">
@@ -1310,8 +1309,8 @@ memory usage: 560.0+ bytes
 <p>2 rows × 27 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Specify-Proximity-Type">
+</div>
+<div class="section" id="Specify-Proximity-Type">
 <h2>Specify Proximity Type<a class="headerlink" href="#Specify-Proximity-Type" title="Permalink to this headline">¶</a></h2>
 <p>The above examples all use the default <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> of <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>. However, based on what transportation network you have available with the GIS source you are using, other methods are also available. These can be discovered using the <code class="docutils literal notranslate"><span class="pre">travel_modes</span></code> property of the <code class="docutils literal notranslate"><span class="pre">Country</span></code>. Any of the vaues in the <code class="docutils literal notranslate"><span class="pre">names</span></code> column are valid values for <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> in addition to the default <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>.</p>
 <div class="nbinput docutils container">
@@ -1625,8 +1624,8 @@ memory usage: 560.0+ bytes
 <p>2 rows × 27 columns</p>
 </div></div>
 </div>
-</section>
-<section id="Use-a-Spatially-Enabled-Data-Frame">
+</div>
+<div class="section" id="Use-a-Spatially-Enabled-Data-Frame">
 <h2>Use a Spatially Enabled Data Frame<a class="headerlink" href="#Use-a-Spatially-Enabled-Data-Frame" title="Permalink to this headline">¶</a></h2>
 <p>Finally, although using a list of <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> objects may be useful, likely a much more common paradigm is the Spatially Enabled Data Frame. Above, we created a Spatially Enabled Data Frame. We can use this as input into the <code class="docutils literal notranslate"><span class="pre">geographies</span></code> parameter.</p>
 <p>Also, just to demonstrate the interchangability of GIS sources, we are going to create a <code class="docutils literal notranslate"><span class="pre">Country</span></code> instance using the connection to ArcGIS Online, and perform the same workflow.</p>
@@ -1799,8 +1798,8 @@ memory usage: 560.0+ bytes
 <p>2 rows × 27 columns</p>
 </div></div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -1813,7 +1812,7 @@ memory usage: 560.0+ bytes
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
