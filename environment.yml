@@ -35,6 +35,4 @@ dependencies:
     - placekey
     - sphinx
     - sphinx-autodoc-typehints
-    - tox
-    - tox-conda
     - twine

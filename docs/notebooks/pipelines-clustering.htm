@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Integrating into Pipelines for Clustering &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
@@ -13,7 +14,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
@@ -367,7 +368,7 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
-<div class="section" id="Integrating-into-Pipelines-for-Clustering">
+<section id="Integrating-into-Pipelines-for-Clustering">
 <h1>Integrating into Pipelines for Clustering<a class="headerlink" href="#Integrating-into-Pipelines-for-Clustering" title="Permalink to this headline">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, notice we are grabbing the <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> method from Sci-Kit Learn. We are going to be building pipelines!</p>
 <div class="nbinput nblast docutils container">
@@ -415,7 +416,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Pipeline-for-Zip-Codes">
+<section id="Pipeline-for-Zip-Codes">
 <h2>Pipeline for Zip Codes<a class="headerlink" href="#Pipeline-for-Zip-Codes" title="Permalink to this headline">¶</a></h2>
 <p>We start by getting a list of standard geography codes to use from the demonstration postal code data, just a list of zip codes.</p>
 <div class="nbinput docutils container">
@@ -437,7 +438,7 @@ div.rendered_html tbody tr:hover {
 [&#39;83801&#39;, &#39;83803&#39;, &#39;83810&#39;, &#39;83814&#39;, &#39;83815&#39;, &#39;83833&#39;, &#39;83835&#39;, &#39;83842&#39;, &#39;83854&#39;, &#39;83858&#39;, &#39;83861&#39;, &#39;83869&#39;, &#39;83876&#39;]
 </pre></div></div>
 </div>
-<div class="section" id="Get-a-Local-Country">
+<section id="Get-a-Local-Country">
 <h3>Get a Local Country<a class="headerlink" href="#Get-a-Local-Country" title="Permalink to this headline">¶</a></h3>
 <p>To enrich, we need a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Pro with Business Analyst and local data for the United States.</p>
 <div class="nbinput docutils container">
@@ -459,8 +460,8 @@ div.rendered_html tbody tr:hover {
 &lt;Country - United States 2021 (&#39;local&#39;)&gt;
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Select-Variables">
+</section>
+<section id="Select-Variables">
 <h3>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this headline">¶</a></h3>
 <p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset.</p>
 <div class="nbinput docutils container">
@@ -672,8 +673,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Get-Standard-Geography-Name">
+</section>
+<section id="Get-Standard-Geography-Name">
 <h3>Get Standard Geography Name<a class="headerlink" href="#Get-Standard-Geography-Name" title="Permalink to this headline">¶</a></h3>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">levels</span></code> property, we can see the value we need to use for specifying the specfic zip code level, <code class="docutils literal notranslate"><span class="pre">zip5</span></code>.</p>
 <div class="nbinput docutils container">
@@ -843,8 +844,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Enrich-Preprocessor">
+</section>
+<section id="Enrich-Preprocessor">
 <h3>Enrich Preprocessor<a class="headerlink" href="#Enrich-Preprocessor" title="Permalink to this headline">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method can be wrapped into the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method of a SciKit-Learn Transformer, specifically a preprocessor, to function just like any other preprocessor. In this case, not only have I wrapped the preprocessor, I also have created this preprocessor for specific inputs, standard geographies.</p>
 <div class="nbinput docutils container">
@@ -1081,8 +1082,8 @@ memory usage: 2.8+ KB
 <p>5 rows × 26 columns</p>
 </div></div>
 </div>
-</div>
-<div class="section" id="Filtering-Columns">
+</section>
+<section id="Filtering-Columns">
 <h3>Filtering Columns<a class="headerlink" href="#Filtering-Columns" title="Permalink to this headline">¶</a></h3>
 <p>The output from <code class="docutils literal notranslate"><span class="pre">enrich</span></code> includes a number of metadata columns. If performing subsequent analysis, we need to prune these columns. We can use another preprocessor for this as well, one only keeping columns with enriched values.</p>
 <div class="nbinput docutils container">
@@ -1332,9 +1333,9 @@ memory usage: 2.1+ KB
 </table>
 </div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Clustering-Block-Groups-Using-Demographics">
+</section>
+</section>
+<section id="Clustering-Block-Groups-Using-Demographics">
 <h2>Clustering Block Groups Using Demographics<a class="headerlink" href="#Clustering-Block-Groups-Using-Demographics" title="Permalink to this headline">¶</a></h2>
 <p>Stepping up our game a little, now we are getting all the US Census Block Groups in Portland because we are interested in what demographic variables have the most differences in Portland, and are going to use a SciKit-Learn pipeline to streamline the process.</p>
 <div class="nbinput docutils container">
@@ -1356,7 +1357,7 @@ memory usage: 2.1+ KB
 Block Group Count: 1,421
 </pre></div></div>
 </div>
-<div class="section" id="Source---ArcGIS-Online">
+<section id="Source---ArcGIS-Online">
 <h3>Source - ArcGIS Online<a class="headerlink" href="#Source---ArcGIS-Online" title="Permalink to this headline">¶</a></h3>
 <p>This time around, we no longer are using local resources. Now, we are switching to ArcGIS Online.</p>
 <div class="nbinput docutils container">
@@ -1379,8 +1380,8 @@ Block Group Count: 1,421
 &lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Selecting-Variables">
+</section>
+<section id="Selecting-Variables">
 <h3>Selecting Variables<a class="headerlink" href="#Selecting-Variables" title="Permalink to this headline">¶</a></h3>
 <p>This time around, we are going big. By just grabbing a lot of categories, we are selecting a wide swath of demographic varaiables. There wasn not a tremenedously emperical method used to retrieve these categories. I just grabbed quite a few. Below, please notice how I used some naming conventions to filter out some values to exclude.</p>
 <div class="nbinput docutils container">
@@ -1576,8 +1577,8 @@ memory usage: 105.5+ KB
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Get-Demographics">
+</section>
+<section id="Get-Demographics">
 <h3>Get Demographics<a class="headerlink" href="#Get-Demographics" title="Permalink to this headline">¶</a></h3>
 <p>Just like before, we are going to enrich, but this time around we are using a LOT of data - over 1,500 variables. This time around, we are including the geometry so we can use it later.</p>
 <div class="nbinput docutils container">
@@ -1607,7 +1608,7 @@ dtypes: float64(67), geometry(1), int64(1256)
 memory usage: 14.4 MB
 </pre></div></div>
 </div>
-<div class="section" id="Get-Just-the-Enriched-Columns">
+<section id="Get-Just-the-Enriched-Columns">
 <h4>Get Just the Enriched Columns<a class="headerlink" href="#Get-Just-the-Enriched-Columns" title="Permalink to this headline">¶</a></h4>
 <p>Following enrichment, now we are getting just the columns <em>not</em> containing the geometry, the polygon shapes of the Block Groups. Notice the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> date type is no longer listed.</p>
 <div class="nbinput docutils container">
@@ -1633,9 +1634,9 @@ dtypes: float64(67), int64(1256)
 memory usage: 14.3 MB
 </pre></div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Data-Cleanup">
+</section>
+</section>
+<section id="Data-Cleanup">
 <h3>Data Cleanup<a class="headerlink" href="#Data-Cleanup" title="Permalink to this headline">¶</a></h3>
 <p>Since subsequent steps need standard scaled data and have difficulty with zero variance and missing values, we use tools from Sci-Kit Learn to clean up the data.</p>
 <div class="nbinput docutils container">
@@ -1681,8 +1682,8 @@ array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,
         0.30726002]])
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Dimensionalty-Reduction">
+</section>
+<section id="Dimensionalty-Reduction">
 <h3>Dimensionalty Reduction<a class="headerlink" href="#Dimensionalty-Reduction" title="Permalink to this headline">¶</a></h3>
 <p>Over 1,000 variables is a lot to process. To speed up the process, we first are going to use Principal Component Analysis (PCA) for dimensionality reduction, using a scree plot to ascertain how many components to create. In this case, we are going with 200 to retain roughly 90% of the variation in the data.</p>
 <div class="nbinput docutils container">
@@ -1710,8 +1711,8 @@ array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,
 <img alt="../_images/notebooks_pipelines-clustering_36_0.png" src="../_images/notebooks_pipelines-clustering_36_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Clustering">
+</section>
+<section id="Clustering">
 <h3>Clustering<a class="headerlink" href="#Clustering" title="Permalink to this headline">¶</a></h3>
 <p>From the scree plot we know the number of clusters to use with PCA, so we are now going to combine this with K-Means Clustering in a succinct pipeline. Once we have the clusters created, we then will create a new spatially enabled Pandas data frame by combining the output clusters with the geometry returned from geoenrichment earlier.</p>
 <div class="nbinput docutils container">
@@ -1815,8 +1816,8 @@ memory usage: 27.9+ KB
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Dissolve-Clusters">
+</section>
+<section id="Dissolve-Clusters">
 <h3>Dissolve Clusters<a class="headerlink" href="#Dissolve-Clusters" title="Permalink to this headline">¶</a></h3>
 <p>For visualization on a map and also for further investigation using Inforgaphics, we need the geometries consolidated into a single geometry per cluster. The ArcGIS Online Geometry engine can be used through the <code class="docutils literal notranslate"><span class="pre">arcgis.geometry.union</span></code> method to accomplish this.</p>
 <div class="nbinput nblast docutils container">
@@ -1926,9 +1927,9 @@ Created geometry for cluster id 4
 </table>
 </div></div>
 </div>
-</div>
-</div>
-<div class="section" id="Visualizing,-Sharing-and-Interrogating">
+</section>
+</section>
+<section id="Visualizing,-Sharing-and-Interrogating">
 <h2>Visualizing, Sharing and Interrogating<a class="headerlink" href="#Visualizing,-Sharing-and-Interrogating" title="Permalink to this headline">¶</a></h2>
 <p>Both outputs from the clustering are spatially enabled Pandas data frames, and can easily be shared with ArcGIS Online. From there, the results of these analyses can be quickly visualized in maps and mapping applications, shared to communicate results, and further interrogated through Infographics.</p>
 <div class="nbinput docutils container">
@@ -2007,8 +2008,8 @@ Created geometry for cluster id 4
 </pre></div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -2021,7 +2022,7 @@ Created geometry for cluster id 4
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

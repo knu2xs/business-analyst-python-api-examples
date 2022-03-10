@@ -62,30 +62,12 @@ GOTO %1
 :: Build the local environment from the environment file
 :env
     ENDLOCAL & (
-
-        :: Create new environment by cloning the original
-        CALL conda create --name "%ENV_NAME%" --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
-
-        :: Add more fun stuff from environment file
-        CALL conda env update -e "%ENV_NAME%" -f environment.yml
-
-        :: Install the local package in development (experimental) mode
-        CALL python -m pip install -e .
-
-        :: Activate the environment so you can get to work
-        CALL activate "%ENV_NAME%"
-
-    )
-    EXIT /B
-
-:env_geosaurus
-    ENDLOCAL & (
         
         :: Create new environment by cloning the original
-        CALL conda create --name "%ENV_DEV_NAME%" --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
+        CALL conda create -p ./env --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
 
         :: Add more fun stuff from environment file
-        CALL conda env update -e "%ENV_DEV_NAME%" -f environment.yml
+        CALL conda env update -p ./env -f environment.yml
 
         :: Install geosaurus in development (edit) mode
         CALL python -m pip install -e ./src/geosaurus/src
@@ -94,7 +76,7 @@ GOTO %1
         CALL python -m pip install -e .
 
         :: Activate the environment so you can get to work
-        CALL activate "%ENV_DEV_NAME%"
+        CALL activate ./env
 
     )
     EXIT /B
@@ -103,9 +85,15 @@ GOTO %1
 :env_remove
 	ENDLOCAL & (
 		CALL conda deactivate
-		CALL conda env remove --name "%ENV_NAME%" -y
+		CALL conda env remove -p ./env
 	)
 	EXIT /B
+
+:: Start Jupyter Lab
+:jupyter
+    :jupyter
+    ENDLOCAL & CALL conda activate ./env && jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
+    EXIT /B
 
 :: Run all tests in module
 :test
