@@ -1,0 +1,192 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "0db399e7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from demo_data import demo_data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "1d241dc6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 650 entries, 0 to 649\n",
+      "Data columns (total 2 columns):\n",
+      " #   Column  Non-Null Count  Dtype   \n",
+      "---  ------  --------------  -----   \n",
+      " 0   LOCNUM  650 non-null    object  \n",
+      " 1   SHAPE   650 non-null    geometry\n",
+      "dtypes: geometry(1), object(1)\n",
+      "memory usage: 10.3+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df = demo_data.pdx_coffee_locations.df\n",
+    "\n",
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "cee540ef",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>LOCNUM</th>\n",
+       "      <th>SHAPE</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>105550909</td>\n",
+       "      <td>{\"x\": -13661187.466078103, \"y\": 5686302.261006...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>105633002</td>\n",
+       "      <td>{\"x\": -13683283.32746541, \"y\": 5709438.5596519...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>105759815</td>\n",
+       "      <td>{\"x\": -13656422.54659419, \"y\": 5704599.4372188...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>177692910</td>\n",
+       "      <td>{\"x\": -13651479.293286022, \"y\": 5687492.553844...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>180308389</td>\n",
+       "      <td>{\"x\": -13640908.50575978, \"y\": 5706009.5641631...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>645</th>\n",
+       "      <td>975608142</td>\n",
+       "      <td>{\"x\": -13642558.093634102, \"y\": 5727674.253938...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>646</th>\n",
+       "      <td>992212571</td>\n",
+       "      <td>{\"x\": -13654355.677608632, \"y\": 5705334.506061...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>647</th>\n",
+       "      <td>996372082</td>\n",
+       "      <td>{\"x\": -13674911.656479793, \"y\": 5703468.350132...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>648</th>\n",
+       "      <td>996388682</td>\n",
+       "      <td>{\"x\": -13666351.632915748, \"y\": 5682056.173892...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>649</th>\n",
+       "      <td>996456521</td>\n",
+       "      <td>{\"x\": -13674040.525804587, \"y\": 5709105.186949...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>650 rows × 2 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        LOCNUM                                              SHAPE\n",
+       "0    105550909  {\"x\": -13661187.466078103, \"y\": 5686302.261006...\n",
+       "1    105633002  {\"x\": -13683283.32746541, \"y\": 5709438.5596519...\n",
+       "2    105759815  {\"x\": -13656422.54659419, \"y\": 5704599.4372188...\n",
+       "3    177692910  {\"x\": -13651479.293286022, \"y\": 5687492.553844...\n",
+       "4    180308389  {\"x\": -13640908.50575978, \"y\": 5706009.5641631...\n",
+       "..         ...                                                ...\n",
+       "645  975608142  {\"x\": -13642558.093634102, \"y\": 5727674.253938...\n",
+       "646  992212571  {\"x\": -13654355.677608632, \"y\": 5705334.506061...\n",
+       "647  996372082  {\"x\": -13674911.656479793, \"y\": 5703468.350132...\n",
+       "648  996388682  {\"x\": -13666351.632915748, \"y\": 5682056.173892...\n",
+       "649  996456521  {\"x\": -13674040.525804587, \"y\": 5709105.186949...\n",
+       "\n",
+       "[650 rows x 2 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "keep_cols = [c for c in df.columns if 'id' in c.lower() or c == 'SHAPE' or c == 'LOCNUM']\n",
+    "df = df.loc[:,keep_cols]\n",
+    "\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9940d611",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.11"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

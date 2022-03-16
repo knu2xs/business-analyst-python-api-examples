@@ -14,8 +14,8 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
     <link rel="next" title="Tools" href="../tools.htm" />
@@ -52,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="enrich-store-locations.htm">Enrich Store Locations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Clustering Block Groups</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Pipeline-for-Zip-Codes">Pipeline for Zip Codes</a><ul>
@@ -1610,7 +1611,7 @@ memory usage: 14.4 MB
 </div>
 <section id="Get-Just-the-Enriched-Columns">
 <h4>Get Just the Enriched Columns<a class="headerlink" href="#Get-Just-the-Enriched-Columns" title="Permalink to this headline">¶</a></h4>
-<p>Following enrichment, now we are getting just the columns <em>not</em> containing the geometry, the polygon shapes of the Block Groups. Notice the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> date type is no longer listed.</p>
+<p>Following enrichment, now we are getting just the columns <em>not</em> containing the geometry, the polygon shapes of the Block Groups. Notice the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> date type is <em>no longer</em> listed.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -2022,7 +2023,7 @@ Created geometry for cluster id 4
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

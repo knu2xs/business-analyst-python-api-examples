@@ -8,5 +8,6 @@ with this repository.
 
 .. toctree::
 
+    Enrich Store Locations <notebooks/enrich-store-locations>
     Variables for Medical Fraud <notebooks/medical-fraud-enrich-aliases-to-excel>
     Clustering Block Groups <notebooks/pipelines-clustering>

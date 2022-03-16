@@ -16,7 +16,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
-    <link rel="next" title="Getting Data for Medical Fraud Detection" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" />
+    <link rel="next" title="Enrich Store Locations" href="notebooks/enrich-store-locations.htm" />
     <link rel="prev" title="Future" href="future.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -50,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm">Enrich Store Locations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/pipelines-clustering.htm">Clustering Block Groups</a></li>
 </ul>
@@ -62,7 +63,7 @@
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
       <li>Previous: <a href="future.htm" title="previous chapter">Future</a></li>
-      <li>Next: <a href="notebooks/medical-fraud-enrich-aliases-to-excel.htm" title="next chapter">Getting Data for Medical Fraud Detection</a></li>
+      <li>Next: <a href="notebooks/enrich-store-locations.htm" title="next chapter">Enrich Store Locations</a></li>
   </ul></li>
 </ul>
 </div>
@@ -100,6 +101,35 @@ since they may require additional dependencies or depend on datasets not include
 with this repository.</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/enrich-store-locations.htm">Enrich Store Locations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Setup">Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Using-Python-DotEnv">Using Python-DotEnv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Parameterizing">Parameterizing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Create-GIS-Object-Instance">Create GIS Object Instance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Get-Store-Locations">Get Store Locations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Create-Item-Instance">Create Item Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Get-the-Layer">Get the Layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Get-the-Data">Get the Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Enrich-Data">Enrich Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Create-a-Country">Create a Country</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Filter-to-Variables-of-Interest">Filter to Variables of Interest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Pre-Python-API-v2.0.1">Pre-Python API v2.0.1</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Create-Geometries-to-Enrich">Create Geometries to Enrich</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Post-Python-API-v2.0.1">Post Python API v2.0.1</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Travel-Modes">Travel Modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-store-locations.htm#Use-Rural-Driving-Modes">Use <em>Rural</em> Driving Modes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Create-a-Country-Object-Instance">Create a Country Object Instance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/medical-fraud-enrich-aliases-to-excel.htm#Retrieve-Standard-Geographies-for-Analysis">Retrieve Standard Geographies for Analysis</a></li>
@@ -158,7 +188,7 @@ with this repository.</p>
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -14,8 +14,8 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../../genindex.htm" />
     <link rel="search" title="Search" href="../../search.htm" />
    
@@ -336,8 +336,8 @@ div.rendered_html tbody tr:hover {
 </style>
 <section id="Demonstration">
 <h1>Demonstration<a class="headerlink" href="#Demonstration" title="Permalink to this headline">¶</a></h1>
-<section id="Boilerplate-Setup">
-<h2>Boilerplate Setup<a class="headerlink" href="#Boilerplate-Setup" title="Permalink to this headline">¶</a></h2>
+<section id="Imports-and-Setup">
+<h2>Imports and Setup<a class="headerlink" href="#Imports-and-Setup" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -347,104 +347,28 @@ div.rendered_html tbody tr:hover {
 
 <span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
 <span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">from</span> <span class="nn">demo_data</span> <span class="kn">import</span> <span class="n">demo_data</span>
 <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">in_pth</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;D:\scratch\geoenrichment-demos\data\interim\interim.gdb\pdx_coffee_study_area_3min&#39;</span>
-<span class="n">in_df</span> <span class="o">=</span> <span class="n">GeoAccessor</span><span class="o">.</span><span class="n">from_featureclass</span><span class="p">(</span><span class="n">in_pth</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;LOCNUM&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">]]</span>
-<span class="n">in_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
-
-<span class="n">in_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-<span class="n">in_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 650 entries, 0 to 649
-Data columns (total 2 columns):
- #   Column  Non-Null Count  Dtype
----  ------  --------------  -----
- 0   LOCNUM  650 non-null    object
- 1   SHAPE   650 non-null    geometry
-dtypes: geometry(1), object(1)
-memory usage: 10.3+ KB
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>LOCNUM</th>
-      <th>SHAPE</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>105550909</td>
-      <td>{"rings": [[[-13659712.491841972, 5689050.6789...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>105633002</td>
-      <td>{"rings": [[[-13683812.381583042, 5712092.0429...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>105759815</td>
-      <td>{"rings": [[[-13655812.509662066, 5706201.2159...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>177692910</td>
-      <td>{"rings": [[[-13651962.527299367, 5690511.2941...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>180308389</td>
-      <td>{"rings": [[[-13640787.578395057, 5708949.7851...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
 
-<span class="n">gis_local</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis_local</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">)</span>
 
 <span class="n">gis_agol</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span>
     <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">),</span>
@@ -455,18 +379,18 @@ memory usage: 10.3+ KB
 </div>
 </div>
 </section>
-<section id="id1">
-<h2>Demonstration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<section id="Let-It-Rip">
+<h2>Let It Rip<a class="headerlink" href="#Let-It-Rip" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span><span class="p">,</span> <span class="n">get_countries</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">get_countries</span><span class="p">,</span> <span class="n">Country</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis</span> <span class="o">=</span> <span class="n">gis_agol</span>
@@ -474,192 +398,74 @@ memory usage: 10.3+ KB
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_countries</span><span class="p">(</span><span class="n">gis</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cntry</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
+<span class="n">in_geo</span> <span class="o">=</span> <span class="n">demo_data</span><span class="o">.</span><span class="n">van_census_tracts</span><span class="o">.</span><span class="n">df</span>
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>iso2</th>
-      <th>iso3</th>
-      <th>country_name</th>
-      <th>datasets</th>
-      <th>default_dataset</th>
-      <th>alt_name</th>
-      <th>continent</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>AL</td>
-      <td>ALB</td>
-      <td>Albania</td>
-      <td>[ALB_MBR_2020]</td>
-      <td>ALB_MBR_2020</td>
-      <td>ALBANIA</td>
-      <td>Europe</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>DZ</td>
-      <td>DZA</td>
-      <td>Algeria</td>
-      <td>[DZA_MBR_2019]</td>
-      <td>DZA_MBR_2019</td>
-      <td>ALGERIA</td>
-      <td>Africa</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AD</td>
-      <td>AND</td>
-      <td>Andorra</td>
-      <td>[AND_MBR_2020]</td>
-      <td>AND_MBR_2020</td>
-      <td>ANDORRA</td>
-      <td>Europe</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AO</td>
-      <td>AGO</td>
-      <td>Angola</td>
-      <td>[AGO_MBR_2019]</td>
-      <td>AGO_MBR_2019</td>
-      <td>ANGOLA</td>
-      <td>Africa</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AI</td>
-      <td>AIA</td>
-      <td>Anguilla</td>
-      <td>[AIA_MBR_2020]</td>
-      <td>AIA_MBR_2020</td>
-      <td>ANGUILLA</td>
-      <td>North America</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>149</th>
-      <td>UZ</td>
-      <td>UZB</td>
-      <td>Uzbekistan</td>
-      <td>[UZB_MBR_2020]</td>
-      <td>UZB_MBR_2020</td>
-      <td>UZBEKISTAN</td>
-      <td>Asia</td>
-    </tr>
-    <tr>
-      <th>150</th>
-      <td>VE</td>
-      <td>VEN</td>
-      <td>Venezuela</td>
-      <td>[VEN_MBR_2020]</td>
-      <td>VEN_MBR_2020</td>
-      <td>VENEZUELA, BOLIVARIAN REPUBLIC OF</td>
-      <td>South America</td>
-    </tr>
-    <tr>
-      <th>151</th>
-      <td>VN</td>
-      <td>VNM</td>
-      <td>Vietnam</td>
-      <td>[VNM_MBR_2020]</td>
-      <td>VNM_MBR_2020</td>
-      <td>VIET NAM</td>
-      <td>Asia</td>
-    </tr>
-    <tr>
-      <th>152</th>
-      <td>VI</td>
-      <td>VIR</td>
-      <td>Virgin Islands</td>
-      <td>[VIR_MBR_2020]</td>
-      <td>VIR_MBR_2020</td>
-      <td>UNITED STATES VIRGIN ISLANDS</td>
-      <td>North America</td>
-    </tr>
-    <tr>
-      <th>153</th>
-      <td>ZM</td>
-      <td>ZMB</td>
-      <td>Zambia</td>
-      <td>[ZMB_MBR_2019]</td>
-      <td>ZMB_MBR_2019</td>
-      <td>ZAMBIA</td>
-      <td>Africa</td>
-    </tr>
-  </tbody>
-</table>
-<p>154 rows × 7 columns</p>
-</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cntry</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis</span><span class="p">)</span>
+<span class="n">ev</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich_variables</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
+<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">cntry</span>
+<span class="n">edf</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">in_geo</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">)</span>
+
+<span class="n">edf</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">edf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;Country - United States (GIS @ https://baqa.mapsqa.arcgis.com version:9.4)&gt;
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 481 entries, 0 to 480
+Data columns (total 32 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   id                                 481 non-null    object
+ 1   source_country                     481 non-null    object
+ 2   aggregation_method                 481 non-null    object
+ 3   population_to_polygon_size_rating  481 non-null    float64
+ 4   apportionment_confidence           481 non-null    float64
+ 5   has_data                           481 non-null    int64
+ 6   totpop_cy                          481 non-null    int64
+ 7   gqpop_cy                           481 non-null    int64
+ 8   divindx_cy                         481 non-null    int64
+ 9   tothh_cy                           481 non-null    int64
+ 10  avghhsz_cy                         481 non-null    int64
+ 11  medhinc_cy                         481 non-null    int64
+ 12  avghinc_cy                         481 non-null    int64
+ 13  pci_cy                             481 non-null    int64
+ 14  tothu_cy                           481 non-null    int64
+ 15  owner_cy                           481 non-null    int64
+ 16  renter_cy                          481 non-null    int64
+ 17  vacant_cy                          481 non-null    int64
+ 18  medval_cy                          481 non-null    int64
+ 19  avgval_cy                          481 non-null    int64
+ 20  popgrw10_cy                        481 non-null    int64
+ 21  hhgrw10_cy                         481 non-null    int64
+ 22  famgrw10_cy                        481 non-null    int64
+ 23  popgrwcyfy                         481 non-null    int64
+ 24  hhgrwcyfy                          481 non-null    int64
+ 25  famgrwcyfy                         481 non-null    int64
+ 26  mhigrwcyfy                         481 non-null    int64
+ 27  pcigrwcyfy                         481 non-null    int64
+ 28  dpop_cy                            481 non-null    int64
+ 29  dpopwrk_cy                         481 non-null    int64
+ 30  dpopres_cy                         481 non-null    int64
+ 31  SHAPE                              481 non-null    geometry
+dtypes: float64(2), geometry(1), int64(26), object(3)
+memory usage: 120.4+ KB
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich_variables</span>
-
-<span class="n">ev</span>
-</pre></div>
-</div>
-</div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[57]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -681,503 +487,7 @@ memory usage: 10.3+ KB
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
-      <th>alias</th>
-      <th>data_collection</th>
-      <th>enrich_name</th>
-      <th>enrich_field_name</th>
-      <th>description</th>
-      <th>vintage</th>
-      <th>units</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>AGE0_CY</td>
-      <td>2021 Population Age &lt;1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE0_CY</td>
-      <td>F1yearincrements_AGE0_CY</td>
-      <td>2021 Total Population Age &lt;1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>AGE1_CY</td>
-      <td>2021 Population Age 1</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE1_CY</td>
-      <td>F1yearincrements_AGE1_CY</td>
-      <td>2021 Total Population Age 1 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>AGE2_CY</td>
-      <td>2021 Population Age 2</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE2_CY</td>
-      <td>F1yearincrements_AGE2_CY</td>
-      <td>2021 Total Population Age 2 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>AGE3_CY</td>
-      <td>2021 Population Age 3</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE3_CY</td>
-      <td>F1yearincrements_AGE3_CY</td>
-      <td>2021 Total Population Age 3 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AGE4_CY</td>
-      <td>2021 Population Age 4</td>
-      <td>1yearincrements</td>
-      <td>1yearincrements.AGE4_CY</td>
-      <td>F1yearincrements_AGE4_CY</td>
-      <td>2021 Total Population Age 4 (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>19148</th>
-      <td>MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In MOE (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEMEDYRMV</td>
-      <td>yearmovedin_MOEMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit M...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19149</th>
-      <td>RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved In REL (ACS...</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELMEDYRMV</td>
-      <td>yearmovedin_RELMEDYRMV</td>
-      <td>2019 Median Year Householder Moved into Unit R...</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19150</th>
-      <td>ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.ACSOWNER</td>
-      <td>yearmovedin_ACSOWNER</td>
-      <td>2019 Owner Households (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19151</th>
-      <td>MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.MOEOWNER</td>
-      <td>yearmovedin_MOEOWNER</td>
-      <td>2019 Owner Households MOE (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>19152</th>
-      <td>RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>yearmovedin</td>
-      <td>yearmovedin.RELOWNER</td>
-      <td>yearmovedin_RELOWNER</td>
-      <td>2019 Owner Households REL (ACS 5-Yr)</td>
-      <td>2015-2019</td>
-      <td>count</td>
-    </tr>
-  </tbody>
-</table>
-<p>19153 rows × 8 columns</p>
-</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
-    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;CY&#39;</span><span class="p">))</span>
-    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
-<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">kv</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[58]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>alias</th>
-      <th>data_collection</th>
-      <th>enrich_name</th>
-      <th>enrich_field_name</th>
-      <th>description</th>
-      <th>vintage</th>
-      <th>units</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>TOTPOP_CY</td>
-      <td>2021 Total Population</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.TOTPOP_CY</td>
-      <td>KeyUSFacts_TOTPOP_CY</td>
-      <td>2021 Total Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>GQPOP_CY</td>
-      <td>2021 Group Quarters Population</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.GQPOP_CY</td>
-      <td>KeyUSFacts_GQPOP_CY</td>
-      <td>2021 Group Quarters Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>DIVINDX_CY</td>
-      <td>2021 Diversity Index</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.DIVINDX_CY</td>
-      <td>KeyUSFacts_DIVINDX_CY</td>
-      <td>2021 Diversity Index (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>TOTHH_CY</td>
-      <td>2021 Total Households</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.TOTHH_CY</td>
-      <td>KeyUSFacts_TOTHH_CY</td>
-      <td>2021 Total Households (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>AVGHHSZ_CY</td>
-      <td>2021 Average Household Size</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.AVGHHSZ_CY</td>
-      <td>KeyUSFacts_AVGHHSZ_CY</td>
-      <td>2021 Average Household Size (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>MEDHINC_CY</td>
-      <td>2021 Median Household Income</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.MEDHINC_CY</td>
-      <td>KeyUSFacts_MEDHINC_CY</td>
-      <td>2021 Median Household Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>AVGHINC_CY</td>
-      <td>2021 Average Household Income</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.AVGHINC_CY</td>
-      <td>KeyUSFacts_AVGHINC_CY</td>
-      <td>2021 Average Household Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>PCI_CY</td>
-      <td>2021 Per Capita Income</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.PCI_CY</td>
-      <td>KeyUSFacts_PCI_CY</td>
-      <td>2021 Per Capita Income (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>TOTHU_CY</td>
-      <td>2021 Total Housing Units</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.TOTHU_CY</td>
-      <td>KeyUSFacts_TOTHU_CY</td>
-      <td>2021 Total Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>OWNER_CY</td>
-      <td>2021 Owner Occupied HUs</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.OWNER_CY</td>
-      <td>KeyUSFacts_OWNER_CY</td>
-      <td>2021 Owner Occupied Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>RENTER_CY</td>
-      <td>2021 Renter Occupied HUs</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.RENTER_CY</td>
-      <td>KeyUSFacts_RENTER_CY</td>
-      <td>2021 Renter Occupied Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>VACANT_CY</td>
-      <td>2021 Vacant Housing Units</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.VACANT_CY</td>
-      <td>KeyUSFacts_VACANT_CY</td>
-      <td>2021 Vacant Housing Units (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>MEDVAL_CY</td>
-      <td>2021 Median Home Value</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.MEDVAL_CY</td>
-      <td>KeyUSFacts_MEDVAL_CY</td>
-      <td>2021 Median Home Value (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>AVGVAL_CY</td>
-      <td>2021 Average Home Value</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.AVGVAL_CY</td>
-      <td>KeyUSFacts_AVGVAL_CY</td>
-      <td>2021 Average Home Value (Esri)</td>
-      <td>2021</td>
-      <td>currency</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>POPGRW10CY</td>
-      <td>2010-2021 Growth Rate: Population</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.POPGRW10CY</td>
-      <td>KeyUSFacts_POPGRW10CY</td>
-      <td>2010-2021 Population: Compound Annual Growth R...</td>
-      <td>2021</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>HHGRW10CY</td>
-      <td>2010-2021 Growth Rate: Households</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.HHGRW10CY</td>
-      <td>KeyUSFacts_HHGRW10CY</td>
-      <td>2010-2021 Households: Compound Annual Growth R...</td>
-      <td>2021</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>FAMGRW10CY</td>
-      <td>2010-2021 Growth Rate: Families</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.FAMGRW10CY</td>
-      <td>KeyUSFacts_FAMGRW10CY</td>
-      <td>2010-2021 Families: Compound Annual Growth Rat...</td>
-      <td>2021</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>POPGRWCYFY</td>
-      <td>2021-2026 Growth Rate: Population</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.POPGRWCYFY</td>
-      <td>KeyUSFacts_POPGRWCYFY</td>
-      <td>2021-2026 Population: Compound Annual Growth R...</td>
-      <td>2026</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>HHGRWCYFY</td>
-      <td>2021-2026 Growth Rate: Households</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.HHGRWCYFY</td>
-      <td>KeyUSFacts_HHGRWCYFY</td>
-      <td>2021-2026 Households: Compound Annual Growth R...</td>
-      <td>2026</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>FAMGRWCYFY</td>
-      <td>2021-2026 Growth Rate: Families</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.FAMGRWCYFY</td>
-      <td>KeyUSFacts_FAMGRWCYFY</td>
-      <td>2021-2026 Families: Compound Annual Growth Rat...</td>
-      <td>2026</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>MHIGRWCYFY</td>
-      <td>2021-2026 Growth Rate: Median HH Inc</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.MHIGRWCYFY</td>
-      <td>KeyUSFacts_MHIGRWCYFY</td>
-      <td>2021-2026 Median Household Income: Compound An...</td>
-      <td>2026</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>PCIGRWCYFY</td>
-      <td>2021-2026 Growth Rate: Per Capita Inc</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.PCIGRWCYFY</td>
-      <td>KeyUSFacts_PCIGRWCYFY</td>
-      <td>2021-2026 Per Capita Income: Compound Annual G...</td>
-      <td>2026</td>
-      <td>pct</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>DPOP_CY</td>
-      <td>2021 Total Daytime Population</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.DPOP_CY</td>
-      <td>KeyUSFacts_DPOP_CY</td>
-      <td>2021 Total Daytime Population (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>DPOPWRK_CY</td>
-      <td>2021 Daytime Pop: Workers</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.DPOPWRK_CY</td>
-      <td>KeyUSFacts_DPOPWRK_CY</td>
-      <td>2021 Daytime Population: Workers (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>DPOPRES_CY</td>
-      <td>2021 Daytime Pop: Residents</td>
-      <td>KeyUSFacts</td>
-      <td>KeyUSFacts.DPOPRES_CY</td>
-      <td>KeyUSFacts_DPOPRES_CY</td>
-      <td>2021 Daytime Population: Residents (Esri)</td>
-      <td>2021</td>
-      <td>count</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e_df</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">in_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">)</span>
-
-<span class="n">e_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
-</pre></div>
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>locnum</th>
+      <th>id</th>
       <th>source_country</th>
       <th>aggregation_method</th>
       <th>population_to_polygon_size_rating</th>
@@ -1203,127 +513,356 @@ memory usage: 10.3+ KB
   <tbody>
     <tr>
       <th>0</th>
-      <td>105550909</td>
-      <td>US</td>
+      <td>9320014.00</td>
+      <td>USA</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
       <td>2.191</td>
       <td>2.576</td>
-      <td>1</td>
-      <td>5443</td>
-      <td>47</td>
-      <td>36.4</td>
-      <td>2391</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
-      <td>0.30</td>
-      <td>1.71</td>
-      <td>1.72</td>
-      <td>1.48</td>
-      <td>2.39</td>
-      <td>2.09</td>
-      <td>8430</td>
-      <td>6007</td>
-      <td>2423</td>
-      <td>{"rings": [[[-122.70728508062291, 45.427343047...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-122.3599099999031, 49.0824700000...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>105633002</td>
-      <td>US</td>
+      <td>9320206.00</td>
+      <td>USA</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
       <td>2.191</td>
       <td>2.576</td>
-      <td>1</td>
-      <td>47</td>
       <td>0</td>
-      <td>61.2</td>
-      <td>19</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
-      <td>2.36</td>
-      <td>1.25</td>
-      <td>2.02</td>
-      <td>0.00</td>
-      <td>1.71</td>
-      <td>2.80</td>
-      <td>1197</td>
-      <td>1177</td>
-      <td>20</td>
-      <td>{"rings": [[[-122.92377807415231, 45.572420302...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-122.2692710001368, 49.1865999997...</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>105759815</td>
-      <td>US</td>
+      <td>9320207.00</td>
+      <td>USA</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
       <td>2.191</td>
       <td>2.576</td>
-      <td>1</td>
-      <td>11170</td>
-      <td>1736</td>
-      <td>46.7</td>
-      <td>6869</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
-      <td>1.43</td>
-      <td>3.13</td>
-      <td>3.51</td>
-      <td>3.44</td>
-      <td>5.39</td>
-      <td>3.21</td>
-      <td>29779</td>
-      <td>24597</td>
-      <td>5182</td>
-      <td>{"rings": [[[-122.6722509453407, 45.5353649659...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-122.3291220006446, 49.1598059995...</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>177692910</td>
-      <td>US</td>
+      <td>9330001.01</td>
+      <td>USA</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
       <td>2.191</td>
       <td>2.576</td>
-      <td>1</td>
-      <td>6255</td>
-      <td>66</td>
-      <td>47.0</td>
-      <td>2636</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
-      <td>0.20</td>
-      <td>0.61</td>
-      <td>0.58</td>
-      <td>0.46</td>
-      <td>1.45</td>
-      <td>2.41</td>
-      <td>5677</td>
-      <td>2756</td>
-      <td>2921</td>
-      <td>{"rings": [[[-122.6376659650056, 45.4365507371...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-123.0234740000042, 49.2230569998...</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>180308389</td>
-      <td>US</td>
+      <td>9330001.02</td>
+      <td>USA</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
       <td>2.191</td>
       <td>2.576</td>
-      <td>1</td>
-      <td>13200</td>
-      <td>432</td>
-      <td>64.9</td>
-      <td>5109</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>...</td>
-      <td>0.34</td>
-      <td>0.58</td>
-      <td>0.45</td>
-      <td>0.51</td>
-      <td>3.03</td>
-      <td>2.69</td>
-      <td>12250</td>
-      <td>5193</td>
-      <td>7057</td>
-      <td>{"rings": [[[-122.53727969104438, 45.552657456...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-123.0229470006478, 49.2025850000...</td>
     </tr>
   </tbody>
 </table>
 <p>5 rows × 32 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cntry</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;can&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis_agol</span><span class="p">)</span>
+
+<span class="n">in_geo</span> <span class="o">=</span> <span class="n">demo_data</span><span class="o">.</span><span class="n">van_census_tracts</span><span class="o">.</span><span class="n">df</span>
+
+<span class="n">ev</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich_variables</span>
+<span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
+<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">edf</span> <span class="o">=</span> <span class="n">cntry</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">in_geo</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">kv</span><span class="p">,</span> <span class="n">standard_geography_level</span><span class="o">=</span><span class="s1">&#39;ct&#39;</span><span class="p">,</span> <span class="n">standard_geography_id_column</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+
+<span class="n">edf</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">edf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 481 entries, 0 to 480
+Data columns (total 22 columns):
+ #   Column                             Non-Null Count  Dtype
+---  ------                             --------------  -----
+ 0   std_geography_level                481 non-null    object
+ 1   std_geography_name                 481 non-null    object
+ 2   std_geography_id                   481 non-null    object
+ 3   source_country                     481 non-null    object
+ 4   aggregation_method                 481 non-null    object
+ 5   population_to_polygon_size_rating  481 non-null    int64
+ 6   apportionment_confidence           481 non-null    int64
+ 7   has_data                           481 non-null    int64
+ 8   ecyptapop                          481 non-null    int64
+ 9   ecydaypop                          481 non-null    int64
+ 10  ecyworkpop                         481 non-null    int64
+ 11  ecyhomepop                         481 non-null    int64
+ 12  ecyhfscf                           481 non-null    int64
+ 13  ecyhszavg                          481 non-null    float64
+ 14  ecyhniavg                          481 non-null    float64
+ 15  ecyhnimed                          481 non-null    float64
+ 16  ecytenhhd                          481 non-null    int64
+ 17  ecytenown                          481 non-null    int64
+ 18  ecytenrent                         481 non-null    int64
+ 19  ecytenband                         481 non-null    int64
+ 20  ecyactpr                           481 non-null    float64
+ 21  SHAPE                              481 non-null    geometry
+dtypes: float64(4), geometry(1), int64(12), object(5)
+memory usage: 82.8+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>std_geography_level</th>
+      <th>std_geography_name</th>
+      <th>std_geography_id</th>
+      <th>source_country</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>ecyptapop</th>
+      <th>ecydaypop</th>
+      <th>...</th>
+      <th>ecyhfscf</th>
+      <th>ecyhszavg</th>
+      <th>ecyhniavg</th>
+      <th>ecyhnimed</th>
+      <th>ecytenhhd</th>
+      <th>ecytenown</th>
+      <th>ecytenrent</th>
+      <th>ecytenband</th>
+      <th>ecyactpr</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CAN.CT</td>
+      <td>Abbotsford - Mission (0014.00)</td>
+      <td>9320014.00</td>
+      <td>CAN</td>
+      <td>Query:CAN.CT</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>1</td>
+      <td>11730</td>
+      <td>10354</td>
+      <td>...</td>
+      <td>2778</td>
+      <td>3.5</td>
+      <td>153575.51</td>
+      <td>126164.14</td>
+      <td>3300</td>
+      <td>2489</td>
+      <td>809</td>
+      <td>2</td>
+      <td>72.7</td>
+      <td>{"rings": [[[-122.35990999990312, 49.082470000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CAN.CT</td>
+      <td>Abbotsford - Mission (0206.00)</td>
+      <td>9320206.00</td>
+      <td>CAN</td>
+      <td>Query:CAN.CT</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>1</td>
+      <td>3451</td>
+      <td>2004</td>
+      <td>...</td>
+      <td>883</td>
+      <td>2.8</td>
+      <td>110279.93</td>
+      <td>88163.39</td>
+      <td>1239</td>
+      <td>1086</td>
+      <td>153</td>
+      <td>0</td>
+      <td>70.0</td>
+      <td>{"rings": [[[-122.26927100013678, 49.186599999...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>CAN.CT</td>
+      <td>Abbotsford - Mission (0207.00)</td>
+      <td>9320207.00</td>
+      <td>CAN</td>
+      <td>Query:CAN.CT</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>1</td>
+      <td>2458</td>
+      <td>1441</td>
+      <td>...</td>
+      <td>593</td>
+      <td>3.2</td>
+      <td>136071.43</td>
+      <td>110063.06</td>
+      <td>737</td>
+      <td>619</td>
+      <td>118</td>
+      <td>0</td>
+      <td>70.9</td>
+      <td>{"rings": [[[-122.32912200064465, 49.159805999...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CAN.CT</td>
+      <td>Vancouver (0001.01)</td>
+      <td>9330001.01</td>
+      <td>CAN</td>
+      <td>Query:CAN.CT</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>1</td>
+      <td>6307</td>
+      <td>3707</td>
+      <td>...</td>
+      <td>1666</td>
+      <td>2.8</td>
+      <td>105356.52</td>
+      <td>87548.79</td>
+      <td>2236</td>
+      <td>1150</td>
+      <td>1086</td>
+      <td>0</td>
+      <td>64.7</td>
+      <td>{"rings": [[[-123.02347400000423, 49.223056999...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CAN.CT</td>
+      <td>Vancouver (0001.02)</td>
+      <td>9330001.02</td>
+      <td>CAN</td>
+      <td>Query:CAN.CT</td>
+      <td>-1</td>
+      <td>-1</td>
+      <td>1</td>
+      <td>7202</td>
+      <td>5226</td>
+      <td>...</td>
+      <td>2027</td>
+      <td>2.6</td>
+      <td>115560.82</td>
+      <td>94123.65</td>
+      <td>2691</td>
+      <td>1771</td>
+      <td>920</td>
+      <td>0</td>
+      <td>65.5</td>
+      <td>{"rings": [[[-123.02294700064785, 49.202585000...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 22 columns</p>
 </div></div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1348,7 +887,7 @@ memory usage: 10.3+ KB
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

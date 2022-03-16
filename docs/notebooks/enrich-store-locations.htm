@@ -1,0 +1,2134 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Enrich Store Locations &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.htm" />
+    <link rel="search" title="Search" href="../search.htm" />
+    <link rel="next" title="Getting Data for Medical Fraud Detection" href="medical-fraud-enrich-aliases-to-excel.htm" />
+    <link rel="prev" title="Workflows" href="../workflows.htm" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=knu2xs&repo=business-analyst-python-api-examples&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Enrich Store Locations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Setup">Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Using-Python-DotEnv">Using Python-DotEnv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Parameterizing">Parameterizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-GIS-Object-Instance">Create GIS Object Instance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Get-Store-Locations">Get Store Locations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Create-Item-Instance">Create Item Instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Get-the-Layer">Get the Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Get-the-Data">Get the Data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Enrich-Data">Enrich Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Create-a-Country">Create a Country</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Filter-to-Variables-of-Interest">Filter to Variables of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Pre-Python-API-v2.0.1">Pre-Python API v2.0.1</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#Create-Geometries-to-Enrich">Create Geometries to Enrich</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#Post-Python-API-v2.0.1">Post Python API v2.0.1</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#Travel-Modes">Travel Modes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#Use-Rural-Driving-Modes">Use <em>Rural</em> Driving Modes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipelines-clustering.htm">Clustering Block Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.htm">Documentation overview</a><ul>
+  <li><a href="../workflows.htm">Workflows</a><ul>
+      <li>Previous: <a href="../workflows.htm" title="previous chapter">Workflows</a></li>
+      <li>Next: <a href="medical-fraud-enrich-aliases-to-excel.htm" title="next chapter">Getting Data for Medical Fraud Detection</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Enrich-Store-Locations">
+<h1>Enrich Store Locations<a class="headerlink" href="#Enrich-Store-Locations" title="Permalink to this headline">¶</a></h1>
+<p>Enriching store locations from a Web GIS Feature Layer is a very common workflow. Here, we detail how to enrich store locations both using current capabilities (v2.0.0) and soon to be released capabilties (v2.0.1).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">get_countries</span><span class="p">,</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">use_proximity</span>
+<span class="kn">from</span> <span class="nn">arcgis.features.use_proximity</span> <span class="kn">import</span> <span class="n">create_drive_time_areas</span>
+<span class="kn">from</span> <span class="nn">arcgis.features.enrich_data</span> <span class="kn">import</span> <span class="n">enrich_layer</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<section id="Setup">
+<h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this headline">¶</a></h2>
+<section id="Using-Python-DotEnv">
+<h3>Using Python-DotEnv<a class="headerlink" href="#Using-Python-DotEnv" title="Permalink to this headline">¶</a></h3>
+<p>To not inadvertantly share a credentials, I make a habit of using the <code class="docutils literal notranslate"><span class="pre">python-dotenv</span></code> package. The url, username and password are saved in a file called <code class="docutils literal notranslate"><span class="pre">.env</span></code> in the project directory, and this file is always excluded from version tracking in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file. The contents of the <code class="docutils literal notranslate"><span class="pre">.env</span></code> file are really simple.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ESRI_GIS_URL = https://raddudes.maps.arcgis.com
+ESRI_GIS_USERNAME = oneRadDude
+ESRI_GIS_PASSWORD = P@$$w0rd
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">find_dotenv</span><span class="p">,</span> <span class="n">load_dotenv</span>
+
+<span class="c1"># recursively crawls up directories until finding a .env file, and then loads it</span>
+<span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_URL&#39;</span><span class="p">)</span>
+<span class="n">usrnm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_USERNAME&#39;</span><span class="p">)</span>
+<span class="n">pswd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;ESRI_GIS_PASSWORD&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Parameterizing">
+<h3>Parameterizing<a class="headerlink" href="#Parameterizing" title="Permalink to this headline">¶</a></h3>
+<p>To make the notebook a little more portable, this cell is where values unique to your specific data or preferences can be easily modified.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores_itm_id</span> <span class="o">=</span> <span class="s1">&#39;3adf57606db84d7e81240479347907e1&#39;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Create-GIS-Object-Instance">
+<h3>Create GIS Object Instance<a class="headerlink" href="#Create-GIS-Object-Instance" title="Permalink to this headline">¶</a></h3>
+<p>Now, to get to data and services, we need a connection to a Web GIS. This is accomplished by connecting to ArcGIS Online in this case through the GIS object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gis</span> <span class="o">=</span><span class="n">GIS</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">usrnm</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">pswd</span><span class="p">)</span>
+
+<span class="n">gis</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a></div>
+</div>
+</section>
+</section>
+<section id="Get-Store-Locations">
+<h2>Get Store Locations<a class="headerlink" href="#Get-Store-Locations" title="Permalink to this headline">¶</a></h2>
+<section id="Create-Item-Instance">
+<h3>Create Item Instance<a class="headerlink" href="#Create-Item-Instance" title="Permalink to this headline">¶</a></h3>
+<p>We now get the reference to the Item in the Web GIS using the <code class="docutils literal notranslate"><span class="pre">stores_itm_id</span></code> from above.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores_itm</span> <span class="o">=</span> <span class="n">gis</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stores_itm_id</span><span class="p">)</span>
+
+<span class="n">stores_itm</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div class="item_container" style="height: auto; overflow: hidden; border: 1px solid #cfcfcf; border-radius: 2px; background: #f6fafa; line-height: 1.21429em; padding: 10px;">
+                    <div class="item_left" style="width: 210px; float: left;">
+                       <a href='https://bateam.maps.arcgis.com/home/item.html?id=3adf57606db84d7e81240479347907e1' target='_blank'>
+                        <img src='data:image/png;base64,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' width='200' height='133' class="itemThumbnail">
+                       </a>
+                    </div>
+
+                    <div class="item_right"     style="float: none; width: auto; overflow: hidden;">
+                        <a href='https://bateam.maps.arcgis.com/home/item.html?id=3adf57606db84d7e81240479347907e1' target='_blank'><b>locations</b>
+                        </a>
+                        <br/>Locations for demonstration and testing.<img src='https://bateam.maps.arcgis.com/home/js/jsapi/esri/css/images/item_type_icons/featureshosted16.png' style="vertical-align:middle;">Feature Layer Collection by jmccune_bateam
+                        <br/>Last Modified: March 15, 2022
+                        <br/>0 comments, 6 views
+                    </div>
+                </div></div>
+</div>
+</section>
+<section id="Get-the-Layer">
+<h3>Get the Layer<a class="headerlink" href="#Get-the-Layer" title="Permalink to this headline">¶</a></h3>
+<p>The item only saves the reference to the layer, and the layer is how we access data, so we need to get the first layer saved as part of the item (the only layer) to access the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores_lyr</span> <span class="o">=</span> <span class="n">stores_itm</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">stores_lyr</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;FeatureLayer url:&#34;https://services8.arcgis.com/cOQY5d2zYaXw1BYI/arcgis/rest/services/locations/FeatureServer/0&#34;&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Get-the-Data">
+<h3>Get the Data<a class="headerlink" href="#Get-the-Data" title="Permalink to this headline">¶</a></h3>
+<p>Now, we can retrieve and examine the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stores_df</span> <span class="o">=</span> <span class="n">stores_lyr</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">out_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LOCNUM&#39;</span><span class="p">]</span>   <span class="c1"># this only really applies to this demonstration if you&#39;re using your own data, so please feel free to remove</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sdf</span>
+
+<span class="n">stores_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">stores_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 6 entries, 0 to 5
+Data columns (total 3 columns):
+ #   Column    Non-Null Count  Dtype
+---  ------    --------------  -----
+ 0   OBJECTID  6 non-null      int64
+ 1   LOCNUM    6 non-null      object
+ 2   SHAPE     6 non-null      geometry
+dtypes: geometry(1), int64(1), object(1)
+memory usage: 272.0+ bytes
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>LOCNUM</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>164204208</td>
+      <td>{"x": -97.37453699999998, "y": 27.712800000000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>402166529</td>
+      <td>{"x": -97.323093, "y": 27.71141400000015, "spa...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>720384210</td>
+      <td>{"x": -97.36875000000002, "y": 27.709965000000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>736055028</td>
+      <td>{"x": -97.37815552999999, "y": 27.682539720000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>743788118</td>
+      <td>{"x": -97.63392599999996, "y": 27.855611999999...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Enrich-Data">
+<h2>Enrich Data<a class="headerlink" href="#Enrich-Data" title="Permalink to this headline">¶</a></h2>
+<section id="Create-a-Country">
+<h3>Create a Country<a class="headerlink" href="#Create-a-Country" title="Permalink to this headline">¶</a></h3>
+<p>Since working with in the United States, we need a Country object instance referencing the USA to access this data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">)</span>
+
+<span class="n">usa</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States (GIS @ https://bateam.maps.arcgis.com version:9.4)&gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Filter-to-Variables-of-Interest">
+<h3>Filter to Variables of Interest<a class="headerlink" href="#Filter-to-Variables-of-Interest" title="Permalink to this headline">¶</a></h3>
+<p>With over 19 thousand variables available, we are going to reduce it to something at least under 100.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich_variables</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Total Available </span><span class="si">{</span><span class="n">usa</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">country_name</span><span class="si">}</span><span class="s1"> Enrichment Variables: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span> <span class="o">==</span> <span class="s1">&#39;tapestryhouseholdsNEW&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">enrich_vars</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Total Available United States Enrichment Variables: 19,153
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+      <th>description</th>
+      <th>vintage</th>
+      <th>units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TSEGNUM</td>
+      <td>2021 Dominant Tapestry Number</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.TSEGNUM</td>
+      <td>tapestryhouseholdsNEW_TSEGNUM</td>
+      <td>2021 Dominant Tapestry Number (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>TSEGCODE</td>
+      <td>2021 Dominant Tapestry Segment</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.TSEGCODE</td>
+      <td>tapestryhouseholdsNEW_TSEGCODE</td>
+      <td>2021 Dominant Tapestry Segment (Esri)</td>
+      <td>2021</td>
+      <td>text</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>TSEGNAME</td>
+      <td>2021 Dom Tapestry Segment Name</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.TSEGNAME</td>
+      <td>tapestryhouseholdsNEW_TSEGNAME</td>
+      <td>2021 Dominant Tapestry Segment Name (Esri)</td>
+      <td>2021</td>
+      <td>text</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>THHBASE</td>
+      <td>2021 Tapestry Household Base</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHBASE</td>
+      <td>tapestryhouseholdsNEW_THHBASE</td>
+      <td>2021 Households by Tapestry Segment Base</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>THH01</td>
+      <td>2021 HHs in Tapestry Seg 1A</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THH01</td>
+      <td>tapestryhouseholdsNEW_THH01</td>
+      <td>2021 Top Tier (1A) Tapestry Households (Esri)</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>THHGRPU2</td>
+      <td>2021 HHs: Urbanization Group 2</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHGRPU2</td>
+      <td>tapestryhouseholdsNEW_THHGRPU2</td>
+      <td>2021 Urban Periphery Tapestry Urbanization Gro...</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>THHGRPU3</td>
+      <td>2021 HHs: Urbanization Group 3</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHGRPU3</td>
+      <td>tapestryhouseholdsNEW_THHGRPU3</td>
+      <td>2021 Metro Cities Tapestry Urbanization Group ...</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>THHGRPU4</td>
+      <td>2021 HHs: Urbanization Group 4</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHGRPU4</td>
+      <td>tapestryhouseholdsNEW_THHGRPU4</td>
+      <td>2021 Suburban Periphery Tapestry Urbanization ...</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>THHGRPU5</td>
+      <td>2021 HHs: Urbanization Group 5</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHGRPU5</td>
+      <td>tapestryhouseholdsNEW_THHGRPU5</td>
+      <td>2021 Semirural Tapestry Urbanization Group U5 ...</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>THHGRPU6</td>
+      <td>2021 HHs: Urbanization Group 6</td>
+      <td>tapestryhouseholdsNEW</td>
+      <td>tapestryhouseholdsNEW.THHGRPU6</td>
+      <td>tapestryhouseholdsNEW_THHGRPU6</td>
+      <td>2021 Rural Tapestry Urbanization Group U6 Hous...</td>
+      <td>2021</td>
+      <td>count</td>
+    </tr>
+  </tbody>
+</table>
+<p>92 rows × 8 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Pre-Python-API-v2.0.1">
+<h3>Pre-Python API v2.0.1<a class="headerlink" href="#Pre-Python-API-v2.0.1" title="Permalink to this headline">¶</a></h3>
+<section id="Create-Geometries-to-Enrich">
+<h4>Create Geometries to Enrich<a class="headerlink" href="#Create-Geometries-to-Enrich" title="Permalink to this headline">¶</a></h4>
+<p>Although there is a way to pass these parameters direclty in the JSON payload in the <code class="docutils literal notranslate"><span class="pre">geographies</span></code> parameter, the somewhat more obvious method is creation of the geometries using available methods.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store_buf_fc</span> <span class="o">=</span> <span class="n">use_proximity</span><span class="o">.</span><span class="n">create_buffers</span><span class="p">(</span><span class="n">stores_df</span><span class="p">,</span> <span class="n">distances</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;miles&#39;</span><span class="p">)</span>
+<span class="n">store_buf_df</span> <span class="o">=</span> <span class="n">store_buf_fc</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">sdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;LOCNUM&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">]]</span>
+<span class="n">store_buf_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">store_buf_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>LOCNUM</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>164204208</td>
+      <td>{"rings": [[[-97.37453699978266, 27.7563684127...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>402166529</td>
+      <td>{"rings": [[[-97.32309299984206, 27.7549824208...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>720384210</td>
+      <td>{"rings": [[[-97.36875000001248, 27.7535334304...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>736055028</td>
+      <td>{"rings": [[[-97.37815552995369, 27.7261083231...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>743788118</td>
+      <td>{"rings": [[[-97.63392599968512, 27.8991795108...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store_buf_enrich_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">store_buf_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">)</span>
+
+<span class="n">store_buf_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>tsegnum</th>
+      <th>tsegcode</th>
+      <th>tsegname</th>
+      <th>thhbase</th>
+      <th>...</th>
+      <th>thhgrpl12</th>
+      <th>thhgrpl13</th>
+      <th>thhgrpl14</th>
+      <th>thhgrpu1</th>
+      <th>thhgrpu2</th>
+      <th>thhgrpu3</th>
+      <th>thhgrpu4</th>
+      <th>thhgrpu5</th>
+      <th>thhgrpu6</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>164204208</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>35</td>
+      <td>8C</td>
+      <td>Bright Young Professionals</td>
+      <td>50364</td>
+      <td>...</td>
+      <td>953</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>17744</td>
+      <td>19534</td>
+      <td>11861</td>
+      <td>1225</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.37453699978266, 27.7563684127...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>402166529</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>35</td>
+      <td>8C</td>
+      <td>Bright Young Professionals</td>
+      <td>17285</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>673</td>
+      <td>0</td>
+      <td>6692</td>
+      <td>7926</td>
+      <td>2666</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.32309299984206, 27.7549824208...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>720384210</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>35</td>
+      <td>8C</td>
+      <td>Bright Young Professionals</td>
+      <td>47095</td>
+      <td>...</td>
+      <td>918</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>15891</td>
+      <td>18425</td>
+      <td>11541</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.36875000001248, 27.7535334304...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>736055028</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>35</td>
+      <td>8C</td>
+      <td>Bright Young Professionals</td>
+      <td>45787</td>
+      <td>...</td>
+      <td>621</td>
+      <td>0</td>
+      <td>77</td>
+      <td>0</td>
+      <td>12072</td>
+      <td>13613</td>
+      <td>18863</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.37815552995369, 27.7261083231...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>743788118</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>14</td>
+      <td>4B</td>
+      <td>Home Improvement</td>
+      <td>6098</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1916</td>
+      <td>12</td>
+      <td>2977</td>
+      <td>336</td>
+      <td>857</td>
+      <td>{"rings": [[[-97.63392599968512, 27.8991795108...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 99 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store_dt_fc</span> <span class="o">=</span> <span class="n">create_drive_time_areas</span><span class="p">(</span><span class="n">stores_df</span><span class="p">,</span> <span class="n">break_values</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">travel_mode</span><span class="o">=</span><span class="s1">&#39;Driving Time&#39;</span><span class="p">)</span>
+<span class="n">store_dt_df</span> <span class="o">=</span> <span class="n">store_dt_fc</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">sdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;LOCNUM&#39;</span><span class="p">,</span> <span class="s1">&#39;SHAPE&#39;</span><span class="p">]]</span>
+<span class="n">store_dt_df</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="s1">&#39;SHAPE&#39;</span><span class="p">)</span>
+
+<span class="n">store_dt_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>LOCNUM</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>164204208</td>
+      <td>{"rings": [[[-97.42162212699998, 27.7564393460...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>402166529</td>
+      <td>{"rings": [[[-97.36121070099995, 27.7353290330...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>720384210</td>
+      <td>{"rings": [[[-97.42229586099995, 27.7517232120...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>736055028</td>
+      <td>{"rings": [[[-97.38658799099994, 27.7124220980...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>743788118</td>
+      <td>{"rings": [[[-97.65450929899998, 27.9466567370...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">store_dt_enrich_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">store_dt_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">)</span>
+
+<span class="n">store_dt_enrich_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>has_data</th>
+      <th>tsegnum</th>
+      <th>tsegcode</th>
+      <th>tsegname</th>
+      <th>thhbase</th>
+      <th>...</th>
+      <th>thhgrpl12</th>
+      <th>thhgrpl13</th>
+      <th>thhgrpl14</th>
+      <th>thhgrpu1</th>
+      <th>thhgrpu2</th>
+      <th>thhgrpu3</th>
+      <th>thhgrpu4</th>
+      <th>thhgrpu5</th>
+      <th>thhgrpu6</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>164204208</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>19</td>
+      <td>5D</td>
+      <td>Rustbelt Traditions</td>
+      <td>20675</td>
+      <td>...</td>
+      <td>1095</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>10309</td>
+      <td>7356</td>
+      <td>3010</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.42162212699998, 27.7564393460...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>402166529</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>66</td>
+      <td>14B</td>
+      <td>College Towns</td>
+      <td>1871</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1373</td>
+      <td>498</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.36121070099995, 27.7353290330...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>720384210</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>19</td>
+      <td>5D</td>
+      <td>Rustbelt Traditions</td>
+      <td>31131</td>
+      <td>...</td>
+      <td>1026</td>
+      <td>0</td>
+      <td>670</td>
+      <td>0</td>
+      <td>13732</td>
+      <td>12963</td>
+      <td>4436</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.42229586099995, 27.7517232120...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>736055028</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>35</td>
+      <td>8C</td>
+      <td>Bright Young Professionals</td>
+      <td>28242</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8487</td>
+      <td>6327</td>
+      <td>12188</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"rings": [[[-97.38658799099994, 27.7124220980...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>743788118</td>
+      <td>USA</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>1</td>
+      <td>13</td>
+      <td>4A</td>
+      <td>Workday Drive</td>
+      <td>7296</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2766</td>
+      <td>656</td>
+      <td>2457</td>
+      <td>500</td>
+      <td>918</td>
+      <td>{"rings": [[[-97.65450929899998, 27.9466567370...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 99 columns</p>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Post-Python-API-v2.0.1">
+<h3>Post Python API v2.0.1<a class="headerlink" href="#Post-Python-API-v2.0.1" title="Permalink to this headline">¶</a></h3>
+<section id="Travel-Modes">
+<h4>Travel Modes<a class="headerlink" href="#Travel-Modes" title="Permalink to this headline">¶</a></h4>
+<p>Travel modes can be specified as input into the <code class="docutils literal notranslate"><span class="pre">Country.enrich</span></code> method using</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">travel_modes</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>description</th>
+      <th>type</th>
+      <th>impedance</th>
+      <th>impedance_category</th>
+      <th>time_attribute_name</th>
+      <th>distance_attribute_name</th>
+      <th>travel_mode_id</th>
+      <th>travel_mode_dict</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>driving_time</td>
+      <td>Driving Time</td>
+      <td>Models the movement of cars and other similar ...</td>
+      <td>AUTOMOBILE</td>
+      <td>TravelTime</td>
+      <td>temporal</td>
+      <td>TravelTime</td>
+      <td>Kilometers</td>
+      <td>FEgifRtFndKNcJMJ</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>driving_distance</td>
+      <td>Driving Distance</td>
+      <td>Models the movement of cars and other similar ...</td>
+      <td>AUTOMOBILE</td>
+      <td>Kilometers</td>
+      <td>distance</td>
+      <td>TravelTime</td>
+      <td>Kilometers</td>
+      <td>iKjmHuBSIqdEfOVr</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>trucking_time</td>
+      <td>Trucking Time</td>
+      <td>Models basic truck travel by preferring design...</td>
+      <td>TRUCK</td>
+      <td>TruckTravelTime</td>
+      <td>temporal</td>
+      <td>TruckTravelTime</td>
+      <td>Kilometers</td>
+      <td>ZzzRtYcPLjXFBKwr</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>trucking_distance</td>
+      <td>Trucking Distance</td>
+      <td>Models basic truck travel by preferring design...</td>
+      <td>TRUCK</td>
+      <td>Kilometers</td>
+      <td>distance</td>
+      <td>TruckTravelTime</td>
+      <td>Kilometers</td>
+      <td>UBaNfFWeKcrRVYIo</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>walking_time</td>
+      <td>Walking Time</td>
+      <td>Follows paths and roads that allow pedestrian ...</td>
+      <td>WALK</td>
+      <td>WalkTime</td>
+      <td>temporal</td>
+      <td>WalkTime</td>
+      <td>Kilometers</td>
+      <td>caFAgoThrvUpkFBW</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>walking_distance</td>
+      <td>Walking Distance</td>
+      <td>Follows paths and roads that allow pedestrian ...</td>
+      <td>WALK</td>
+      <td>Kilometers</td>
+      <td>distance</td>
+      <td>WalkTime</td>
+      <td>Kilometers</td>
+      <td>yFuMFwIYblqKEefX</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>rural_driving_time</td>
+      <td>Rural Driving Time</td>
+      <td>Models the movement of cars and other similar ...</td>
+      <td>AUTOMOBILE</td>
+      <td>TravelTime</td>
+      <td>temporal</td>
+      <td>TravelTime</td>
+      <td>Kilometers</td>
+      <td>NmNhNDUwZmE1YTlj</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>rural_driving_distance</td>
+      <td>Rural Driving Distance</td>
+      <td>Models the movement of cars and other similar ...</td>
+      <td>AUTOMOBILE</td>
+      <td>Kilometers</td>
+      <td>distance</td>
+      <td>TravelTime</td>
+      <td>Kilometers</td>
+      <td>Yzk3NjI1NTU5NjVj</td>
+      <td>{"attributeParameterValues": [{"attributeName"...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Use-Rural-Driving-Modes">
+<h4>Use <em>Rural</em> Driving Modes<a class="headerlink" href="#Use-Rural-Driving-Modes" title="Permalink to this headline">¶</a></h4>
+<p>I really enjoy pointing out this distinction because I frequenlty use it. Other driving modes on ArcGIS Online discourage travel on unpaved roads. In many locales, this is decidedly <em>not</em> desirable for accurate analysis results. Where we are doing this analysis example, in Corpus Christi, Texas, you do not have to venure far out of town to find dirt and gravel roads, especially if you head south toward King Ranch. Consequently, for this example, to accurately model the way people travel, I am
+using <em>rural</em> driving modes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">travel_modes</span><span class="p">[</span><span class="n">usa</span><span class="o">.</span><span class="n">travel_modes</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;rural_driving_distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;Models the movement of cars and other similar small automobiles, such as pickup trucks, and finds solutions that optimize travel distance. Travel obeys one-way roads, avoids illegal turns, and follows other rules that are specific to cars, but does not discourage travel on unpaved roads.&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_straight_line_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">stores_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">,</span> <span class="n">proximity_type</span><span class="o">=</span><span class="s1">&#39;straight_line&#39;</span><span class="p">,</span> <span class="n">proximity_value</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">proximity_metric</span><span class="o">=</span><span class="s1">&#39;miles&#39;</span><span class="p">)</span>
+
+<span class="n">enrich_straight_line_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">enrich_straight_line_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 6 entries, 0 to 5
+Columns: 104 entries, objectid to SHAPE
+dtypes: float64(2), geometry(1), int64(93), object(8)
+memory usage: 5.0+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>objectid</th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>...</th>
+      <th>thhgrpl12</th>
+      <th>thhgrpl13</th>
+      <th>thhgrpl14</th>
+      <th>thhgrpu1</th>
+      <th>thhgrpu2</th>
+      <th>thhgrpu3</th>
+      <th>thhgrpu4</th>
+      <th>thhgrpu5</th>
+      <th>thhgrpu6</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>164204208</td>
+      <td>USA</td>
+      <td>RingBuffer</td>
+      <td>Miles</td>
+      <td>Miles</td>
+      <td>3</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>953</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>17744</td>
+      <td>19534</td>
+      <td>11861</td>
+      <td>1225</td>
+      <td>0</td>
+      <td>{"x": -97.37453699999998, "y": 27.712800000000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>402166529</td>
+      <td>USA</td>
+      <td>RingBuffer</td>
+      <td>Miles</td>
+      <td>Miles</td>
+      <td>3</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>673</td>
+      <td>0</td>
+      <td>6692</td>
+      <td>7926</td>
+      <td>2666</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"x": -97.323093, "y": 27.71141400000015, "spa...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>720384210</td>
+      <td>USA</td>
+      <td>RingBuffer</td>
+      <td>Miles</td>
+      <td>Miles</td>
+      <td>3</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>918</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>15891</td>
+      <td>18425</td>
+      <td>11541</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"x": -97.36875000000002, "y": 27.709965000000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>736055028</td>
+      <td>USA</td>
+      <td>RingBuffer</td>
+      <td>Miles</td>
+      <td>Miles</td>
+      <td>3</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>621</td>
+      <td>0</td>
+      <td>77</td>
+      <td>0</td>
+      <td>12072</td>
+      <td>13613</td>
+      <td>18863</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"x": -97.37815552999999, "y": 27.682539720000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>743788118</td>
+      <td>USA</td>
+      <td>RingBuffer</td>
+      <td>Miles</td>
+      <td>Miles</td>
+      <td>3</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1916</td>
+      <td>12</td>
+      <td>2977</td>
+      <td>336</td>
+      <td>857</td>
+      <td>{"x": -97.63392599999996, "y": 27.855611999999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 104 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_drive_dist_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">stores_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">,</span> <span class="n">proximity_type</span><span class="o">=</span><span class="s1">&#39;rural_driving_distance&#39;</span><span class="p">,</span> <span class="n">proximity_value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">proximity_metric</span><span class="o">=</span><span class="s1">&#39;miles&#39;</span><span class="p">)</span>
+
+<span class="n">enrich_drive_dist_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">enrich_drive_dist_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 6 entries, 0 to 5
+Columns: 104 entries, objectid to SHAPE
+dtypes: float64(2), geometry(1), int64(93), object(8)
+memory usage: 5.0+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>objectid</th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>...</th>
+      <th>thhgrpl12</th>
+      <th>thhgrpl13</th>
+      <th>thhgrpl14</th>
+      <th>thhgrpu1</th>
+      <th>thhgrpu2</th>
+      <th>thhgrpu3</th>
+      <th>thhgrpu4</th>
+      <th>thhgrpu5</th>
+      <th>thhgrpu6</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>164204208</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Miles</td>
+      <td>Drive Distance Miles</td>
+      <td>5</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>1584</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>25091</td>
+      <td>25556</td>
+      <td>20347</td>
+      <td>1710</td>
+      <td>0</td>
+      <td>{"x": -97.37453699999998, "y": 27.712800000000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>402166529</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Miles</td>
+      <td>Drive Distance Miles</td>
+      <td>5</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>499</td>
+      <td>0</td>
+      <td>936</td>
+      <td>0</td>
+      <td>6165</td>
+      <td>9926</td>
+      <td>3454</td>
+      <td>24</td>
+      <td>0</td>
+      <td>{"x": -97.323093, "y": 27.71141400000015, "spa...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>720384210</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Miles</td>
+      <td>Drive Distance Miles</td>
+      <td>5</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>1519</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>23133</td>
+      <td>25191</td>
+      <td>20890</td>
+      <td>1645</td>
+      <td>0</td>
+      <td>{"x": -97.36875000000002, "y": 27.709965000000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>736055028</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Miles</td>
+      <td>Drive Distance Miles</td>
+      <td>5</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>918</td>
+      <td>0</td>
+      <td>670</td>
+      <td>0</td>
+      <td>13477</td>
+      <td>18455</td>
+      <td>21443</td>
+      <td>1366</td>
+      <td>0</td>
+      <td>{"x": -97.37815552999999, "y": 27.682539720000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>743788118</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Miles</td>
+      <td>Drive Distance Miles</td>
+      <td>5</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2972</td>
+      <td>750</td>
+      <td>3257</td>
+      <td>1136</td>
+      <td>1977</td>
+      <td>{"x": -97.63392599999996, "y": 27.855611999999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 104 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_drive_time_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">stores_df</span><span class="p">,</span> <span class="n">enrich_variables</span><span class="o">=</span><span class="n">enrich_vars</span><span class="p">,</span> <span class="n">proximity_type</span><span class="o">=</span><span class="s1">&#39;rural_driving_time&#39;</span><span class="p">,</span> <span class="n">proximity_value</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">proximity_metric</span><span class="o">=</span><span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
+
+<span class="n">enrich_drive_time_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">enrich_drive_time_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 6 entries, 0 to 5
+Columns: 104 entries, objectid to SHAPE
+dtypes: float64(2), geometry(1), int64(93), object(8)
+memory usage: 5.0+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>objectid</th>
+      <th>locnum</th>
+      <th>source_country</th>
+      <th>area_type</th>
+      <th>buffer_units</th>
+      <th>buffer_units_alias</th>
+      <th>buffer_radii</th>
+      <th>aggregation_method</th>
+      <th>population_to_polygon_size_rating</th>
+      <th>apportionment_confidence</th>
+      <th>...</th>
+      <th>thhgrpl12</th>
+      <th>thhgrpl13</th>
+      <th>thhgrpl14</th>
+      <th>thhgrpu1</th>
+      <th>thhgrpu2</th>
+      <th>thhgrpu3</th>
+      <th>thhgrpu4</th>
+      <th>thhgrpu5</th>
+      <th>thhgrpu6</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>164204208</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Minutes</td>
+      <td>Drive Time Minutes</td>
+      <td>7</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>1095</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>10309</td>
+      <td>7340</td>
+      <td>3035</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"x": -97.37453699999998, "y": 27.712800000000...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>402166529</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Minutes</td>
+      <td>Drive Time Minutes</td>
+      <td>7</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>671</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1373</td>
+      <td>498</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"x": -97.323093, "y": 27.71141400000015, "spa...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>720384210</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Minutes</td>
+      <td>Drive Time Minutes</td>
+      <td>7</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>1026</td>
+      <td>0</td>
+      <td>670</td>
+      <td>0</td>
+      <td>13732</td>
+      <td>12963</td>
+      <td>4436</td>
+      <td>0</td>
+      <td>0</td>
+      <td>{"x": -97.36875000000002, "y": 27.709965000000...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>736055028</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Minutes</td>
+      <td>Drive Time Minutes</td>
+      <td>7</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8487</td>
+      <td>6327</td>
+      <td>12207</td>
+      <td>1239</td>
+      <td>0</td>
+      <td>{"x": -97.37815552999999, "y": 27.682539720000...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>743788118</td>
+      <td>USA</td>
+      <td>NetworkServiceArea</td>
+      <td>Minutes</td>
+      <td>Drive Time Minutes</td>
+      <td>7</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>2.191</td>
+      <td>2.576</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2748</td>
+      <td>656</td>
+      <td>2457</td>
+      <td>500</td>
+      <td>910</td>
+      <td>{"x": -97.63392599999996, "y": 27.855611999999...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 104 columns</p>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/notebooks/enrich-store-locations.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
