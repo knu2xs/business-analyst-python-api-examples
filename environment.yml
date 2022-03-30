@@ -5,13 +5,8 @@ channels:
   - conda-forge
 
 dependencies:
-  - arcgis
-  - cookiecutter
-  - dask
-  - h3-py
   - jupyterlab
-  - mkdocs
-  - munch
+  - matplotlib
   - nodejs
   - pip
   - pytest
@@ -24,15 +19,13 @@ dependencies:
   - seaborn
   - shapely
   - swifter
-  - tabulate
-  - tqdm
+  - tox
   - pip:
     - azure-storage-blob
     - boto3
     - bump2version
     - ipykernel
     - nbsphinx
-    - placekey
     - sphinx
     - sphinx-autodoc-typehints
     - twine
