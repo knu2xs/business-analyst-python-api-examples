@@ -1,0 +1,1988 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Enrich Variable Name Lookup &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.htm" />
+    <link rel="search" title="Search" href="../search.htm" />
+    <link rel="next" title="Enrich Store Locations" href="enrich-store-locations.htm" />
+    <link rel="prev" title="Workflows" href="../workflows.htm" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=knu2xs&repo=business-analyst-python-api-examples&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Enrich Variable Name Lookup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Load-Excel-Table-with-Various-Representations-of-Enrich-Names">Load Excel Table with Various Representations of Enrich Names</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Create-a-Country-Object-Instance">Create a Country Object Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Perform-Lookups">Perform Lookups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ArcGIS-Pro-Enrich-Names">ArcGIS Pro Enrich Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ArcMap-Enrich-Names">ArcMap Enrich Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Field-Names">Field Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Preprocessing-with-Lookup">Preprocessing with Lookup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Concantenating-for-Local-Enrich">Concantenating for Local Enrich</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="enrich-store-locations.htm">Enrich Store Locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="medical-fraud-enrich-aliases-to-excel.htm">Variables for Medical Fraud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipelines-clustering.htm">Clustering Block Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.htm">Documentation overview</a><ul>
+  <li><a href="../workflows.htm">Workflows</a><ul>
+      <li>Previous: <a href="../workflows.htm" title="previous chapter">Workflows</a></li>
+      <li>Next: <a href="enrich-store-locations.htm" title="next chapter">Enrich Store Locations</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Enrich-Variable-Name-Lookup">
+<h1>Enrich Variable Name Lookup<a class="headerlink" href="#Enrich-Variable-Name-Lookup" title="Permalink to this headline">¶</a></h1>
+<p>Enrich variable names can be represented using a variety of string representations depending on where you are looking. Frequently there is a need to cross reference between these. The <code class="docutils literal notranslate"><span class="pre">Country.enrich_variables</span></code> property provides the ability to easily retrieve a Pandas data frame. This data frame can be used to perform cross reference lookups, but there also is a hidden method you can use as well, <code class="docutils literal notranslate"><span class="pre">Country._ba_cntry.get_enrich_variables_from_name_list</span></code>. This method accepts any iterabe of
+strings, and will look up the values by checking for a sequence of case insensitive matches in the <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">alias</span></code>, <code class="docutils literal notranslate"><span class="pre">field_name</span></code> and <code class="docutils literal notranslate"><span class="pre">enrich_field_name</span></code> columns.</p>
+<p>NOTE: This requires at least version 1.9.1 of the Python API. This was included with the Pro 2.9 release, but if you have a previous release of Pro, you can get the most recent release of the Python API by <a class="reference external" href="https://pro.arcgis.com/en/pro-app/latest/arcpy/get-started/work-with-python-environments.htm">cloning your default Python environment, setting your new environment to be the new default</a> and <cite>updating the ``arcgis`</cite>
+package &lt;<a class="reference external" href="https://pro.arcgis.com/en/pro-app/latest/arcpy/get-started/work-with-python-packages.htm">https://pro.arcgis.com/en/pro-app/latest/arcpy/get-started/work-with-python-packages.htm</a>&gt;`__.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<section id="Load-Excel-Table-with-Various-Representations-of-Enrich-Names">
+<h2>Load Excel Table with Various Representations of Enrich Names<a class="headerlink" href="#Load-Excel-Table-with-Various-Representations-of-Enrich-Names" title="Permalink to this headline">¶</a></h2>
+<p>This is a table of name variations for enrich variables I was passed to use as an example of different variations needing to be looked up.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dir_prj</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">dir_ref</span> <span class="o">=</span> <span class="n">dir_prj</span><span class="o">/</span><span class="s1">&#39;references&#39;</span>
+<span class="n">xlsx_pth</span> <span class="o">=</span> <span class="n">dir_ref</span><span class="o">/</span><span class="s1">&#39;arcmap_pro_variables.xlsx&#39;</span>
+
+<span class="k">assert</span> <span class="n">xlsx_pth</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xlsx_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">xlsx_pth</span><span class="p">)</span>
+<span class="n">drop_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">xlsx_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Unnamed:&#39;</span><span class="p">)]</span>
+<span class="n">xlsx_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">drop_cols</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">xlsx_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;guided_workflow_names&#39;</span><span class="p">,</span> <span class="s1">&#39;pro_enrich_names&#39;</span><span class="p">,</span> <span class="s1">&#39;fieldnames_arcmap&#39;</span><span class="p">,</span> <span class="s1">&#39;fieldnames_pro&#39;</span><span class="p">]</span>
+
+<span class="n">xlsx_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>guided_workflow_names</th>
+      <th>pro_enrich_names</th>
+      <th>fieldnames_arcmap</th>
+      <th>fieldnames_pro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.totpop_cy</td>
+      <td>TOTPOP_CY</td>
+      <td>populationtotals_totpop_cy</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HHPOP_CY.2021 Key Demographic Indicators (Esri...</td>
+      <td>householdtotals.tothh_cy</td>
+      <td>HHPOP_CY</td>
+      <td>populationtotals_hhpop_cy</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FAMPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.fampop_cy</td>
+      <td>FAMPOP_CY</td>
+      <td>populationtotals_fampop_cy</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP14129a_B.2021 Health (Market Potential) (Esr...</td>
+      <td>healthpersonalcare.mp14129a_b</td>
+      <td>MP14129a_B</td>
+      <td>healthpersonalcare_mp14129a_b</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X11001_X.2021 Education (Consumer Spending) (E...</td>
+      <td>education.x11001_x</td>
+      <td>X11001_X</td>
+      <td>education_x11001_x</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>X11001_A.2021 Education (Consumer Spending) (E...</td>
+      <td>education.x11001_x_a</td>
+      <td>X11001_A</td>
+      <td>education_x11001_x_a</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>X11001_I.2021 Education (Consumer Spending) (E...</td>
+      <td>education.x11001_x_i</td>
+      <td>X11001_I</td>
+      <td>education_x11001_x_i</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MP09147a_B.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09147a_b</td>
+      <td>MP09147a_B</td>
+      <td>electronicsinternet_mp09147a_b</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>MP09147a_I.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09147a_b_i</td>
+      <td>MP09147a_I</td>
+      <td>electronicsinternet_mp09147a_b_i</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>MP09148a_B.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09148a_b</td>
+      <td>MP09148a_B</td>
+      <td>electronicsinternet_mp09148a_b</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>MP09148a_I.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09148a_b_i</td>
+      <td>MP09148a_I</td>
+      <td>electronicsinternet_mp09148a_b_i</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>MP09134a_B.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09134a_b</td>
+      <td>MP09134a_B</td>
+      <td>electronicsinternet_mp09134a_b</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MP09134a_I.2021 Electronics (Market Potential)...</td>
+      <td>electronicsinternet.mp09134a_b_i</td>
+      <td>MP09134a_I</td>
+      <td>electronicsinternet_mp09134a_b_i</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>ACSTOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>veterans.acstotpop</td>
+      <td>ACSTOTPOP</td>
+      <td>veterans_acstotpop</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>MOETOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>veterans.acstotpop_e</td>
+      <td>MOETOTPOP</td>
+      <td>veterans_acstotpop_e</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>RELTOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>veterans.acstotpop_r</td>
+      <td>RELTOTPOP</td>
+      <td>veterans_acstotpop_r</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>INDAGRI_CY.2021 Labor Force (Esri) (US 2021 Re...</td>
+      <td>industry.indagri_cy</td>
+      <td>INDAGRI_CY</td>
+      <td>industry_indagri_cy</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>INDMIN_CY.2021 Labor Force (Esri) (US 2021 Ret...</td>
+      <td>industry.indmin_cy</td>
+      <td>INDMIN_CY</td>
+      <td>industry_indmin_cy</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>INDCONS_CY.2021 Labor Force (Esri) (US 2021 Re...</td>
+      <td>industry.indcons_cy</td>
+      <td>INDCONS_CY</td>
+      <td>industry_indcons_cy</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>HHWHTHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.hhwhthhr10</td>
+      <td>HHWHTHHR10</td>
+      <td>householdsbyraceofhouseholder_hhwhthhr10</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>HHBLKHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.hhblkhhr10</td>
+      <td>HHBLKHHR10</td>
+      <td>householdsbyraceofhouseholder_hhblkhhr10</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>HHAIHHR10.2010 Households by Race_Hispanic Ori...</td>
+      <td>householdsbyraceofhouseholder.hhaihhr10</td>
+      <td>HHAIHHR10</td>
+      <td>householdsbyraceofhouseholder_hhaihhr10</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>HHASNHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.hhasnhhr10</td>
+      <td>HHASNHHR10</td>
+      <td>householdsbyraceofhouseholder_hhasnhhr10</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>HHPIHHR10.2010 Households by Race_Hispanic Ori...</td>
+      <td>householdsbyraceofhouseholder.hhpihhr10</td>
+      <td>HHPIHHR10</td>
+      <td>householdsbyraceofhouseholder_hhpihhr10</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>HHOTHHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.hhothhhr10</td>
+      <td>HHOTHHHR10</td>
+      <td>householdsbyraceofhouseholder_hhothhhr10</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>TADULTBASE.2021 Tapestry Market Segmentation (...</td>
+      <td>tapestryadultsnew.tadultbase</td>
+      <td>TADULTBASE</td>
+      <td>tapestryadultsnew_tadultbase</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>TADULT01.2021 Tapestry Market Segmentation (Ad...</td>
+      <td>tapestryadultsnew.tadult01</td>
+      <td>TADULT01</td>
+      <td>tapestryadultsnew_tadult01</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>TADULT02.2021 Tapestry Market Segmentation (Ad...</td>
+      <td>tapestryadultsnew.tadult02</td>
+      <td>TADULT02</td>
+      <td>tapestryadultsnew_tadult02</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>POPGRW10CY.2021 Key Demographic Indicators (Es...</td>
+      <td>populationtotals.popgrw10cy</td>
+      <td>POPGRW10CY</td>
+      <td>populationtotals_popgrw10cy</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>DIVINDX_CY.2021 Race and Hispanic Origin (Esri...</td>
+      <td>raceandhispanicorigin.divindx_cy</td>
+      <td>DIVINDX_CY</td>
+      <td>raceandhispanicorigin_divindx_cy</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>MEDHINC_CY.2021 Income (Esri) (Esri USA 2021)</td>
+      <td>householdincome.medhinc_cy</td>
+      <td>MEDHINC_CY</td>
+      <td>householdincome_medhinc_cy</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>ACSMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.acsmedhinc</td>
+      <td>ACSMEDHINC</td>
+      <td>householdincome_acsmedhinc</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>MOEMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.acsmedhinc_e</td>
+      <td>MOEMEDHINC</td>
+      <td>householdincome_acsmedhinc_e</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>RELMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.acsmedhinc_r</td>
+      <td>RELMEDHINC</td>
+      <td>householdincome_acsmedhinc_r</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Create-a-Country-Object-Instance">
+<h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this headline">¶</a></h2>
+<p>Create a Country object instance referencing the country you are looking for variables in.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Perform-Lookups">
+<h2>Perform Lookups<a class="headerlink" href="#Perform-Lookups" title="Permalink to this headline">¶</a></h2>
+<p>Now, we just need to provide an interable of strings to be matched into the <code class="docutils literal notranslate"><span class="pre">get_enrich_variables_from_list</span></code> function.</p>
+<section id="ArcGIS-Pro-Enrich-Names">
+<h3>ArcGIS Pro Enrich Names<a class="headerlink" href="#ArcGIS-Pro-Enrich-Names" title="Permalink to this headline">¶</a></h3>
+<p>If using a list of names used to enrich with ArcGIS Pro, you can easily look up these values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">pro_enrich_names</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;populationtotals.totpop_cy&#39;, &#39;householdtotals.tothh_cy&#39;, &#39;populationtotals.fampop_cy&#39;, &#39;healthpersonalcare.mp14129a_b&#39;, &#39;education.x11001_x&#39;, &#39;education.x11001_x_a&#39;, &#39;education.x11001_x_i&#39;, &#39;electronicsinternet.mp09147a_b&#39;, &#39;electronicsinternet.mp09147a_b_i&#39;, &#39;electronicsinternet.mp09148a_b&#39;, &#39;electronicsinternet.mp09148a_b_i&#39;, &#39;electronicsinternet.mp09134a_b&#39;, &#39;electronicsinternet.mp09134a_b_i&#39;, &#39;veterans.acstotpop&#39;, &#39;veterans.acstotpop_e&#39;, &#39;veterans.acstotpop_r&#39;, &#39;industry.indagri_cy&#39;, &#39;industry.indmin_cy&#39;, &#39;industry.indcons_cy&#39;, &#39;householdsbyraceofhouseholder.hhwhthhr10&#39;, &#39;householdsbyraceofhouseholder.hhblkhhr10&#39;, &#39;householdsbyraceofhouseholder.hhaihhr10&#39;, &#39;householdsbyraceofhouseholder.hhasnhhr10&#39;, &#39;householdsbyraceofhouseholder.hhpihhr10&#39;, &#39;householdsbyraceofhouseholder.hhothhhr10&#39;, &#39;tapestryadultsnew.tadultbase&#39;, &#39;tapestryadultsnew.tadult01&#39;, &#39;tapestryadultsnew.tadult02&#39;, &#39;populationtotals.popgrw10cy&#39;, &#39;raceandhispanicorigin.divindx_cy&#39;, &#39;householdincome.medhinc_cy&#39;, &#39;householdincome.acsmedhinc&#39;, &#39;householdincome.acsmedhinc_e&#39;, &#39;householdincome.acsmedhinc_r&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">pro_enrich_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ACSMEDHINC</td>
+      <td>2019 Median HH Income (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.ACSMEDHINC</td>
+      <td>householdincome_ACSMEDHINC</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>householdincome</td>
+      <td>householdincome.MEDHINC_CY</td>
+      <td>householdincome_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>MP09147a_B</td>
+      <td>2021 Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_B</td>
+      <td>ElectronicsInternet_MP09147a_B</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP09148a_B</td>
+      <td>2021 Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_B</td>
+      <td>ElectronicsInternet_MP09148a_B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>MP09134a_B</td>
+      <td>2021 Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_B</td>
+      <td>ElectronicsInternet_MP09134a_B</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>X11001_X</td>
+      <td>2021 Education</td>
+      <td>education</td>
+      <td>education.X11001_X</td>
+      <td>education_X11001_X</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>MP14129a_B</td>
+      <td>2021 Typically Spend 1-3 Hrs Exercising/Wk</td>
+      <td>HealthPersonalCare</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+      <td>HealthPersonalCare_MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>INDAGRI_CY</td>
+      <td>2021 Industry: Agriculture</td>
+      <td>industry</td>
+      <td>industry.INDAGRI_CY</td>
+      <td>industry_INDAGRI_CY</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>INDMIN_CY</td>
+      <td>2021 Industry: Mining</td>
+      <td>industry</td>
+      <td>industry.INDMIN_CY</td>
+      <td>industry_INDMIN_CY</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>INDCONS_CY</td>
+      <td>2021 Industry: Construction</td>
+      <td>industry</td>
+      <td>industry.INDCONS_CY</td>
+      <td>industry_INDCONS_CY</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>HHWHTHHR10</td>
+      <td>2010 HHs w/White HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHWHTHHR10</td>
+      <td>householdsbyraceofhouseholder_HHWHTHHR10</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>HHBLKHHR10</td>
+      <td>2010 HHs w/Black HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHBLKHHR10</td>
+      <td>householdsbyraceofhouseholder_HHBLKHHR10</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>HHAIHHR10</td>
+      <td>2010 HHs w/Amer Indian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHAIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHAIHHR10</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>HHASNHHR10</td>
+      <td>2010 HHs w/Asian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHASNHHR10</td>
+      <td>householdsbyraceofhouseholder_HHASNHHR10</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>HHPIHHR10</td>
+      <td>2010 HHs w/Pacific Isl HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHPIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHPIHHR10</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>HHOTHHHR10</td>
+      <td>2010 HHs w/Other Race HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHOTHHHR10</td>
+      <td>householdsbyraceofhouseholder_HHOTHHHR10</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>TOTHH_CY</td>
+      <td>2021 Total Households</td>
+      <td>householdtotals</td>
+      <td>householdtotals.TOTHH_CY</td>
+      <td>householdtotals_TOTHH_CY</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>TADULTBASE</td>
+      <td>2021 Tapestry Adult Pop Base</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULTBASE</td>
+      <td>tapestryadultsNEW_TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>TADULT01</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1A</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT01</td>
+      <td>tapestryadultsNEW_TADULT01</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>TADULT02</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1B</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT02</td>
+      <td>tapestryadultsNEW_TADULT02</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.TOTPOP_CY</td>
+      <td>populationtotals_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>FAMPOP_CY</td>
+      <td>2021 Family Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.FAMPOP_CY</td>
+      <td>populationtotals_FAMPOP_CY</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.POPGRW10CY</td>
+      <td>populationtotals_POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>raceandhispanicorigin</td>
+      <td>raceandhispanicorigin.DIVINDX_CY</td>
+      <td>raceandhispanicorigin_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>ACSTOTPOP</td>
+      <td>2019 Total Population (ACS 5-Yr)</td>
+      <td>veterans</td>
+      <td>veterans.ACSTOTPOP</td>
+      <td>veterans_ACSTOTPOP</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="ArcMap-Enrich-Names">
+<h3>ArcMap Enrich Names<a class="headerlink" href="#ArcMap-Enrich-Names" title="Permalink to this headline">¶</a></h3>
+<p>ArcMap required a slightly different string format. Hence, if migrating from ArcMap, the same workflow can be used to retrieve these values as well.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_arcmap</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;TOTPOP_CY&#39;, &#39;HHPOP_CY&#39;, &#39;FAMPOP_CY&#39;, &#39;MP14129a_B&#39;, &#39;X11001_X&#39;, &#39;X11001_A&#39;, &#39;X11001_I&#39;, &#39;MP09147a_B&#39;, &#39;MP09147a_I&#39;, &#39;MP09148a_B&#39;, &#39;MP09148a_I&#39;, &#39;MP09134a_B&#39;, &#39;MP09134a_I&#39;, &#39;ACSTOTPOP&#39;, &#39;MOETOTPOP&#39;, &#39;RELTOTPOP&#39;, &#39;INDAGRI_CY&#39;, &#39;INDMIN_CY&#39;, &#39;INDCONS_CY&#39;, &#39;HHWHTHHR10&#39;, &#39;HHBLKHHR10&#39;, &#39;HHAIHHR10&#39;, &#39;HHASNHHR10&#39;, &#39;HHPIHHR10&#39;, &#39;HHOTHHHR10&#39;, &#39;TADULTBASE&#39;, &#39;TADULT01&#39;, &#39;TADULT02&#39;, &#39;POPGRW10CY&#39;, &#39;DIVINDX_CY&#39;, &#39;MEDHINC_CY&#39;, &#39;ACSMEDHINC&#39;, &#39;MOEMEDHINC&#39;, &#39;RELMEDHINC&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_arcmap</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>Health</td>
+      <td>Health.MEDHINC_CY</td>
+      <td>Health_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>MOETOTPOP</td>
+      <td>2019 Total Population MOE (ACS 5-Yr)</td>
+      <td>ACS_Housing_Summary_rep</td>
+      <td>ACS_Housing_Summary_rep.MOETOTPOP</td>
+      <td>ACS_Housing_Summary_rep_MOETOTPOP</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>TADULTBASE</td>
+      <td>2021 Tapestry Adult Pop Base</td>
+      <td>travelMPI</td>
+      <td>travelMPI.TADULTBASE</td>
+      <td>travelMPI_TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>Age_by_Sex_by_Race_Profile_rep</td>
+      <td>Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY</td>
+      <td>Age_by_Sex_by_Race_Profile_rep_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>Policy</td>
+      <td>Policy.DIVINDX_CY</td>
+      <td>Policy_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ACSMEDHINC</td>
+      <td>2019 Median HH Income (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.ACSMEDHINC</td>
+      <td>householdincome_ACSMEDHINC</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>MOEMEDHINC</td>
+      <td>2019 Median HH Income MOE (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.MOEMEDHINC</td>
+      <td>householdincome_MOEMEDHINC</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>RELMEDHINC</td>
+      <td>2019 Median HH Income REL (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.RELMEDHINC</td>
+      <td>householdincome_RELMEDHINC</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>X11001_I</td>
+      <td>2021 Index: Education</td>
+      <td>Community_Profile_rep</td>
+      <td>Community_Profile_rep.X11001_I</td>
+      <td>Community_Profile_rep_X11001_I</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>MP09147a_B</td>
+      <td>2021 Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_B</td>
+      <td>ElectronicsInternet_MP09147a_B</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>MP09147a_I</td>
+      <td>2021 Index: Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_I</td>
+      <td>ElectronicsInternet_MP09147a_I</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>MP09148a_B</td>
+      <td>2021 Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_B</td>
+      <td>ElectronicsInternet_MP09148a_B</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MP09148a_I</td>
+      <td>2021 Index: Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_I</td>
+      <td>ElectronicsInternet_MP09148a_I</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>MP09134a_B</td>
+      <td>2021 Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_B</td>
+      <td>ElectronicsInternet_MP09134a_B</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>MP09134a_I</td>
+      <td>2021 Index: Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_I</td>
+      <td>ElectronicsInternet_MP09134a_I</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>X11001_X</td>
+      <td>2021 Education</td>
+      <td>education</td>
+      <td>education.X11001_X</td>
+      <td>education_X11001_X</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>X11001_A</td>
+      <td>2021 Avg: Education</td>
+      <td>education</td>
+      <td>education.X11001_A</td>
+      <td>education_X11001_A</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>MP14129a_B</td>
+      <td>2021 Typically Spend 1-3 Hrs Exercising/Wk</td>
+      <td>HealthPersonalCare</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+      <td>HealthPersonalCare_MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>INDAGRI_CY</td>
+      <td>2021 Industry: Agriculture</td>
+      <td>industry</td>
+      <td>industry.INDAGRI_CY</td>
+      <td>industry_INDAGRI_CY</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>INDMIN_CY</td>
+      <td>2021 Industry: Mining</td>
+      <td>industry</td>
+      <td>industry.INDMIN_CY</td>
+      <td>industry_INDMIN_CY</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>INDCONS_CY</td>
+      <td>2021 Industry: Construction</td>
+      <td>industry</td>
+      <td>industry.INDCONS_CY</td>
+      <td>industry_INDCONS_CY</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>HHWHTHHR10</td>
+      <td>2010 HHs w/White HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHWHTHHR10</td>
+      <td>householdsbyraceofhouseholder_HHWHTHHR10</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>HHBLKHHR10</td>
+      <td>2010 HHs w/Black HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHBLKHHR10</td>
+      <td>householdsbyraceofhouseholder_HHBLKHHR10</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>HHAIHHR10</td>
+      <td>2010 HHs w/Amer Indian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHAIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHAIHHR10</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>HHASNHHR10</td>
+      <td>2010 HHs w/Asian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHASNHHR10</td>
+      <td>householdsbyraceofhouseholder_HHASNHHR10</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>HHPIHHR10</td>
+      <td>2010 HHs w/Pacific Isl HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHPIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHPIHHR10</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>HHOTHHHR10</td>
+      <td>2010 HHs w/Other Race HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHOTHHHR10</td>
+      <td>householdsbyraceofhouseholder_HHOTHHHR10</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.POPGRW10CY</td>
+      <td>KeyUSFacts_POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>TADULT01</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1A</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT01</td>
+      <td>tapestryadultsNEW_TADULT01</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>TADULT02</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1B</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT02</td>
+      <td>tapestryadultsNEW_TADULT02</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>ACSTOTPOP</td>
+      <td>2019 Total Population (ACS 5-Yr)</td>
+      <td>population</td>
+      <td>population.ACSTOTPOP</td>
+      <td>population_ACSTOTPOP</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>RELTOTPOP</td>
+      <td>2019 Total Population REL (ACS 5-Yr)</td>
+      <td>population</td>
+      <td>population.RELTOTPOP</td>
+      <td>population_RELTOTPOP</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>HHPOP_CY</td>
+      <td>2021 Household Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.HHPOP_CY</td>
+      <td>populationtotals_HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>FAMPOP_CY</td>
+      <td>2021 Family Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.FAMPOP_CY</td>
+      <td>populationtotals_FAMPOP_CY</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Field-Names">
+<h3>Field Names<a class="headerlink" href="#Field-Names" title="Permalink to this headline">¶</a></h3>
+<p>Once enriched, the <code class="docutils literal notranslate"><span class="pre">enrich_name</span></code> string has the period replaced for the output attibute field name (<code class="docutils literal notranslate"><span class="pre">enrich_field_name</span></code>). We can use also use these output field name values to lookup relevant rows in the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> table.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_pro</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;populationtotals_totpop_cy&#39;, &#39;populationtotals_hhpop_cy&#39;, &#39;populationtotals_fampop_cy&#39;, &#39;healthpersonalcare_mp14129a_b&#39;, &#39;education_x11001_x&#39;, &#39;education_x11001_x_a&#39;, &#39;education_x11001_x_i&#39;, &#39;electronicsinternet_mp09147a_b&#39;, &#39;electronicsinternet_mp09147a_b_i&#39;, &#39;electronicsinternet_mp09148a_b&#39;, &#39;electronicsinternet_mp09148a_b_i&#39;, &#39;electronicsinternet_mp09134a_b&#39;, &#39;electronicsinternet_mp09134a_b_i&#39;, &#39;veterans_acstotpop&#39;, &#39;veterans_acstotpop_e&#39;, &#39;veterans_acstotpop_r&#39;, &#39;industry_indagri_cy&#39;, &#39;industry_indmin_cy&#39;, &#39;industry_indcons_cy&#39;, &#39;householdsbyraceofhouseholder_hhwhthhr10&#39;, &#39;householdsbyraceofhouseholder_hhblkhhr10&#39;, &#39;householdsbyraceofhouseholder_hhaihhr10&#39;, &#39;householdsbyraceofhouseholder_hhasnhhr10&#39;, &#39;householdsbyraceofhouseholder_hhpihhr10&#39;, &#39;householdsbyraceofhouseholder_hhothhhr10&#39;, &#39;tapestryadultsnew_tadultbase&#39;, &#39;tapestryadultsnew_tadult01&#39;, &#39;tapestryadultsnew_tadult02&#39;, &#39;populationtotals_popgrw10cy&#39;, &#39;raceandhispanicorigin_divindx_cy&#39;, &#39;householdincome_medhinc_cy&#39;, &#39;householdincome_acsmedhinc&#39;, &#39;householdincome_acsmedhinc_e&#39;, &#39;householdincome_acsmedhinc_r&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_pro</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ACSMEDHINC</td>
+      <td>2019 Median HH Income (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.ACSMEDHINC</td>
+      <td>householdincome_ACSMEDHINC</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>householdincome</td>
+      <td>householdincome.MEDHINC_CY</td>
+      <td>householdincome_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>MP09147a_B</td>
+      <td>2021 Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_B</td>
+      <td>ElectronicsInternet_MP09147a_B</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP09148a_B</td>
+      <td>2021 Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_B</td>
+      <td>ElectronicsInternet_MP09148a_B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>MP09134a_B</td>
+      <td>2021 Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_B</td>
+      <td>ElectronicsInternet_MP09134a_B</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>X11001_X</td>
+      <td>2021 Education</td>
+      <td>education</td>
+      <td>education.X11001_X</td>
+      <td>education_X11001_X</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>MP14129a_B</td>
+      <td>2021 Typically Spend 1-3 Hrs Exercising/Wk</td>
+      <td>HealthPersonalCare</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+      <td>HealthPersonalCare_MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>INDAGRI_CY</td>
+      <td>2021 Industry: Agriculture</td>
+      <td>industry</td>
+      <td>industry.INDAGRI_CY</td>
+      <td>industry_INDAGRI_CY</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>INDMIN_CY</td>
+      <td>2021 Industry: Mining</td>
+      <td>industry</td>
+      <td>industry.INDMIN_CY</td>
+      <td>industry_INDMIN_CY</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>INDCONS_CY</td>
+      <td>2021 Industry: Construction</td>
+      <td>industry</td>
+      <td>industry.INDCONS_CY</td>
+      <td>industry_INDCONS_CY</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>HHWHTHHR10</td>
+      <td>2010 HHs w/White HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHWHTHHR10</td>
+      <td>householdsbyraceofhouseholder_HHWHTHHR10</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>HHBLKHHR10</td>
+      <td>2010 HHs w/Black HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHBLKHHR10</td>
+      <td>householdsbyraceofhouseholder_HHBLKHHR10</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>HHAIHHR10</td>
+      <td>2010 HHs w/Amer Indian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHAIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHAIHHR10</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>HHASNHHR10</td>
+      <td>2010 HHs w/Asian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHASNHHR10</td>
+      <td>householdsbyraceofhouseholder_HHASNHHR10</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>HHPIHHR10</td>
+      <td>2010 HHs w/Pacific Isl HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHPIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHPIHHR10</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>HHOTHHHR10</td>
+      <td>2010 HHs w/Other Race HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHOTHHHR10</td>
+      <td>householdsbyraceofhouseholder_HHOTHHHR10</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>TADULTBASE</td>
+      <td>2021 Tapestry Adult Pop Base</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULTBASE</td>
+      <td>tapestryadultsNEW_TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>TADULT01</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1A</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT01</td>
+      <td>tapestryadultsNEW_TADULT01</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>TADULT02</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1B</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT02</td>
+      <td>tapestryadultsNEW_TADULT02</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.TOTPOP_CY</td>
+      <td>populationtotals_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>HHPOP_CY</td>
+      <td>2021 Household Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.HHPOP_CY</td>
+      <td>populationtotals_HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>FAMPOP_CY</td>
+      <td>2021 Family Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.FAMPOP_CY</td>
+      <td>populationtotals_FAMPOP_CY</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.POPGRW10CY</td>
+      <td>populationtotals_POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>raceandhispanicorigin</td>
+      <td>raceandhispanicorigin.DIVINDX_CY</td>
+      <td>raceandhispanicorigin_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>ACSTOTPOP</td>
+      <td>2019 Total Population (ACS 5-Yr)</td>
+      <td>veterans</td>
+      <td>veterans.ACSTOTPOP</td>
+      <td>veterans_ACSTOTPOP</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>NOTE: Another way to get this list is simply using a list comprehension listing the field names using <code class="docutils literal notranslate"><span class="pre">arcpy.ListFields</span></code>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import arcpy
+from arcgis.gis import Country
+pth_to_fc = r&#39;C:/to/somwhere/somedb.fdgb/fc_of_stuff&#39;
+field_name_list = [f.name for f in arcpy.ListFields(pth_to_fc)]
+usa = Country(&#39;usa&#39;)
+usa._ba_cntry.get_enrich_variables_from_name_list(field_name_list)
+</pre></div>
+</div>
+</section>
+<section id="Preprocessing-with-Lookup">
+<h3>Preprocessing with Lookup<a class="headerlink" href="#Preprocessing-with-Lookup" title="Permalink to this headline">¶</a></h3>
+<p>The first column we are saving for last. These values do not have explicit matches. However, using pandas, we can split the string at the period and only keep the first part. This first part can then be looked up since it matches the <code class="docutils literal notranslate"><span class="pre">name</span></code> column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">guided_workflow_names</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0    TOTPOP_CY.2021 Key Demographic Indicators (Esr...
+1    HHPOP_CY.2021 Key Demographic Indicators (Esri...
+2    FAMPOP_CY.2021 Key Demographic Indicators (Esr...
+3    MP14129a_B.2021 Health (Market Potential) (Esr...
+4    X11001_X.2021 Education (Consumer Spending) (E...
+Name: guided_workflow_names, dtype: object
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_names</span> <span class="o">=</span> <span class="n">xlsx_df</span><span class="o">.</span><span class="n">guided_workflow_names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">search_names</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0     TOTPOP_CY
+1      HHPOP_CY
+2     FAMPOP_CY
+3    MP14129a_B
+4      X11001_X
+Name: guided_workflow_names, dtype: object
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">search_names</span><span class="p">)</span>
+
+<span class="n">enrich_vars</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>MEDHINC_CY</td>
+      <td>2021 Median Household Income</td>
+      <td>Health</td>
+      <td>Health.MEDHINC_CY</td>
+      <td>Health_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>MOETOTPOP</td>
+      <td>2019 Total Population MOE (ACS 5-Yr)</td>
+      <td>ACS_Housing_Summary_rep</td>
+      <td>ACS_Housing_Summary_rep.MOETOTPOP</td>
+      <td>ACS_Housing_Summary_rep_MOETOTPOP</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>TADULTBASE</td>
+      <td>2021 Tapestry Adult Pop Base</td>
+      <td>travelMPI</td>
+      <td>travelMPI.TADULTBASE</td>
+      <td>travelMPI_TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>TOTPOP_CY</td>
+      <td>2021 Total Population</td>
+      <td>Age_by_Sex_by_Race_Profile_rep</td>
+      <td>Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY</td>
+      <td>Age_by_Sex_by_Race_Profile_rep_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>DIVINDX_CY</td>
+      <td>2021 Diversity Index</td>
+      <td>Policy</td>
+      <td>Policy.DIVINDX_CY</td>
+      <td>Policy_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>ACSMEDHINC</td>
+      <td>2019 Median HH Income (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.ACSMEDHINC</td>
+      <td>householdincome_ACSMEDHINC</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>MOEMEDHINC</td>
+      <td>2019 Median HH Income MOE (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.MOEMEDHINC</td>
+      <td>householdincome_MOEMEDHINC</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>RELMEDHINC</td>
+      <td>2019 Median HH Income REL (ACS 5-Yr)</td>
+      <td>householdincome</td>
+      <td>householdincome.RELMEDHINC</td>
+      <td>householdincome_RELMEDHINC</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>X11001_I</td>
+      <td>2021 Index: Education</td>
+      <td>Community_Profile_rep</td>
+      <td>Community_Profile_rep.X11001_I</td>
+      <td>Community_Profile_rep_X11001_I</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>MP09147a_B</td>
+      <td>2021 Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_B</td>
+      <td>ElectronicsInternet_MP09147a_B</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>MP09147a_I</td>
+      <td>2021 Index: Own Any Tablet</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09147a_I</td>
+      <td>ElectronicsInternet_MP09147a_I</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>MP09148a_B</td>
+      <td>2021 Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_B</td>
+      <td>ElectronicsInternet_MP09148a_B</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MP09148a_I</td>
+      <td>2021 Index: Own Any E-Reader</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09148a_I</td>
+      <td>ElectronicsInternet_MP09148a_I</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>MP09134a_B</td>
+      <td>2021 Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_B</td>
+      <td>ElectronicsInternet_MP09134a_B</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>MP09134a_I</td>
+      <td>2021 Index: Own E-Reader/Tablet: Amazon Kindle</td>
+      <td>ElectronicsInternet</td>
+      <td>ElectronicsInternet.MP09134a_I</td>
+      <td>ElectronicsInternet_MP09134a_I</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>X11001_X</td>
+      <td>2021 Education</td>
+      <td>education</td>
+      <td>education.X11001_X</td>
+      <td>education_X11001_X</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>X11001_A</td>
+      <td>2021 Avg: Education</td>
+      <td>education</td>
+      <td>education.X11001_A</td>
+      <td>education_X11001_A</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>MP14129a_B</td>
+      <td>2021 Typically Spend 1-3 Hrs Exercising/Wk</td>
+      <td>HealthPersonalCare</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+      <td>HealthPersonalCare_MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>INDAGRI_CY</td>
+      <td>2021 Industry: Agriculture</td>
+      <td>industry</td>
+      <td>industry.INDAGRI_CY</td>
+      <td>industry_INDAGRI_CY</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>INDMIN_CY</td>
+      <td>2021 Industry: Mining</td>
+      <td>industry</td>
+      <td>industry.INDMIN_CY</td>
+      <td>industry_INDMIN_CY</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>INDCONS_CY</td>
+      <td>2021 Industry: Construction</td>
+      <td>industry</td>
+      <td>industry.INDCONS_CY</td>
+      <td>industry_INDCONS_CY</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>HHWHTHHR10</td>
+      <td>2010 HHs w/White HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHWHTHHR10</td>
+      <td>householdsbyraceofhouseholder_HHWHTHHR10</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>HHBLKHHR10</td>
+      <td>2010 HHs w/Black HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHBLKHHR10</td>
+      <td>householdsbyraceofhouseholder_HHBLKHHR10</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>HHAIHHR10</td>
+      <td>2010 HHs w/Amer Indian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHAIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHAIHHR10</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>HHASNHHR10</td>
+      <td>2010 HHs w/Asian HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHASNHHR10</td>
+      <td>householdsbyraceofhouseholder_HHASNHHR10</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>HHPIHHR10</td>
+      <td>2010 HHs w/Pacific Isl HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHPIHHR10</td>
+      <td>householdsbyraceofhouseholder_HHPIHHR10</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>HHOTHHHR10</td>
+      <td>2010 HHs w/Other Race HHr</td>
+      <td>householdsbyraceofhouseholder</td>
+      <td>householdsbyraceofhouseholder.HHOTHHHR10</td>
+      <td>householdsbyraceofhouseholder_HHOTHHHR10</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>POPGRW10CY</td>
+      <td>2010-2021 Growth Rate: Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.POPGRW10CY</td>
+      <td>KeyUSFacts_POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>TADULT01</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1A</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT01</td>
+      <td>tapestryadultsNEW_TADULT01</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>TADULT02</td>
+      <td>2021 Pop 18+ in Tapestry Seg 1B</td>
+      <td>tapestryadultsNEW</td>
+      <td>tapestryadultsNEW.TADULT02</td>
+      <td>tapestryadultsNEW_TADULT02</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>ACSTOTPOP</td>
+      <td>2019 Total Population (ACS 5-Yr)</td>
+      <td>population</td>
+      <td>population.ACSTOTPOP</td>
+      <td>population_ACSTOTPOP</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>RELTOTPOP</td>
+      <td>2019 Total Population REL (ACS 5-Yr)</td>
+      <td>population</td>
+      <td>population.RELTOTPOP</td>
+      <td>population_RELTOTPOP</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>HHPOP_CY</td>
+      <td>2021 Household Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.HHPOP_CY</td>
+      <td>populationtotals_HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>FAMPOP_CY</td>
+      <td>2021 Family Population</td>
+      <td>populationtotals</td>
+      <td>populationtotals.FAMPOP_CY</td>
+      <td>populationtotals_FAMPOP_CY</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+<section id="Concantenating-for-Local-Enrich">
+<h2>Concantenating for Local Enrich<a class="headerlink" href="#Concantenating-for-Local-Enrich" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">arcpy.ba.EnrichLayer</span></code> tool in ArcGIS Pro needs a semicolon separated string of <code class="docutils literal notranslate"><span class="pre">enrich_name</span></code> values for input. From any of the above results, this can quickly be created from the <code class="docutils literal notranslate"><span class="pre">enich_name</span></code> column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vars_str</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">enrich_vars</span><span class="o">.</span><span class="n">enrich_name</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">vars_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Health.MEDHINC_CY;ACS_Housing_Summary_rep.MOETOTPOP;travelMPI.TADULTBASE;Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY;Policy.DIVINDX_CY;householdincome.ACSMEDHINC;householdincome.MOEMEDHINC;householdincome.RELMEDHINC;Community_Profile_rep.X11001_I;ElectronicsInternet.MP09147a_B;ElectronicsInternet.MP09147a_I;ElectronicsInternet.MP09148a_B;ElectronicsInternet.MP09148a_I;ElectronicsInternet.MP09134a_B;ElectronicsInternet.MP09134a_I;education.X11001_X;education.X11001_A;HealthPersonalCare.MP14129a_B;industry.INDAGRI_CY;industry.INDMIN_CY;industry.INDCONS_CY;householdsbyraceofhouseholder.HHWHTHHR10;householdsbyraceofhouseholder.HHBLKHHR10;householdsbyraceofhouseholder.HHAIHHR10;householdsbyraceofhouseholder.HHASNHHR10;householdsbyraceofhouseholder.HHPIHHR10;householdsbyraceofhouseholder.HHOTHHHR10;KeyUSFacts.POPGRW10CY;tapestryadultsNEW.TADULT01;tapestryadultsNEW.TADULT02;population.ACSTOTPOP;population.RELTOTPOP;populationtotals.HHPOP_CY;populationtotals.FAMPOP_CY
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/notebooks/enrich-variable-name-lookup.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
