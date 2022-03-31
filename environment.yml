@@ -27,5 +27,6 @@ dependencies:
     - ipykernel
     - nbsphinx
     - sphinx
-    - sphinx-autodoc-typehints
+    - sphinx-autodoc-typehintsma
+    - sphinx-copybutton
     - twine
