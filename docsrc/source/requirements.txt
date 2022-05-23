@@ -4,4 +4,4 @@ pandoc
 sphinx-autodoc-typehints
 sphinx-copybutton
 nbsphinx
--e ../../.
+-e .
