@@ -32,7 +32,6 @@ jobs:
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
         with:
-          name: sphinx-build
           docs-folder: "docsrc/source"
           build-command: "sphinx-build -a -w /tmp/sphinx-log -b html . ../docs"
           pre-build-command: "apt-get update -y && apt-get install -y pandoc"
