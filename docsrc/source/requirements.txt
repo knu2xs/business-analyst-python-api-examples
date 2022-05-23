@@ -1,0 +1,4 @@
+# required dependencies for building the Sphinx documentation
+sphinx_autodoc_typehints
+sphinx_copybutton
+nbsphinx
