@@ -30,9 +30,9 @@ jobs:
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
         with:
-          pre-build-command: "apt-get update -y && apt-get install -y pandoc"
           docs-folder: "docsrc/source"
           build-command: "sphinx-build -a -w /tmp/sphinx-log -b html . ../docs"
+          pre-build-command: "apt-get update -y && apt-get install -y pandoc"
           
       # push the results into the docs branch
       - uses: actions/upload-artifact@v1
