@@ -30,8 +30,8 @@ jobs:
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
         with:
-          docs-folder: "docsrc/source"
-          build-command: "sphinx-build -a -b html . ../docs"
+          docs-folder: "/"
+          build-command: "sphinx-build -a -b html docsrc/source docs"
           pre-build-command: "mkdir /tmp && touch /tmp/sphinx-log"
           
       # push the results into the docs branch
