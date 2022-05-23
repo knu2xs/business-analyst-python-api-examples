@@ -29,8 +29,8 @@ jobs:
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
         with:
-          docs-folder: docsrc/
-          build-command: "sphinx-build -a -b html docsrc/source/ docs/"
+          docs-folder: docsrc
+          build-command: "sphinx-build -a -b html . docs"
           
       # push the results into the docs branch
       - uses: actions/upload-artifact@v1
