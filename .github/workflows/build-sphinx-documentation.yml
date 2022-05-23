@@ -25,17 +25,20 @@ jobs:
     steps:
       
       # checkout the master branch
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+        with:
+          name: checkout-repo
       
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
         with:
+          name: sphinx-build
           docs-folder: "docsrc/source"
           build-command: "sphinx-build -a -w /tmp/sphinx-log -b html . ../docs"
           pre-build-command: "apt-get update -y && apt-get install -y pandoc"
           
       # push the results into the docs branch
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
-          name: DocumentationUpload
+          name: upload-documentation
           path: docs/
