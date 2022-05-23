@@ -1,5 +1,4 @@
 # required dependencies for building the Sphinx documentation
-arcgis
 jinja2>=3.0
 pandoc
 sphinx-autodoc-typehints
