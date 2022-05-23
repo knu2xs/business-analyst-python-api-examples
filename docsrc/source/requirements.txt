@@ -1,4 +1,5 @@
 # required dependencies for building the Sphinx documentation
+jinja2>=3.0
 sphinx-autodoc-typehints
 sphinx-copybutton
 nbsphinx
