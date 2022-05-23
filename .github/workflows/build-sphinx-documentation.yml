@@ -23,6 +23,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      # make sure Pandoc is installed
+      - name: Install Pandoc
+        run: "sudo apt-get update -y && sudo apt-get install -y pandoc"
       
       # checkout the master branch
       - uses: actions/checkout@v3
@@ -32,7 +36,7 @@ jobs:
         with:
           docs-folder: "docsrc/source"
           build-command: "sphinx-build -a -w /tmp/sphinx-log -b html . ../docs"
-          pre-build-command: "apt-get update -y && apt-get install -y pandoc"
+#          pre-build-command: "apt-get update -y && apt-get install -y pandoc"
           
       # push the results into the docs branch
       - uses: actions/upload-artifact@v3
