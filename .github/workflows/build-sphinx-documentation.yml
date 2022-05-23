@@ -31,8 +31,7 @@ jobs:
       - uses: ammaraskar/sphinx-action@master
         with:
           docs-folder: "/"
-          build-command: "sphinx-build -a -b html docsrc/source docs"
-          pre-build-command: "mkdir /tmp && touch /tmp/sphinx-log"
+          build-command: "sphinx-build -a -w /tmp/sphinx-log -b html docsrc/source docs"
           
       # push the results into the docs branch
       - uses: actions/upload-artifact@v1
