@@ -26,8 +26,6 @@ jobs:
       
       # checkout the master branch
       - uses: actions/checkout@v3
-        with:
-          name: checkout-repo
       
       # build the docs using Sphinx
       - uses: ammaraskar/sphinx-action@master
