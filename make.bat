@@ -39,25 +39,17 @@ GOTO %1
 
 :: Perform data preprocessing steps contained in the make_data.py script.
 :data
-    ENDLOCAL & (
-        CALL python src/make_data.py
-        ECHO ^>^>^> Data processed.
-    )
+    ENDLOCAL & CALL python src/make_data.py
     GOTO end
 
 :: Make documentation using Sphinx!
 :docs
-    ENDLOCAL & (
-        CALL conda activate ./env
-        CALL docsrc/make.bat github
-    )
-	GOTO end
+    ENDLOCAL & CALL conda run -p ./env sphinx-build -a -b html docsrc docs
+    GOTO end
 
 :: Create the Reveal.js slides from all the notebooks
 :slides
-    ENDLOCAL & (
-        CAll python src/ck_tools/create_reveal_slides.py
-    )
+    ENDLOCAL & CAll conda run - ./env python src/ck_tools/create_reveal_slides.py
     GOTO end
 
 :: Build the local environment from the environment file
@@ -82,17 +74,9 @@ GOTO %1
     )
     GOTO end
 
-:: Remove the environment
-:env_remove
-	ENDLOCAL & (
-		CALL conda deactivate
-		CALL conda env remove -p ./env
-	)
-	GOTO end
-
 :: Start Jupyter Lab
 :jupyter
-    ENDLOCAL & CALL conda activate ./env && jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
+    ENDLOCAL & CALL conda activate ./env && jupyter lab --ip=0.0.0.0 --allow-root --NotebookApp.token=""
     GOTO end
 
 :: Run all tests in module

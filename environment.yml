@@ -5,12 +5,14 @@ channels:
   - conda-forge
 
 dependencies:
+  - arcgis
+  - featuretools
   - jupyterlab
   - matplotlib
   - nodejs
   - pip
   - pytest
-  - python=3.7
+  - python=3.9
   - python-dotenv
   - pyarrow
   - pyyaml
@@ -26,7 +28,8 @@ dependencies:
     - bump2version
     - ipykernel
     - nbsphinx
+    - sodapy
     - sphinx
-    - sphinx-autodoc-typehintsma
+    - sphinx-autodoc-typehints
     - sphinx-copybutton
     - twine
