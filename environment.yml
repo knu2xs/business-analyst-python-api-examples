@@ -1,4 +1,4 @@
-name: ba-ex
+name: ba-examples
 
 channels:
   - esri
@@ -14,16 +14,16 @@ dependencies:
   - pytest
   - python=3.9
   - python-dotenv
-  - pyarrow
+#  - pyarrow
   - pyyaml
   - scipy
   - scikit-learn
   - seaborn
-  - shapely
+#  - shapely
   - swifter
   - tox
   - pip:
-    - azure-storage-blob
+#    - azure-storage-blob
     - boto3
     - bump2version
     - ipykernel

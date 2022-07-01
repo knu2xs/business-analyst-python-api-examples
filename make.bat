@@ -63,7 +63,7 @@ GOTO %1
         CALL conda env update -p ./env -f environment.yml
 
         :: Install geosaurus in development (edit) mode
-        CALL python -m pip install -e ./src/geosaurus/src
+        ::CALL python -m pip install -e ./src/geosaurus/src
 
         :: Install the local package in development (experimental) mode
         CALL python -m pip install -e .
