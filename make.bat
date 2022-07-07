@@ -70,11 +70,8 @@ GOTO %1
         :: Add more fun stuff from environment file
         CALL conda env update -p ./env -f environment.yml
 
-        :: Install geosaurus in development (edit) mode
-        CALL python -m pip install -e ./src/geosaurus/src
-
         :: Install the local package in development (experimental) mode
-        CALL python -m pip install -e .
+        CALL conda run -p ./env python -m pip install -e .
 
         :: Activate the environment so you can get to work
         CALL activate ./env
@@ -92,7 +89,7 @@ GOTO %1
 
 :: Start Jupyter Lab
 :jupyter
-    ENDLOCAL & CALL conda activate ./env && jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
+    ENDLOCAL & CALL conda run -p ./env jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
     GOTO end
 
 :: Run all tests in module

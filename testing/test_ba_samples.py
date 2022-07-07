@@ -14,7 +14,7 @@ dir_src = dir_prj/'src'
 
 # insert the src directory into the path and import the projct package
 sys.path.insert(0, str(dir_src))
-import ba_samples
+import ba_examples
 
 def test_example():
     assert 2 + 2 == 4

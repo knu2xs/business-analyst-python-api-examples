@@ -4,7 +4,7 @@ with open('README.md', 'r') as readme:
     long_description = readme.read()
 
 setup(
-    name='ba_samples',
+    name='ba_examples',
     package_dir={"": "src"},
     packages=find_packages('src'),
     version='0.1.0-dev0',
