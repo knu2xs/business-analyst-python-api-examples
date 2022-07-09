@@ -118,12 +118,13 @@ class EnrichPolygon(EnrichBase):
         has_valid_polygons = False
 
         if isinstance(X, pd.DataFrame):
-            if X.spatial.validate():
-                geom_typ_lst = X.spatial.geometry_type
-                if len(geom_typ_lst):
-                    geom_typ = geom_typ_lst[0]
-                    if geom_typ.lower() == 'polygon':
-                        has_valid_polygons = True
+            if X.spatial.name is not None:
+                if X.spatial.validate():
+                    geom_typ_lst = X.spatial.geometry_type
+                    if len(geom_typ_lst):
+                        geom_typ = geom_typ_lst[0]
+                        if geom_typ.lower() == 'polygon':
+                            has_valid_polygons = True
 
         elif isinstance(X, (list, np.ndarray)):
             first_geom = X[0]

@@ -52,9 +52,7 @@ GOTO %1
 
 :: Create the Reveal.js slides from all the notebooks
 :slides
-    ENDLOCAL & (
-        CAll python src/ck_tools/create_reveal_slides.py
-    )
+    ENDLOCAL & CAll conda run - ./env python src/ck_tools/create_reveal_slides.py
     GOTO end
 
 :: Build the local environment from the environment file
@@ -75,14 +73,6 @@ GOTO %1
 
     )
     GOTO end
-
-:: Remove the environment
-:env_remove
-	ENDLOCAL & (
-		CALL conda deactivate
-		CALL conda env remove -p ./env
-	)
-	GOTO end
 
 :: Start Jupyter Lab
 :jupyter

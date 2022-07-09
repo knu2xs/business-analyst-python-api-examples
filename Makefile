@@ -1,4 +1,4 @@
-.PHONY: data clean env_create env_export env_activate env_build test create_kernel
+.PHONY: data clean env jupyter test
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -6,7 +6,6 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PROJECT_NAME = business-analyst-python-api-examples
-ENV_NAME = ba-ex
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -14,8 +13,7 @@ ENV_NAME = ba-ex
 
 ## Make Dataset
 data:
-	conda activate $(ENV_NAME)
-	python src/data/make_dataset.py
+	conda run -p ./env python src/data/make_dataset.py
 	@echo ">>> Data processed."
 
 ## Delete all compiled Python files
@@ -25,53 +23,17 @@ clean:
 
 ## Build the local environment from the environment file
 env:
-	conda env create -f environment_dev_nix.yml
-	conda run -n $(ENV_NAME) pip install -e .
-	@echo ">>> New conda environment, $(ENV_NAME), created. Activate with:\n- conda activate $(ENV_NAME)"
-
-## Make it easier to clean up the project when finished
-env_remove:
-	conda env remove -n $(ENV_NAME)
+	conda env create -p ./env -f environment.yml
+	conda run -p ./env pip install -e .
+	@echo ">>> New conda environment created in ./env. Activate with:\n\tconda activate -p ./env"
 
 ## Run jupyter without having to explicitly activate the environment
 jupyter:
-	conda run -n $(ENV_NAME) jupyter lab
-
-# If working in an EC2 environment, set everything up - BETA FEATURE
-ec2:
-
-	# get install and configure miniconda
-	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-	~/miniconda.sh -b -p $(HOME)/miniconda
-	~/miniconda/bin/conda init
-	sed -i '1 i\export PATH=/home/ubuntu/miniconda/bin:$PATH' ~/.bashrc
-
-	# create and activate the project conda environment
-	~/miniconda/bin/conda env create -f ./environment.yml
-	~/miniconda/bin/conda activate $(ENV_NAME)
-
-	# install the local package
-	python -m pip install -e .
-
-	# configure jupyter for remote access with password "jovyan"
-	jupyter notebook --generate-config
-	sed -i '1 i\c.NotebookApp.port = 8888' ~/.jupyter/jupyter_notebook_config.py
-	sed -i '1 i\c.NotebookApp.password = u"sha1:b37cb398255d:3f676cfe9b00e0c485385b435584ae5518bd14a4"' ~/.jupyter/jupyter_notebook_config.py
-	sed -i '1 i\c.NotebookApp.ip = "0.0.0.0"' ~/.jupyter/jupyter_notebook_config.py
-
-# create a new kernel
-create_kernel:
-	conda run -n $(ENV_NAME) python -m ipykernel install --user --name $(ENV_NAME) --display-name "$(PROJECT_NAME)"
+	conda run -p ./env jupyter lab
 
 ## Run all tests in module
 test:
-	conda run -n $(ENV_NAME) python -m pytest
-
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
-
-
+	conda run -p ./env python -m pytest
 
 #################################################################################
 # Self Documenting Commands                                                     #
