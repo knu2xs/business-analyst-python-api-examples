@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Integrating into Pipelines for Clustering &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,12 +13,13 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
     <link rel="next" title="Tools" href="../tools.htm" />
@@ -53,7 +54,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="enrich-variable-name-lookup.htm">Enrich Variable Name Lookup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enrich-store-locations.htm">Enrich Store Locations</a></li>
@@ -86,6 +87,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -108,7 +110,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -340,6 +342,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -348,10 +351,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -363,18 +370,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Integrating-into-Pipelines-for-Clustering">
-<h1>Integrating into Pipelines for Clustering<a class="headerlink" href="#Integrating-into-Pipelines-for-Clustering" title="Permalink to this headline">¶</a></h1>
+<h1>Integrating into Pipelines for Clustering<a class="headerlink" href="#Integrating-into-Pipelines-for-Clustering" title="Permalink to this heading">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, notice we are grabbing the <code class="docutils literal notranslate"><span class="pre">make_pipeline</span></code> method from Sci-Kit Learn. We are going to be building pipelines!</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -416,13 +426,13 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">ba_samples.preprocessing</span> <span class="kn">import</span> <span class="n">EnrichStandardGeography</span><span class="p">,</span> <span class="n">KeepOnlyEnrichColumns</span><span class="p">,</span> <span class="n">ArrayToDataFrame</span>
 
 <span class="c1"># specifically, the data being used for this example - pickled dataframes</span>
-<span class="n">postal_codes_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;postal_codes.pkl&#39;</span>
-<span class="n">block_groups_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;block_groups.pkl&#39;</span>
+<span class="n">postal_codes_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;pdx_postal_codes.pkl&#39;</span>
+<span class="n">block_groups_pth</span> <span class="o">=</span> <span class="n">dir_raw</span><span class="o">/</span><span class="s1">&#39;pdx_block_groups.pkl&#39;</span>
 </pre></div>
 </div>
 </div>
 <section id="Pipeline-for-Zip-Codes">
-<h2>Pipeline for Zip Codes<a class="headerlink" href="#Pipeline-for-Zip-Codes" title="Permalink to this headline">¶</a></h2>
+<h2>Pipeline for Zip Codes<a class="headerlink" href="#Pipeline-for-Zip-Codes" title="Permalink to this heading">¶</a></h2>
 <p>We start by getting a list of standard geography codes to use from the demonstration postal code data, just a list of zip codes.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -440,11 +450,11 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&#39;83801&#39;, &#39;83803&#39;, &#39;83810&#39;, &#39;83814&#39;, &#39;83815&#39;, &#39;83833&#39;, &#39;83835&#39;, &#39;83842&#39;, &#39;83854&#39;, &#39;83858&#39;, &#39;83861&#39;, &#39;83869&#39;, &#39;83876&#39;]
+[&#39;97038&#39;, &#39;97101&#39;, &#39;97304&#39;, &#39;97347&#39;, &#39;97362&#39;, &#39;97375&#39;, &#39;97396&#39;, &#39;97002&#39;, &#39;97003&#39;, &#39;97004&#39;, &#39;97005&#39;, &#39;97006&#39;, &#39;97007&#39;, &#39;97008&#39;, &#39;97009&#39;, &#39;97013&#39;, &#39;97015&#39;, &#39;97016&#39;, &#39;97017&#39;, &#39;97018&#39;, &#39;97022&#39;, &#39;97024&#39;, &#39;97027&#39;, &#39;97030&#39;, &#39;97032&#39;, &#39;97034&#39;, &#39;97035&#39;, &#39;97036&#39;, &#39;97042&#39;, &#39;97045&#39;, &#39;97048&#39;, &#39;97051&#39;, &#39;97053&#39;, &#39;97054&#39;, &#39;97056&#39;, &#39;97060&#39;, &#39;97062&#39;, &#39;97064&#39;, &#39;97068&#39;, &#39;97070&#39;, &#39;97071&#39;, &#39;97078&#39;, &#39;97080&#39;, &#39;97086&#39;, &#39;97089&#39;, &#39;97106&#39;, &#39;97109&#39;, &#39;97111&#39;, &#39;97113&#39;, &#39;97114&#39;, &#39;97115&#39;, &#39;97116&#39;, &#39;97117&#39;, &#39;97119&#39;, &#39;97123&#39;, &#39;97124&#39;, &#39;97125&#39;, &#39;97127&#39;, &#39;97128&#39;, &#39;97132&#39;, &#39;97133&#39;, &#39;97140&#39;, &#39;97144&#39;, &#39;97148&#39;, &#39;97201&#39;, &#39;97202&#39;, &#39;97203&#39;, &#39;97204&#39;, &#39;97205&#39;, &#39;97206&#39;, &#39;97209&#39;, &#39;97210&#39;, &#39;97211&#39;, &#39;97212&#39;, &#39;97213&#39;, &#39;97214&#39;, &#39;97215&#39;, &#39;97216&#39;, &#39;97217&#39;, &#39;97218&#39;, &#39;97219&#39;, &#39;97220&#39;, &#39;97221&#39;, &#39;97222&#39;, &#39;97223&#39;, &#39;97224&#39;, &#39;97225&#39;, &#39;97227&#39;, &#39;97229&#39;, &#39;97230&#39;, &#39;97231&#39;, &#39;97232&#39;, &#39;97233&#39;, &#39;97236&#39;, &#39;97239&#39;, &#39;97266&#39;, &#39;97267&#39;, &#39;97378&#39;, &#39;98601&#39;, &#39;98604&#39;, &#39;98606&#39;, &#39;98607&#39;, &#39;98629&#39;, &#39;98642&#39;, &#39;98649&#39;, &#39;98660&#39;, &#39;98661&#39;, &#39;98662&#39;, &#39;98663&#39;, &#39;98664&#39;, &#39;98665&#39;, &#39;98674&#39;, &#39;98675&#39;, &#39;98682&#39;, &#39;98683&#39;, &#39;98684&#39;, &#39;98685&#39;, &#39;98686&#39;, &#39;97023&#39;, &#39;97010&#39;, &#39;97011&#39;, &#39;97014&#39;, &#39;97019&#39;, &#39;97028&#39;, &#39;97049&#39;, &#39;97055&#39;, &#39;97067&#39;, &#39;98605&#39;, &#39;98610&#39;, &#39;98639&#39;, &#39;98648&#39;, &#39;98651&#39;, &#39;98671&#39;]
 </pre></div></div>
 </div>
 <section id="Get-a-Local-Country">
-<h3>Get a Local Country<a class="headerlink" href="#Get-a-Local-Country" title="Permalink to this headline">¶</a></h3>
+<h3>Get a Local Country<a class="headerlink" href="#Get-a-Local-Country" title="Permalink to this heading">¶</a></h3>
 <p>To enrich, we need a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use ArcGIS Pro with Business Analyst and local data for the United States.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -467,7 +477,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Select-Variables">
-<h3>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this headline">¶</a></h3>
+<h3>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this heading">¶</a></h3>
 <p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country. From these tens of thousands of variables, we can prune this down to a manageable subset.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -680,7 +690,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Get-Standard-Geography-Name">
-<h3>Get Standard Geography Name<a class="headerlink" href="#Get-Standard-Geography-Name" title="Permalink to this headline">¶</a></h3>
+<h3>Get Standard Geography Name<a class="headerlink" href="#Get-Standard-Geography-Name" title="Permalink to this heading">¶</a></h3>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">levels</span></code> property, we can see the value we need to use for specifying the specfic zip code level, <code class="docutils literal notranslate"><span class="pre">zip5</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -851,7 +861,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Enrich-Preprocessor">
-<h3>Enrich Preprocessor<a class="headerlink" href="#Enrich-Preprocessor" title="Permalink to this headline">¶</a></h3>
+<h3>Enrich Preprocessor<a class="headerlink" href="#Enrich-Preprocessor" title="Permalink to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method can be wrapped into the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method of a SciKit-Learn Transformer, specifically a preprocessor, to function just like any other preprocessor. In this case, not only have I wrapped the preprocessor, I also have created this preprocessor for specific inputs, standard geographies.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -873,38 +883,38 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 13 entries, 0 to 12
+RangeIndex: 133 entries, 0 to 132
 Data columns (total 26 columns):
- #   Column                 Non-Null Count  Dtype
----  ------                 --------------  -----
- 0   id_field               13 non-null     object
- 1   area_desc              13 non-null     object
- 2   ta_desc                13 non-null     object
- 3   names                  13 non-null     object
- 4   has_data               13 non-null     int64
- 5   aggregation_method     13 non-null     object
- 6   keyusfacts_totpop_cy   13 non-null     float64
- 7   keyusfacts_gqpop_cy    13 non-null     float64
- 8   keyusfacts_divindx_cy  13 non-null     float64
- 9   keyusfacts_tothh_cy    13 non-null     float64
- 10  keyusfacts_avghhsz_cy  13 non-null     float64
- 11  keyusfacts_medhinc_cy  13 non-null     float64
- 12  keyusfacts_avghinc_cy  13 non-null     float64
- 13  keyusfacts_pci_cy      13 non-null     float64
- 14  keyusfacts_tothu_cy    13 non-null     float64
- 15  keyusfacts_owner_cy    13 non-null     float64
- 16  keyusfacts_renter_cy   13 non-null     float64
- 17  keyusfacts_vacant_cy   13 non-null     float64
- 18  keyusfacts_medval_cy   13 non-null     float64
- 19  keyusfacts_avgval_cy   13 non-null     float64
- 20  keyusfacts_popgrw10cy  13 non-null     float64
- 21  keyusfacts_hhgrw10cy   13 non-null     float64
- 22  keyusfacts_famgrw10cy  13 non-null     float64
- 23  keyusfacts_dpop_cy     13 non-null     float64
- 24  keyusfacts_dpopwrk_cy  13 non-null     float64
- 25  keyusfacts_dpopres_cy  13 non-null     float64
-dtypes: float64(20), int64(1), object(5)
-memory usage: 2.8+ KB
+ #   Column              Non-Null Count  Dtype
+---  ------              --------------  -----
+ 0   id_field            133 non-null    object
+ 1   area_desc           133 non-null    object
+ 2   ta_desc             133 non-null    object
+ 3   names               133 non-null    object
+ 4   has_data            133 non-null    int32
+ 5   aggregation_method  133 non-null    object
+ 6   totpop_cy           133 non-null    float64
+ 7   gqpop_cy            133 non-null    float64
+ 8   divindx_cy          133 non-null    float64
+ 9   tothh_cy            133 non-null    float64
+ 10  avghhsz_cy          133 non-null    float64
+ 11  medhinc_cy          133 non-null    float64
+ 12  avghinc_cy          133 non-null    float64
+ 13  pci_cy              133 non-null    float64
+ 14  tothu_cy            133 non-null    float64
+ 15  owner_cy            133 non-null    float64
+ 16  renter_cy           133 non-null    float64
+ 17  vacant_cy           133 non-null    float64
+ 18  medval_cy           133 non-null    float64
+ 19  avgval_cy           133 non-null    float64
+ 20  popgrw10_cy         133 non-null    float64
+ 21  hhgrw10_cy          133 non-null    float64
+ 22  famgrw10_cy         133 non-null    float64
+ 23  dpop_cy             133 non-null    float64
+ 24  dpopwrk_cy          133 non-null    float64
+ 25  dpopres_cy          133 non-null    float64
+dtypes: float64(20), int32(1), object(5)
+memory usage: 26.6+ KB
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -944,143 +954,143 @@ memory usage: 2.8+ KB
       <th>names</th>
       <th>has_data</th>
       <th>aggregation_method</th>
-      <th>keyusfacts_totpop_cy</th>
-      <th>keyusfacts_gqpop_cy</th>
-      <th>keyusfacts_divindx_cy</th>
-      <th>keyusfacts_tothh_cy</th>
+      <th>totpop_cy</th>
+      <th>gqpop_cy</th>
+      <th>divindx_cy</th>
+      <th>tothh_cy</th>
       <th>...</th>
-      <th>keyusfacts_renter_cy</th>
-      <th>keyusfacts_vacant_cy</th>
-      <th>keyusfacts_medval_cy</th>
-      <th>keyusfacts_avgval_cy</th>
-      <th>keyusfacts_popgrw10cy</th>
-      <th>keyusfacts_hhgrw10cy</th>
-      <th>keyusfacts_famgrw10cy</th>
-      <th>keyusfacts_dpop_cy</th>
-      <th>keyusfacts_dpopwrk_cy</th>
-      <th>keyusfacts_dpopres_cy</th>
+      <th>renter_cy</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrw10_cy</th>
+      <th>hhgrw10_cy</th>
+      <th>famgrw10_cy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>83801</td>
-      <td>83801</td>
-      <td>TA from geography Layer: 83801</td>
-      <td>Athol</td>
+      <td>97038</td>
+      <td>97038</td>
+      <td>TA from geography Layer: 97038</td>
+      <td>Molalla</td>
       <td>1</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>8497.0</td>
-      <td>0.0</td>
-      <td>13.6</td>
-      <td>3142.0</td>
+      <td>17305.0</td>
+      <td>56.0</td>
+      <td>42.4</td>
+      <td>6144.0</td>
       <td>...</td>
-      <td>482.0</td>
-      <td>421.0</td>
-      <td>382542.0</td>
-      <td>391184.0</td>
-      <td>2.07</td>
-      <td>2.09</td>
-      <td>1.92</td>
-      <td>6502.0</td>
-      <td>1962.0</td>
-      <td>4540.0</td>
+      <td>1552.0</td>
+      <td>293.0</td>
+      <td>388300.0</td>
+      <td>442226.0</td>
+      <td>1.18</td>
+      <td>1.20</td>
+      <td>1.00</td>
+      <td>13803.0</td>
+      <td>4468.0</td>
+      <td>9335.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>83803</td>
-      <td>83803</td>
-      <td>TA from geography Layer: 83803</td>
-      <td>Bayview</td>
+      <td>97002</td>
+      <td>97002</td>
+      <td>TA from geography Layer: 97002</td>
+      <td>Aurora</td>
       <td>1</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>656.0</td>
-      <td>0.0</td>
-      <td>10.5</td>
-      <td>341.0</td>
+      <td>5951.0</td>
+      <td>52.0</td>
+      <td>54.3</td>
+      <td>2285.0</td>
       <td>...</td>
-      <td>76.0</td>
-      <td>318.0</td>
-      <td>391333.0</td>
-      <td>403113.0</td>
-      <td>1.76</td>
-      <td>1.80</td>
-      <td>1.56</td>
-      <td>499.0</td>
-      <td>145.0</td>
-      <td>354.0</td>
+      <td>389.0</td>
+      <td>85.0</td>
+      <td>491246.0</td>
+      <td>565932.0</td>
+      <td>1.09</td>
+      <td>1.15</td>
+      <td>0.97</td>
+      <td>7040.0</td>
+      <td>3847.0</td>
+      <td>3193.0</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>83810</td>
-      <td>83810</td>
-      <td>TA from geography Layer: 83810</td>
-      <td>Cataldo</td>
+      <td>97347</td>
+      <td>97347</td>
+      <td>TA from geography Layer: 97347</td>
+      <td>Grand Ronde</td>
       <td>1</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>1090.0</td>
-      <td>4.0</td>
-      <td>11.7</td>
-      <td>479.0</td>
+      <td>2163.0</td>
+      <td>0.0</td>
+      <td>53.5</td>
+      <td>850.0</td>
       <td>...</td>
-      <td>72.0</td>
-      <td>100.0</td>
-      <td>437903.0</td>
-      <td>464383.0</td>
-      <td>0.94</td>
-      <td>0.96</td>
-      <td>0.76</td>
-      <td>762.0</td>
-      <td>246.0</td>
-      <td>516.0</td>
+      <td>242.0</td>
+      <td>60.0</td>
+      <td>375287.0</td>
+      <td>446223.0</td>
+      <td>1.28</td>
+      <td>1.31</td>
+      <td>1.13</td>
+      <td>2296.0</td>
+      <td>907.0</td>
+      <td>1389.0</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>83814</td>
-      <td>83814</td>
-      <td>TA from geography Layer: 83814</td>
-      <td>Coeur D Alene</td>
+      <td>97013</td>
+      <td>97013</td>
+      <td>TA from geography Layer: 97013</td>
+      <td>Canby</td>
       <td>1</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>28546.0</td>
-      <td>609.0</td>
-      <td>21.2</td>
-      <td>12454.0</td>
+      <td>25403.0</td>
+      <td>104.0</td>
+      <td>54.2</td>
+      <td>9139.0</td>
       <td>...</td>
-      <td>5599.0</td>
-      <td>2600.0</td>
-      <td>377722.0</td>
-      <td>508589.0</td>
-      <td>1.86</td>
-      <td>1.91</td>
-      <td>1.72</td>
-      <td>38178.0</td>
-      <td>23011.0</td>
-      <td>15167.0</td>
+      <td>2458.0</td>
+      <td>340.0</td>
+      <td>392366.0</td>
+      <td>437940.0</td>
+      <td>0.96</td>
+      <td>0.98</td>
+      <td>0.85</td>
+      <td>21914.0</td>
+      <td>9136.0</td>
+      <td>12778.0</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>83815</td>
-      <td>83815</td>
-      <td>TA from geography Layer: 83815</td>
-      <td>Coeur D Alene</td>
+      <td>97017</td>
+      <td>97017</td>
+      <td>TA from geography Layer: 97017</td>
+      <td>Colton</td>
       <td>1</td>
       <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
-      <td>38614.0</td>
-      <td>617.0</td>
-      <td>24.1</td>
-      <td>15247.0</td>
+      <td>3194.0</td>
+      <td>0.0</td>
+      <td>16.9</td>
+      <td>1133.0</td>
       <td>...</td>
-      <td>5598.0</td>
-      <td>1146.0</td>
-      <td>308198.0</td>
-      <td>374194.0</td>
-      <td>1.79</td>
-      <td>1.78</td>
-      <td>1.51</td>
-      <td>37345.0</td>
-      <td>15891.0</td>
-      <td>21454.0</td>
+      <td>125.0</td>
+      <td>58.0</td>
+      <td>434483.0</td>
+      <td>480442.0</td>
+      <td>0.68</td>
+      <td>0.72</td>
+      <td>0.58</td>
+      <td>2405.0</td>
+      <td>687.0</td>
+      <td>1718.0</td>
     </tr>
   </tbody>
 </table>
@@ -1089,7 +1099,7 @@ memory usage: 2.8+ KB
 </div>
 </section>
 <section id="Filtering-Columns">
-<h3>Filtering Columns<a class="headerlink" href="#Filtering-Columns" title="Permalink to this headline">¶</a></h3>
+<h3>Filtering Columns<a class="headerlink" href="#Filtering-Columns" title="Permalink to this heading">¶</a></h3>
 <p>The output from <code class="docutils literal notranslate"><span class="pre">enrich</span></code> includes a number of metadata columns. If performing subsequent analysis, we need to prune these columns. We can use another preprocessor for this as well, one only keeping columns with enriched values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1114,32 +1124,29 @@ memory usage: 2.8+ KB
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-Index: 13 entries, 83801 to 83876
-Data columns (total 20 columns):
- #   Column                 Non-Null Count  Dtype
----  ------                 --------------  -----
- 0   keyusfacts_totpop_cy   13 non-null     float64
- 1   keyusfacts_gqpop_cy    13 non-null     float64
- 2   keyusfacts_divindx_cy  13 non-null     float64
- 3   keyusfacts_tothh_cy    13 non-null     float64
- 4   keyusfacts_avghhsz_cy  13 non-null     float64
- 5   keyusfacts_medhinc_cy  13 non-null     float64
- 6   keyusfacts_avghinc_cy  13 non-null     float64
- 7   keyusfacts_pci_cy      13 non-null     float64
- 8   keyusfacts_tothu_cy    13 non-null     float64
- 9   keyusfacts_owner_cy    13 non-null     float64
- 10  keyusfacts_renter_cy   13 non-null     float64
- 11  keyusfacts_vacant_cy   13 non-null     float64
- 12  keyusfacts_medval_cy   13 non-null     float64
- 13  keyusfacts_avgval_cy   13 non-null     float64
- 14  keyusfacts_popgrw10cy  13 non-null     float64
- 15  keyusfacts_hhgrw10cy   13 non-null     float64
- 16  keyusfacts_famgrw10cy  13 non-null     float64
- 17  keyusfacts_dpop_cy     13 non-null     float64
- 18  keyusfacts_dpopwrk_cy  13 non-null     float64
- 19  keyusfacts_dpopres_cy  13 non-null     float64
-dtypes: float64(20)
-memory usage: 2.1+ KB
+Index: 133 entries, 97038 to 98671
+Data columns (total 17 columns):
+ #   Column      Non-Null Count  Dtype
+---  ------      --------------  -----
+ 0   totpop_cy   133 non-null    float64
+ 1   gqpop_cy    133 non-null    float64
+ 2   divindx_cy  133 non-null    float64
+ 3   tothh_cy    133 non-null    float64
+ 4   avghhsz_cy  133 non-null    float64
+ 5   medhinc_cy  133 non-null    float64
+ 6   avghinc_cy  133 non-null    float64
+ 7   pci_cy      133 non-null    float64
+ 8   tothu_cy    133 non-null    float64
+ 9   owner_cy    133 non-null    float64
+ 10  renter_cy   133 non-null    float64
+ 11  vacant_cy   133 non-null    float64
+ 12  medval_cy   133 non-null    float64
+ 13  avgval_cy   133 non-null    float64
+ 14  dpop_cy     133 non-null    float64
+ 15  dpopwrk_cy  133 non-null    float64
+ 16  dpopres_cy  133 non-null    float64
+dtypes: float64(17)
+memory usage: 18.7+ KB
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1341,10 +1348,10 @@ memory usage: 2.1+ KB
 </section>
 </section>
 <section id="Clustering-Block-Groups-Using-Demographics">
-<h2>Clustering Block Groups Using Demographics<a class="headerlink" href="#Clustering-Block-Groups-Using-Demographics" title="Permalink to this headline">¶</a></h2>
+<h2>Clustering Block Groups Using Demographics<a class="headerlink" href="#Clustering-Block-Groups-Using-Demographics" title="Permalink to this heading">¶</a></h2>
 <p>Stepping up our game a little, now we are getting all the US Census Block Groups in Portland because we are interested in what demographic variables have the most differences in Portland, and are going to use a SciKit-Learn pipeline to streamline the process.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_groups_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">block_groups_pth</span><span class="p">)</span>
@@ -1363,7 +1370,7 @@ Block Group Count: 1,421
 </pre></div></div>
 </div>
 <section id="Source---ArcGIS-Online">
-<h3>Source - ArcGIS Online<a class="headerlink" href="#Source---ArcGIS-Online" title="Permalink to this headline">¶</a></h3>
+<h3>Source - ArcGIS Online<a class="headerlink" href="#Source---ArcGIS-Online" title="Permalink to this heading">¶</a></h3>
 <p>This time around, we no longer are using local resources. Now, we are switching to ArcGIS Online.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1387,7 +1394,7 @@ Block Group Count: 1,421
 </div>
 </section>
 <section id="Selecting-Variables">
-<h3>Selecting Variables<a class="headerlink" href="#Selecting-Variables" title="Permalink to this headline">¶</a></h3>
+<h3>Selecting Variables<a class="headerlink" href="#Selecting-Variables" title="Permalink to this heading">¶</a></h3>
 <p>This time around, we are going big. By just grabbing a lot of categories, we are selecting a wide swath of demographic varaiables. There wasn not a tremenedously emperical method used to retrieve these categories. I just grabbed quite a few. Below, please notice how I used some naming conventions to filter out some values to exclude.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1584,7 +1591,7 @@ memory usage: 105.5+ KB
 </div>
 </section>
 <section id="Get-Demographics">
-<h3>Get Demographics<a class="headerlink" href="#Get-Demographics" title="Permalink to this headline">¶</a></h3>
+<h3>Get Demographics<a class="headerlink" href="#Get-Demographics" title="Permalink to this heading">¶</a></h3>
 <p>Just like before, we are going to enrich, but this time around we are using a LOT of data - over 1,500 variables. This time around, we are including the geometry so we can use it later.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -1614,7 +1621,7 @@ memory usage: 14.4 MB
 </pre></div></div>
 </div>
 <section id="Get-Just-the-Enriched-Columns">
-<h4>Get Just the Enriched Columns<a class="headerlink" href="#Get-Just-the-Enriched-Columns" title="Permalink to this headline">¶</a></h4>
+<h4>Get Just the Enriched Columns<a class="headerlink" href="#Get-Just-the-Enriched-Columns" title="Permalink to this heading">¶</a></h4>
 <p>Following enrichment, now we are getting just the columns <em>not</em> containing the geometry, the polygon shapes of the Block Groups. Notice the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> date type is <em>no longer</em> listed.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1642,7 +1649,7 @@ memory usage: 14.3 MB
 </section>
 </section>
 <section id="Data-Cleanup">
-<h3>Data Cleanup<a class="headerlink" href="#Data-Cleanup" title="Permalink to this headline">¶</a></h3>
+<h3>Data Cleanup<a class="headerlink" href="#Data-Cleanup" title="Permalink to this heading">¶</a></h3>
 <p>Since subsequent steps need standard scaled data and have difficulty with zero variance and missing values, we use tools from Sci-Kit Learn to clean up the data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -1689,7 +1696,7 @@ array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,
 </div>
 </section>
 <section id="Dimensionalty-Reduction">
-<h3>Dimensionalty Reduction<a class="headerlink" href="#Dimensionalty-Reduction" title="Permalink to this headline">¶</a></h3>
+<h3>Dimensionalty Reduction<a class="headerlink" href="#Dimensionalty-Reduction" title="Permalink to this heading">¶</a></h3>
 <p>Over 1,000 variables is a lot to process. To speed up the process, we first are going to use Principal Component Analysis (PCA) for dimensionality reduction, using a scree plot to ascertain how many components to create. In this case, we are going with 200 to retain roughly 90% of the variation in the data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1718,7 +1725,7 @@ array([[0.11816762, 0.16923077, 0.66666667, ..., 0.        , 0.        ,
 </div>
 </section>
 <section id="Clustering">
-<h3>Clustering<a class="headerlink" href="#Clustering" title="Permalink to this headline">¶</a></h3>
+<h3>Clustering<a class="headerlink" href="#Clustering" title="Permalink to this heading">¶</a></h3>
 <p>From the scree plot we know the number of clusters to use with PCA, so we are now going to combine this with K-Means Clustering in a succinct pipeline. Once we have the clusters created, we then will create a new spatially enabled Pandas data frame by combining the output clusters with the geometry returned from geoenrichment earlier.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1823,7 +1830,7 @@ memory usage: 27.9+ KB
 </div>
 </section>
 <section id="Dissolve-Clusters">
-<h3>Dissolve Clusters<a class="headerlink" href="#Dissolve-Clusters" title="Permalink to this headline">¶</a></h3>
+<h3>Dissolve Clusters<a class="headerlink" href="#Dissolve-Clusters" title="Permalink to this heading">¶</a></h3>
 <p>For visualization on a map and also for further investigation using Inforgaphics, we need the geometries consolidated into a single geometry per cluster. The ArcGIS Online Geometry engine can be used through the <code class="docutils literal notranslate"><span class="pre">arcgis.geometry.union</span></code> method to accomplish this.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
@@ -1935,7 +1942,7 @@ Created geometry for cluster id 4
 </section>
 </section>
 <section id="Visualizing,-Sharing-and-Interrogating">
-<h2>Visualizing, Sharing and Interrogating<a class="headerlink" href="#Visualizing,-Sharing-and-Interrogating" title="Permalink to this headline">¶</a></h2>
+<h2>Visualizing, Sharing and Interrogating<a class="headerlink" href="#Visualizing,-Sharing-and-Interrogating" title="Permalink to this heading">¶</a></h2>
 <p>Both outputs from the clustering are spatially enabled Pandas data frames, and can easily be shared with ArcGIS Online. From there, the results of these analyses can be quickly visualized in maps and mapping applications, shared to communicate results, and further interrogated through Infographics.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -2027,7 +2034,7 @@ Created geometry for cluster id 4
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

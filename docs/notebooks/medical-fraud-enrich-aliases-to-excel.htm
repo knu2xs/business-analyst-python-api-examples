@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Getting Data for Medical Fraud Detection &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,12 +13,13 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
     <link rel="next" title="Integrating into Pipelines for Clustering" href="pipelines-clustering.htm" />
@@ -53,7 +54,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="enrich-variable-name-lookup.htm">Enrich Variable Name Lookup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="enrich-store-locations.htm">Enrich Store Locations</a></li>
@@ -79,6 +80,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -101,7 +103,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -333,6 +335,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -341,10 +344,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -356,18 +363,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Getting-Data-for-Medical-Fraud-Detection">
-<h1>Getting Data for Medical Fraud Detection<a class="headerlink" href="#Getting-Data-for-Medical-Fraud-Detection" title="Permalink to this headline">¶</a></h1>
+<h1>Getting Data for Medical Fraud Detection<a class="headerlink" href="#Getting-Data-for-Medical-Fraud-Detection" title="Permalink to this heading">¶</a></h1>
 <p>The need, in this case, is to get potentially relevant variables to Excel with <em>intelligible</em> column names for follow on analyses for medical fraud detection using Excel.</p>
 <p>This example will run with Python API version 1.9.1 <em>if</em> you are using a Web GIS, but this will use credits (a LOT) if you are using ArcGIS Online. Once the <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method is added, this will run locally as well.</p>
 <div class="nbinput nblast docutils container">
@@ -416,7 +426,7 @@ div.rendered_html tbody tr:hover {
 GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a></div>
 </div>
 <section id="Create-a-Country-Object-Instance">
-<h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this headline">¶</a></h2>
+<h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this heading">¶</a></h2>
 <p>The starting point is creation of a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance to work with.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -439,7 +449,7 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </div>
 </section>
 <section id="Retrieve-Standard-Geographies-for-Analysis">
-<h2>Retrieve Standard Geographies for Analysis<a class="headerlink" href="#Retrieve-Standard-Geographies-for-Analysis" title="Permalink to this headline">¶</a></h2>
+<h2>Retrieve Standard Geographies for Analysis<a class="headerlink" href="#Retrieve-Standard-Geographies-for-Analysis" title="Permalink to this heading">¶</a></h2>
 <p>Standard geographies can be retrieved from the country object. Especially for the CBSA’s, the exact string can be difficult to figure out. Thankfully, the <code class="docutils literal notranslate"><span class="pre">`standard_geography_query</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#standard-geography-query</a>&gt;`__ can be used to search for the exact string to use for retrieving subgeographies.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -474,9 +484,9 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </div>
 </section>
 <section id="Enrich">
-<h2>Enrich<a class="headerlink" href="#Enrich" title="Permalink to this headline">¶</a></h2>
+<h2>Enrich<a class="headerlink" href="#Enrich" title="Permalink to this heading">¶</a></h2>
 <section id="Get-Variables-for-Enrichment">
-<h3>Get Variables for Enrichment<a class="headerlink" href="#Get-Variables-for-Enrichment" title="Permalink to this headline">¶</a></h3>
+<h3>Get Variables for Enrichment<a class="headerlink" href="#Get-Variables-for-Enrichment" title="Permalink to this heading">¶</a></h3>
 <p>Using the filtering capabilities for Pandas data frames, we can quickly create a list of variables to work with. It is useful to note, even though I do not take advantage of it below, the <cite>Pandas ``contains`</cite> &lt;<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.contains.html</a>&gt;`__ method supports <a class="reference external" href="https://docs.python.org/3/howto/regex.html">Python regular expression</a> string syntax facilitating very powerful filtering.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -657,7 +667,7 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </div>
 </section>
 <section id="Perform-Enrichment">
-<h3>Perform Enrichment<a class="headerlink" href="#Perform-Enrichment" title="Permalink to this headline">¶</a></h3>
+<h3>Perform Enrichment<a class="headerlink" href="#Perform-Enrichment" title="Permalink to this heading">¶</a></h3>
 <p>Enrichment is as straightforward as running the <code class="docutils literal notranslate"><span class="pre">`enrich</span></code> method &lt;<a class="reference external" href="https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich">https://developers.arcgis.com/python/api-reference/arcgis.geoenrichment.html#enrich</a>&gt;`__. Please notice the input for the <code class="docutils literal notranslate"><span class="pre">analysis_variables</span></code> parameter, a list of variable names. In the next release, you will be able to just input the filtered enrichment variables dataframe to make this easier, but for now, we still need to prepare the input for this parameter a bit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -1036,9 +1046,9 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </section>
 </section>
 <section id="Add-Aliases">
-<h2>Add Aliases<a class="headerlink" href="#Add-Aliases" title="Permalink to this headline">¶</a></h2>
+<h2>Add Aliases<a class="headerlink" href="#Add-Aliases" title="Permalink to this heading">¶</a></h2>
 <section id="Create-Pandas-Series-for-Alias-Lookup">
-<h3>Create Pandas Series for Alias Lookup<a class="headerlink" href="#Create-Pandas-Series-for-Alias-Lookup" title="Permalink to this headline">¶</a></h3>
+<h3>Create Pandas Series for Alias Lookup<a class="headerlink" href="#Create-Pandas-Series-for-Alias-Lookup" title="Permalink to this heading">¶</a></h3>
 <p>We can create a Pandas series enabling easy column alias lookup by removing duplicate names, set the index to the column name, and just keeping the alias column.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1073,7 +1083,7 @@ Name: alias, Length: 16275, dtype: object
 </div>
 </section>
 <section id="Use-Alias-List-to-Look-Up-Relevant-Column-Aliases">
-<h3>Use Alias List to Look Up Relevant Column Aliases<a class="headerlink" href="#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases" title="Permalink to this headline">¶</a></h3>
+<h3>Use Alias List to Look Up Relevant Column Aliases<a class="headerlink" href="#Use-Alias-List-to-Look-Up-Relevant-Column-Aliases" title="Permalink to this heading">¶</a></h3>
 <p>Using a ternerary operator in a list comprehension with the Pandas Series created in the last step enables us to look up aliases if there is a match and keep the existing column name if there is not a match. This enables us to create a list of column names for the output data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -1173,7 +1183,7 @@ Name: alias, Length: 16275, dtype: object
 </div>
 </section>
 <section id="Prune-Columns">
-<h3>Prune Columns<a class="headerlink" href="#Prune-Columns" title="Permalink to this headline">¶</a></h3>
+<h3>Prune Columns<a class="headerlink" href="#Prune-Columns" title="Permalink to this heading">¶</a></h3>
 <p>If the intention for the output data is for subsequent analysis, it is easier to just have the unique identifier, in this case the zip code, and the enriched columns in the final output. We can create a list of these columns using a list comprehension to filter the column names.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1363,7 +1373,7 @@ Name: alias, Length: 16275, dtype: object
 </div>
 </section>
 <section id="Apply-Aliases">
-<h3>Apply Aliases<a class="headerlink" href="#Apply-Aliases" title="Permalink to this headline">¶</a></h3>
+<h3>Apply Aliases<a class="headerlink" href="#Apply-Aliases" title="Permalink to this heading">¶</a></h3>
 <p>Using the same method as above, we can create a list of aliases. These aliases can then be applied to the output data frame. Also, to faciliate quick retrieval by ID, we can set the index to this ID.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1578,7 +1588,7 @@ Name: alias, Length: 16275, dtype: object
 </section>
 </section>
 <section id="Final-Product---Export-to-Excel">
-<h2>Final Product - Export to Excel<a class="headerlink" href="#Final-Product---Export-to-Excel" title="Permalink to this headline">¶</a></h2>
+<h2>Final Product - Export to Excel<a class="headerlink" href="#Final-Product---Export-to-Excel" title="Permalink to this heading">¶</a></h2>
 <p>For follow on analysis using Excel, Pandas data frames can easily be saved to Excel.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1602,7 +1612,7 @@ Name: alias, Length: 16275, dtype: object
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

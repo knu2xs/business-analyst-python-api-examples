@@ -26,9 +26,7 @@
 SETLOCAL
 SET PROJECT_DIR=%cd%
 SET PROJECT_NAME=business-analyst-python-api-examples
-SET SUPPORT_LIBRARY=ba_ex
-SET ENV_NAME=ba-ex
-SET ENV_DEV_NAME=geosaurus
+
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: COMMANDS                                                                     :
@@ -40,16 +38,15 @@ GOTO %1
 :: Perform data preprocessing steps contained in the make_data.py script.
 :data
     ENDLOCAL & (
-        CALL python src/make_data.py
-        ECHO ^>^>^> Data processed.
+        CALL src/make_data.py
+        ECHO ^>^>^> Data setup complete.
     )
     GOTO end
 
 :: Make documentation using Sphinx!
 :docs
     ENDLOCAL & (
-        CALL conda activate ./env
-        CALL docsrc/make.bat github
+        CALL conda run -p "%PROJECT_DIR%\env" sphinx-build -a -b html docsrc docs
     )
 	GOTO end
 
@@ -65,16 +62,16 @@ GOTO %1
     ENDLOCAL & (
         
         :: Create new environment by cloning the original
-        CALL conda create -p ./env --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
+        CALL conda create -p "%PROJECT_DIR%\env" --clone "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"
 
         :: Add more fun stuff from environment file
-        CALL conda env update -p ./env -f environment.yml
+        CALL conda env update -p "%PROJECT_DIR%\env" -f environment.yml
 
         :: Install the local package in development (experimental) mode
-        CALL conda run -p ./env python -m pip install -e .
+        CALL conda run -p "%PROJECT_DIR%\env" python -m pip install -e .
 
         :: Activate the environment so you can get to work
-        CALL activate ./env
+        CALL activate "%PROJECT_DIR%\env"
 
     )
     GOTO end
@@ -89,7 +86,7 @@ GOTO %1
 
 :: Start Jupyter Lab
 :jupyter
-    ENDLOCAL & CALL conda run -p ./env jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
+    ENDLOCAL & CALL conda run -p "%PROJECT_DIR%\env" jupyter lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token=""
     GOTO end
 
 :: Run all tests in module

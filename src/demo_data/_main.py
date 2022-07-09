@@ -22,10 +22,13 @@ class DataAsset(object):
                      'fips' in c.lower()
                      or 'id' in c.lower()
                      or c == 'SHAPE'
-                     or c == 'LOCNUM']
+                     or c.lower() == 'locnum']
         df = df.loc[:, keep_cols]
         df.spatial.set_geometry('SHAPE')
         return df
+
+    def to_feature_class(self, output_gdb: Path):
+        return self.df.spatial.to_featureclass(str(output_gdb/self.name))
 
 
 class DemoData(object):
@@ -36,5 +39,9 @@ class DemoData(object):
         for pkl_pth in data_dir.glob('*pkl'):
             setattr(self, pkl_pth.stem, DataAsset(pkl_pth))
 
+    @property
+    def assets(self):
+        asset_lst = [itm for itm in self.__dict__.values() if isinstance(itm, DataAsset)]
+        return asset_lst
 
 demo_data = DemoData()

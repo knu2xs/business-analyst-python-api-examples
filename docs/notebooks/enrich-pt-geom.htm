@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Enrich Using Point Geometries &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,16 +13,17 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
-    <link rel="next" title="Future" href="../future.htm" />
-    <link rel="prev" title="Dev Summit 2021" href="enrich-std-geo.htm" />
+    <link rel="next" title="Workflows" href="../workflows.htm" />
+    <link rel="prev" title="Enrich Using Standard Geography" href="enrich-std-geo.htm" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -53,40 +54,35 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../capabilities.htm">Capabilities</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../current.htm">Current</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../next.htm">Next Release</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="../enrich.htm">Enrich</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="enrich-std-geo.htm">Dev Summit 2021</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Enrich Using Point Geometries</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#Point-List-Using-Defaults">Point List Using Defaults</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Specify-Proximity-Value">Specify Proximity Value</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Specify-Proximity-Type">Specify Proximity Type</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="enrich-intro.htm">Introducation to ``enrich``</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../enrich_options.htm">Enrich Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="enrich-std-geo.htm">Enrich Using Standard Geography</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Enrich Using Point Geometries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Point-List-Using-Defaults">Point List Using Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Specify-Proximity-Value">Specify Proximity Value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Specify-Proximity-Type">Specify Proximity Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../future.htm">Future</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.htm">Documentation overview</a><ul>
-  <li><a href="../capabilities.htm">Capabilities and Functionality</a><ul>
-  <li><a href="../next.htm">Next Release</a><ul>
-  <li><a href="../enrich.htm">Enrich</a><ul>
-      <li>Previous: <a href="enrich-std-geo.htm" title="previous chapter">Dev Summit 2021</a></li>
-      <li>Next: <a href="../future.htm" title="next chapter">Future</a></li>
-  </ul></li>
+  <li><a href="../enrich.htm">Geoenrichment - Enrich</a><ul>
+  <li><a href="../enrich_options.htm">Enrich Options</a><ul>
+      <li>Previous: <a href="enrich-std-geo.htm" title="previous chapter">Enrich Using Standard Geography</a></li>
+      <li>Next: <a href="../workflows.htm" title="next chapter">Workflows</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -101,7 +97,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -333,6 +329,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -341,10 +338,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -356,18 +357,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Enrich-Using-Point-Geometries">
-<h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this headline">¶</a></h1>
+<h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this heading">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -471,7 +475,7 @@ div.rendered_html tbody tr:hover {
 GIS @ <a href="https://www.arcgis.com">https://www.arcgis.com</a></div>
 </div>
 <section id="Point-List-Using-Defaults">
-<h2>Point List Using Defaults<a class="headerlink" href="#Point-List-Using-Defaults" title="Permalink to this headline">¶</a></h2>
+<h2>Point List Using Defaults<a class="headerlink" href="#Point-List-Using-Defaults" title="Permalink to this heading">¶</a></h2>
 <p>To enrich, we start by creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code> object instance. As part of the constructor, we need to tell the object what Business Analyst source to use in the <code class="docutils literal notranslate"><span class="pre">gis</span></code> parameter. In this case, we are telling the object to use a local instance of ArcGIS Pro with Business Analyst and the United States data pack.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -994,7 +998,7 @@ memory usage: 560.0+ bytes
 </div>
 </section>
 <section id="Specify-Proximity-Value">
-<h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this headline">¶</a></h2>
+<h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this heading">¶</a></h2>
 <p>If wanting to use a value different from the default of one kilometer (highly recommended), this can easily be specified using the <code class="docutils literal notranslate"><span class="pre">proximity_value</span></code> parameter.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -1154,7 +1158,7 @@ memory usage: 560.0+ bytes
 </div>
 </section>
 <section id="Specify-Proximity-Value-and-Metric">
-<h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this headline">¶</a></h2>
+<h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this heading">¶</a></h2>
 <p>If desiring to use a different measure of distance, such as miles, this can be specified as well using the <code class="docutils literal notranslate"><span class="pre">proximity_metric</span></code> parameter.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1315,7 +1319,7 @@ memory usage: 560.0+ bytes
 </div>
 </section>
 <section id="Specify-Proximity-Type">
-<h2>Specify Proximity Type<a class="headerlink" href="#Specify-Proximity-Type" title="Permalink to this headline">¶</a></h2>
+<h2>Specify Proximity Type<a class="headerlink" href="#Specify-Proximity-Type" title="Permalink to this heading">¶</a></h2>
 <p>The above examples all use the default <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> of <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>. However, based on what transportation network you have available with the GIS source you are using, other methods are also available. These can be discovered using the <code class="docutils literal notranslate"><span class="pre">travel_modes</span></code> property of the <code class="docutils literal notranslate"><span class="pre">Country</span></code>. Any of the vaues in the <code class="docutils literal notranslate"><span class="pre">names</span></code> column are valid values for <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> in addition to the default <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -1630,7 +1634,7 @@ memory usage: 560.0+ bytes
 </div>
 </section>
 <section id="Use-a-Spatially-Enabled-Data-Frame">
-<h2>Use a Spatially Enabled Data Frame<a class="headerlink" href="#Use-a-Spatially-Enabled-Data-Frame" title="Permalink to this headline">¶</a></h2>
+<h2>Use a Spatially Enabled Data Frame<a class="headerlink" href="#Use-a-Spatially-Enabled-Data-Frame" title="Permalink to this heading">¶</a></h2>
 <p>Finally, although using a list of <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> objects may be useful, likely a much more common paradigm is the Spatially Enabled Data Frame. Above, we created a Spatially Enabled Data Frame. We can use this as input into the <code class="docutils literal notranslate"><span class="pre">geographies</span></code> parameter.</p>
 <p>Also, just to demonstrate the interchangability of GIS sources, we are going to create a <code class="docutils literal notranslate"><span class="pre">Country</span></code> instance using the connection to ArcGIS Online, and perform the same workflow.</p>
 <div class="nbinput docutils container">
@@ -1816,7 +1820,7 @@ memory usage: 560.0+ bytes
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

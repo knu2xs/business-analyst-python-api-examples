@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Enrich Variable Name Lookup &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,12 +13,13 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
     <link rel="next" title="Enrich Store Locations" href="enrich-store-locations.htm" />
@@ -53,7 +54,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Enrich Variable Name Lookup</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Load-Excel-Table-with-Various-Representations-of-Enrich-Names">Load Excel Table with Various Representations of Enrich Names</a></li>
@@ -66,6 +67,11 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#Concantenating-for-Local-Enrich">Concantenating for Local Enrich</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Adding-Onto-Existing-Table">Adding Onto Existing Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Saving-Results">Saving Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Garbage-Disposal-Function">Garbage Disposal Function</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="enrich-store-locations.htm">Enrich Store Locations</a></li>
@@ -74,6 +80,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -96,7 +103,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -328,6 +335,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -336,10 +344,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -351,18 +363,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Enrich-Variable-Name-Lookup">
-<h1>Enrich Variable Name Lookup<a class="headerlink" href="#Enrich-Variable-Name-Lookup" title="Permalink to this headline">¶</a></h1>
+<h1>Enrich Variable Name Lookup<a class="headerlink" href="#Enrich-Variable-Name-Lookup" title="Permalink to this heading">¶</a></h1>
 <p>Enrich variable names can be represented using a variety of string representations depending on where you are looking. Frequently there is a need to cross reference between these. The <code class="docutils literal notranslate"><span class="pre">Country.enrich_variables</span></code> property provides the ability to easily retrieve a Pandas data frame. This data frame can be used to perform cross reference lookups, but there also is a hidden method you can use as well, <code class="docutils literal notranslate"><span class="pre">Country._ba_cntry.get_enrich_variables_from_name_list</span></code>. This method accepts any iterabe of
 strings, and will look up the values by checking for a sequence of case insensitive matches in the <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">alias</span></code>, <code class="docutils literal notranslate"><span class="pre">field_name</span></code> and <code class="docutils literal notranslate"><span class="pre">enrich_field_name</span></code> columns.</p>
 <p>NOTE: This requires at least version 1.9.1 of the Python API. This was included with the Pro 2.9 release, but if you have a previous release of Pro, you can get the most recent release of the Python API by <a class="reference external" href="https://pro.arcgis.com/en/pro-app/latest/arcpy/get-started/work-with-python-environments.htm">cloning your default Python environment, setting your new environment to be the default</a> and <a class="reference external" href="https://pro.arcgis.com/en/pro-app/latest/arcpy/get-started/work-with-python-packages.htm">updating the ArcGIS Python API (arcgis)
@@ -380,7 +395,7 @@ package</a>.</p>
 </div>
 </div>
 <section id="Load-Excel-Table-with-Various-Representations-of-Enrich-Names">
-<h2>Load Excel Table with Various Representations of Enrich Names<a class="headerlink" href="#Load-Excel-Table-with-Various-Representations-of-Enrich-Names" title="Permalink to this headline">¶</a></h2>
+<h2>Load Excel Table with Various Representations of Enrich Names<a class="headerlink" href="#Load-Excel-Table-with-Various-Representations-of-Enrich-Names" title="Permalink to this heading">¶</a></h2>
 <p>This is a table of name variations for enrich variables I was passed to use as an example of different variations needing to be looked up.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -681,7 +696,7 @@ package</a>.</p>
 </div>
 </section>
 <section id="Create-a-Country-Object-Instance">
-<h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this headline">¶</a></h2>
+<h2>Create a Country Object Instance<a class="headerlink" href="#Create-a-Country-Object-Instance" title="Permalink to this heading">¶</a></h2>
 <p>Create a Country object instance referencing the country you are looking for variables in.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -693,10 +708,10 @@ package</a>.</p>
 </div>
 </section>
 <section id="Perform-Lookups">
-<h2>Perform Lookups<a class="headerlink" href="#Perform-Lookups" title="Permalink to this headline">¶</a></h2>
+<h2>Perform Lookups<a class="headerlink" href="#Perform-Lookups" title="Permalink to this heading">¶</a></h2>
 <p>Now, we just need to provide an interable of strings to be matched into the <code class="docutils literal notranslate"><span class="pre">get_enrich_variables_from_list</span></code> function.</p>
 <section id="ArcGIS-Pro-Enrich-Names">
-<h3>ArcGIS Pro Enrich Names<a class="headerlink" href="#ArcGIS-Pro-Enrich-Names" title="Permalink to this headline">¶</a></h3>
+<h3>ArcGIS Pro Enrich Names<a class="headerlink" href="#ArcGIS-Pro-Enrich-Names" title="Permalink to this heading">¶</a></h3>
 <p>If using a list of names used to enrich with ArcGIS Pro, you can easily look up these values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -718,7 +733,7 @@ package</a>.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">pro_enrich_names</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">pro_enrich_names</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -959,7 +974,7 @@ package</a>.</p>
 </div>
 </section>
 <section id="ArcMap-Enrich-Names">
-<h3>ArcMap Enrich Names<a class="headerlink" href="#ArcMap-Enrich-Names" title="Permalink to this headline">¶</a></h3>
+<h3>ArcMap Enrich Names<a class="headerlink" href="#ArcMap-Enrich-Names" title="Permalink to this heading">¶</a></h3>
 <p>ArcMap required a slightly different string format. Hence, if migrating from ArcMap, the same workflow can be used to retrieve these values as well.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -981,7 +996,7 @@ package</a>.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_arcmap</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_arcmap</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1294,7 +1309,7 @@ package</a>.</p>
 </div>
 </section>
 <section id="Field-Names">
-<h3>Field Names<a class="headerlink" href="#Field-Names" title="Permalink to this headline">¶</a></h3>
+<h3>Field Names<a class="headerlink" href="#Field-Names" title="Permalink to this heading">¶</a></h3>
 <p>Once enriched, the <code class="docutils literal notranslate"><span class="pre">enrich_name</span></code> string has the period replaced for the output attibute field name (<code class="docutils literal notranslate"><span class="pre">enrich_field_name</span></code>). We can use also use these output field name values to lookup relevant rows in the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> table.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -1316,7 +1331,7 @@ package</a>.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_pro</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_pro</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1566,7 +1581,7 @@ usa._ba_cntry.get_enrich_variables_from_name_list(field_name_list)
 </div>
 </section>
 <section id="Preprocessing-with-Lookup">
-<h3>Preprocessing with Lookup<a class="headerlink" href="#Preprocessing-with-Lookup" title="Permalink to this headline">¶</a></h3>
+<h3>Preprocessing with Lookup<a class="headerlink" href="#Preprocessing-with-Lookup" title="Permalink to this heading">¶</a></h3>
 <p>The first column we are saving for last. These values do not have explicit matches. However, using pandas, we can split the string at the period and only keep the first part. This first part can then be looked up since it matches the <code class="docutils literal notranslate"><span class="pre">name</span></code> column.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1590,13 +1605,14 @@ usa._ba_cntry.get_enrich_variables_from_name_list(field_name_list)
 Name: guided_workflow_names, dtype: object
 </pre></div></div>
 </div>
+<p>We do it slightly differently here. Instead of simply creating an iterable to use for lookup, in this case, we add the <code class="docutils literal notranslate"><span class="pre">search_names</span></code> to the existing dataframe generated from the Excel table we read in.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_names</span> <span class="o">=</span> <span class="n">xlsx_df</span><span class="o">.</span><span class="n">guided_workflow_names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xlsx_df</span><span class="p">[</span><span class="s1">&#39;search_names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xlsx_df</span><span class="o">.</span><span class="n">guided_workflow_names</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="n">val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="n">search_names</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">xlsx_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1604,21 +1620,83 @@ Name: guided_workflow_names, dtype: object
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-0     TOTPOP_CY
-1      HHPOP_CY
-2     FAMPOP_CY
-3    MP14129a_B
-4      X11001_X
-Name: guided_workflow_names, dtype: object
-</pre></div></div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>guided_workflow_names</th>
+      <th>pro_enrich_names</th>
+      <th>fieldnames_arcmap</th>
+      <th>fieldnames_pro</th>
+      <th>search_names</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.totpop_cy</td>
+      <td>TOTPOP_CY</td>
+      <td>populationtotals_totpop_cy</td>
+      <td>TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HHPOP_CY.2021 Key Demographic Indicators (Esri...</td>
+      <td>householdtotals.tothh_cy</td>
+      <td>HHPOP_CY</td>
+      <td>populationtotals_hhpop_cy</td>
+      <td>HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FAMPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.fampop_cy</td>
+      <td>FAMPOP_CY</td>
+      <td>populationtotals_fampop_cy</td>
+      <td>FAMPOP_CY</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP14129a_B.2021 Health (Market Potential) (Esr...</td>
+      <td>healthpersonalcare.mp14129a_b</td>
+      <td>MP14129a_B</td>
+      <td>healthpersonalcare_mp14129a_b</td>
+      <td>MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X11001_X.2021 Education (Consumer Spending) (E...</td>
+      <td>education.x11001_x</td>
+      <td>X11001_X</td>
+      <td>education_x11001_x</td>
+      <td>X11001_X</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
+<p>Since the function just needs an <code class="docutils literal notranslate"><span class="pre">Iterable</span></code> object, we can use the column (Pandas Series) we just created to look up valid values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_name_list</span><span class="p">(</span><span class="n">search_names</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">search_names</span><span class="p">)</span>
 
 <span class="n">enrich_vars</span>
 </pre></div>
@@ -1934,7 +2012,7 @@ Name: guided_workflow_names, dtype: object
 </section>
 </section>
 <section id="Concantenating-for-Local-Enrich">
-<h2>Concantenating for Local Enrich<a class="headerlink" href="#Concantenating-for-Local-Enrich" title="Permalink to this headline">¶</a></h2>
+<h2>Concantenating for Local Enrich<a class="headerlink" href="#Concantenating-for-Local-Enrich" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">arcpy.ba.EnrichLayer</span></code> tool in ArcGIS Pro needs a semicolon separated string of <code class="docutils literal notranslate"><span class="pre">enrich_name</span></code> values for input. From any of the above results, this can quickly be created from the <code class="docutils literal notranslate"><span class="pre">enich_name</span></code> column.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1954,13 +2032,522 @@ Name: guided_workflow_names, dtype: object
 Health.MEDHINC_CY;ACS_Housing_Summary_rep.MOETOTPOP;travelMPI.TADULTBASE;Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY;Policy.DIVINDX_CY;householdincome.ACSMEDHINC;householdincome.MOEMEDHINC;householdincome.RELMEDHINC;Community_Profile_rep.X11001_I;ElectronicsInternet.MP09147a_B;ElectronicsInternet.MP09147a_I;ElectronicsInternet.MP09148a_B;ElectronicsInternet.MP09148a_I;ElectronicsInternet.MP09134a_B;ElectronicsInternet.MP09134a_I;education.X11001_X;education.X11001_A;HealthPersonalCare.MP14129a_B;industry.INDAGRI_CY;industry.INDMIN_CY;industry.INDCONS_CY;householdsbyraceofhouseholder.HHWHTHHR10;householdsbyraceofhouseholder.HHBLKHHR10;householdsbyraceofhouseholder.HHAIHHR10;householdsbyraceofhouseholder.HHASNHHR10;householdsbyraceofhouseholder.HHPIHHR10;householdsbyraceofhouseholder.HHOTHHHR10;KeyUSFacts.POPGRW10CY;tapestryadultsNEW.TADULT01;tapestryadultsNEW.TADULT02;population.ACSTOTPOP;population.RELTOTPOP;populationtotals.HHPOP_CY;populationtotals.FAMPOP_CY
 </pre></div></div>
 </div>
+</section>
+<section id="Adding-Onto-Existing-Table">
+<h2>Adding Onto Existing Table<a class="headerlink" href="#Adding-Onto-Existing-Table" title="Permalink to this heading">¶</a></h2>
+<p>Also, if we want, we can add the values needed for the Enrich Layer tool onto our existing table.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_df</span> <span class="o">=</span> <span class="n">enrich_vars</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;enrich_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="n">add_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>enrich_name</th>
+    </tr>
+    <tr>
+      <th>name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>MEDHINC_CY</th>
+      <td>Health.MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>MOETOTPOP</th>
+      <td>ACS_Housing_Summary_rep.MOETOTPOP</td>
+    </tr>
+    <tr>
+      <th>TADULTBASE</th>
+      <td>travelMPI.TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>TOTPOP_CY</th>
+      <td>Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>DIVINDX_CY</th>
+      <td>Policy.DIVINDX_CY</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">joined_df</span> <span class="o">=</span> <span class="n">xlsx_df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">add_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;search_names&#39;</span><span class="p">)</span>
+
+<span class="n">joined_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">joined_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 34 entries, 0 to 33
+Data columns (total 6 columns):
+ #   Column                 Non-Null Count  Dtype
+---  ------                 --------------  -----
+ 0   guided_workflow_names  34 non-null     object
+ 1   pro_enrich_names       34 non-null     object
+ 2   fieldnames_arcmap      34 non-null     object
+ 3   fieldnames_pro         34 non-null     object
+ 4   search_names           34 non-null     object
+ 5   enrich_name            34 non-null     object
+dtypes: object(6)
+memory usage: 1.7+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>guided_workflow_names</th>
+      <th>pro_enrich_names</th>
+      <th>fieldnames_arcmap</th>
+      <th>fieldnames_pro</th>
+      <th>search_names</th>
+      <th>enrich_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.totpop_cy</td>
+      <td>TOTPOP_CY</td>
+      <td>populationtotals_totpop_cy</td>
+      <td>TOTPOP_CY</td>
+      <td>Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HHPOP_CY.2021 Key Demographic Indicators (Esri...</td>
+      <td>householdtotals.tothh_cy</td>
+      <td>HHPOP_CY</td>
+      <td>populationtotals_hhpop_cy</td>
+      <td>HHPOP_CY</td>
+      <td>populationtotals.HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FAMPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.fampop_cy</td>
+      <td>FAMPOP_CY</td>
+      <td>populationtotals_fampop_cy</td>
+      <td>FAMPOP_CY</td>
+      <td>populationtotals.FAMPOP_CY</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP14129a_B.2021 Health (Market Potential) (Esr...</td>
+      <td>healthpersonalcare.mp14129a_b</td>
+      <td>MP14129a_B</td>
+      <td>healthpersonalcare_mp14129a_b</td>
+      <td>MP14129a_B</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X11001_X.2021 Education (Consumer Spending) (E...</td>
+      <td>education.x11001_x</td>
+      <td>X11001_X</td>
+      <td>education_x11001_x</td>
+      <td>X11001_X</td>
+      <td>education.X11001_X</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Finally, if all we want is the input values, and the enrich names, we can quickly filter to just these columns.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vals_df</span> <span class="o">=</span> <span class="n">joined_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;guided_workflow_names&#39;</span><span class="p">,</span> <span class="s1">&#39;enrich_name&#39;</span><span class="p">]]</span>
+
+<span class="n">vals_df</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>guided_workflow_names</th>
+      <th>enrich_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HHPOP_CY.2021 Key Demographic Indicators (Esri...</td>
+      <td>populationtotals.HHPOP_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FAMPOP_CY.2021 Key Demographic Indicators (Esr...</td>
+      <td>populationtotals.FAMPOP_CY</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP14129a_B.2021 Health (Market Potential) (Esr...</td>
+      <td>HealthPersonalCare.MP14129a_B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>X11001_X.2021 Education (Consumer Spending) (E...</td>
+      <td>education.X11001_X</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>X11001_A.2021 Education (Consumer Spending) (E...</td>
+      <td>education.X11001_A</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>X11001_I.2021 Education (Consumer Spending) (E...</td>
+      <td>Community_Profile_rep.X11001_I</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>MP09147a_B.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09147a_B</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>MP09147a_I.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09147a_I</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>MP09148a_B.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09148a_B</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>MP09148a_I.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09148a_I</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>MP09134a_B.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09134a_B</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MP09134a_I.2021 Electronics (Market Potential)...</td>
+      <td>ElectronicsInternet.MP09134a_I</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>ACSTOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>population.ACSTOTPOP</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>MOETOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>ACS_Housing_Summary_rep.MOETOTPOP</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>RELTOTPOP.2015-2019 Key Demographic Indicators...</td>
+      <td>population.RELTOTPOP</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>INDAGRI_CY.2021 Labor Force (Esri) (US 2021 Re...</td>
+      <td>industry.INDAGRI_CY</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>INDMIN_CY.2021 Labor Force (Esri) (US 2021 Ret...</td>
+      <td>industry.INDMIN_CY</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>INDCONS_CY.2021 Labor Force (Esri) (US 2021 Re...</td>
+      <td>industry.INDCONS_CY</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>HHWHTHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.HHWHTHHR10</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>HHBLKHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.HHBLKHHR10</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>HHAIHHR10.2010 Households by Race_Hispanic Ori...</td>
+      <td>householdsbyraceofhouseholder.HHAIHHR10</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>HHASNHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.HHASNHHR10</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>HHPIHHR10.2010 Households by Race_Hispanic Ori...</td>
+      <td>householdsbyraceofhouseholder.HHPIHHR10</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>HHOTHHHR10.2010 Households by Race_Hispanic Or...</td>
+      <td>householdsbyraceofhouseholder.HHOTHHHR10</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>TADULTBASE.2021 Tapestry Market Segmentation (...</td>
+      <td>travelMPI.TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>TADULT01.2021 Tapestry Market Segmentation (Ad...</td>
+      <td>tapestryadultsNEW.TADULT01</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>TADULT02.2021 Tapestry Market Segmentation (Ad...</td>
+      <td>tapestryadultsNEW.TADULT02</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>POPGRW10CY.2021 Key Demographic Indicators (Es...</td>
+      <td>KeyUSFacts.POPGRW10CY</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>DIVINDX_CY.2021 Race and Hispanic Origin (Esri...</td>
+      <td>Policy.DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>MEDHINC_CY.2021 Income (Esri) (Esri USA 2021)</td>
+      <td>Health.MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>ACSMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.ACSMEDHINC</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>MOEMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.MOEMEDHINC</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>RELMEDHINC.2015-2019 Income (ACS) (Esri USA 20...</td>
+      <td>householdincome.RELMEDHINC</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<section id="Saving-Results">
+<h3>Saving Results<a class="headerlink" href="#Saving-Results" title="Permalink to this heading">¶</a></h3>
+<p>Obviously, copying and pasting out of this notebook is a possibility, but Pandas also includes a large number of output options including back to Excel or one of my personal favorites, <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_clipboard.html#pandas.DataFrame.to_clipboard">directly to the clipboard</a>.</p>
+<p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/io.html">Input/Output - Pandas Documentation</a></p>
+</section>
+</section>
+<section id="Garbage-Disposal-Function">
+<h2>Garbage Disposal Function<a class="headerlink" href="#Garbage-Disposal-Function" title="Permalink to this heading">¶</a></h2>
+<p>Taking advantage of a little iteration we can create a more universal function to try and find matches based on any of these input types. While we are at it, we can also add a bit of convenience, the option to copy the results directly to the clipboard.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">Country</span>
+<span class="kn">from</span> <span class="nn">pandas.io.clipboards</span> <span class="kn">import</span> <span class="n">to_clipboard</span>
+
+
+<span class="k">def</span> <span class="nf">get_variable_string</span><span class="p">(</span><span class="n">input_names</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Path</span><span class="p">],</span> <span class="n">country</span><span class="p">:</span> <span class="n">Country</span><span class="p">,</span> <span class="n">copy_to_clipboard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Based on an iterable input identifying variables, return the string needed to perform enrichment using the Enrich Layer</span>
+<span class="sd">    geoprocessing tool.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input_names: Iterable (typically a list) of strings identifying the variable names for enrichment, or a path to a</span>
+<span class="sd">            Feature Class if trying to find variable names from the feature inputs.</span>
+<span class="sd">        country: Country to search in for enrichment variables.</span>
+<span class="sd">        copy_to_clipboard: Whether or not to copy the result to the clipboard. Default is false.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        String formatted for input into the Enrich Layer geoprocessing tool.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if the input names is a path to a feature class, get the column names to use for lookup</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_names</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">arcpy</span><span class="o">.</span><span class="n">ListFields</span><span class="p">(</span><span class="n">input_names</span><span class="p">)]</span>
+
+    <span class="c1"># try to find valid enrich variable strings based on the input names</span>
+    <span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">country</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span>
+
+    <span class="c1"># if nothing found, try to split on a period, and see if this provides any matches</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">enrich_vars</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">input_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">var_str</span> <span class="ow">in</span> <span class="n">input_names</span><span class="p">]</span>
+
+        <span class="c1"># try again - NOTE: not doing the split before trying, becuase another potential input format can include periods</span>
+        <span class="n">enrich_vars</span> <span class="o">=</span> <span class="n">country</span><span class="o">.</span><span class="n">_ba_cntry</span><span class="o">.</span><span class="n">get_enrich_variables_from_iterable</span><span class="p">(</span><span class="n">input_names</span><span class="p">)</span>
+
+    <span class="c1"># sort for consistency</span>
+    <span class="n">enrich_vars</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># combine the enrich variable strings into a single string</span>
+    <span class="n">enrich_str</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">enrich_vars</span><span class="o">.</span><span class="n">enrich_name</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="c1"># now, if desiring making life easy by dropping right into the clipboard</span>
+    <span class="k">if</span> <span class="n">copy_to_clipboard</span><span class="p">:</span>
+        <span class="n">to_clipboard</span><span class="p">(</span><span class="n">enrich_str</span><span class="p">,</span> <span class="n">excel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">enrich_str</span>
 </pre></div>
 </div>
+</div>
+<p>Now, with this new function we can input the variations from above, and consistently get the results we need. Because of the repeat trying to find variables, you will encounter the warning below if passing in the variables needing to be modified (split on the period).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_variable_string</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">guided_workflow_names</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="n">usa</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+d:\projects\geosaurus\src\arcgis\geoenrichment\_business_analyst\_main.py:1157: UserWarning: It appears none of the input enrich enrich_variables were found.
+  warn(f&#34;It appears none of the input enrich enrich_variables were found.&#34;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;householdincome.ACSMEDHINC;population.ACSTOTPOP;Policy.DIVINDX_CY;populationtotals.FAMPOP_CY;householdsbyraceofhouseholder.HHAIHHR10;householdsbyraceofhouseholder.HHASNHHR10;householdsbyraceofhouseholder.HHBLKHHR10;householdsbyraceofhouseholder.HHOTHHHR10;householdsbyraceofhouseholder.HHPIHHR10;populationtotals.HHPOP_CY;householdsbyraceofhouseholder.HHWHTHHR10;industry.INDAGRI_CY;industry.INDCONS_CY;industry.INDMIN_CY;Health.MEDHINC_CY;householdincome.MOEMEDHINC;ACS_Housing_Summary_rep.MOETOTPOP;ElectronicsInternet.MP09134a_B;ElectronicsInternet.MP09134a_I;ElectronicsInternet.MP09147a_B;ElectronicsInternet.MP09147a_I;ElectronicsInternet.MP09148a_B;ElectronicsInternet.MP09148a_I;HealthPersonalCare.MP14129a_B;KeyUSFacts.POPGRW10CY;householdincome.RELMEDHINC;population.RELTOTPOP;tapestryadultsNEW.TADULT01;tapestryadultsNEW.TADULT02;travelMPI.TADULTBASE;Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY;education.X11001_A;Community_Profile_rep.X11001_I;education.X11001_X&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_variable_string</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">fieldnames_arcmap</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="n">usa</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;householdincome.ACSMEDHINC;population.ACSTOTPOP;Policy.DIVINDX_CY;populationtotals.FAMPOP_CY;householdsbyraceofhouseholder.HHAIHHR10;householdsbyraceofhouseholder.HHASNHHR10;householdsbyraceofhouseholder.HHBLKHHR10;householdsbyraceofhouseholder.HHOTHHHR10;householdsbyraceofhouseholder.HHPIHHR10;populationtotals.HHPOP_CY;householdsbyraceofhouseholder.HHWHTHHR10;industry.INDAGRI_CY;industry.INDCONS_CY;industry.INDMIN_CY;Health.MEDHINC_CY;householdincome.MOEMEDHINC;ACS_Housing_Summary_rep.MOETOTPOP;ElectronicsInternet.MP09134a_B;ElectronicsInternet.MP09134a_I;ElectronicsInternet.MP09147a_B;ElectronicsInternet.MP09147a_I;ElectronicsInternet.MP09148a_B;ElectronicsInternet.MP09148a_I;HealthPersonalCare.MP14129a_B;KeyUSFacts.POPGRW10CY;householdincome.RELMEDHINC;population.RELTOTPOP;tapestryadultsNEW.TADULT01;tapestryadultsNEW.TADULT02;travelMPI.TADULTBASE;Age_by_Sex_by_Race_Profile_rep.TOTPOP_CY;education.X11001_A;Community_Profile_rep.X11001_I;education.X11001_X&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_variable_string</span><span class="p">(</span><span class="n">xlsx_df</span><span class="o">.</span><span class="n">pro_enrich_names</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="n">usa</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;householdincome.ACSMEDHINC;veterans.ACSTOTPOP;raceandhispanicorigin.DIVINDX_CY;populationtotals.FAMPOP_CY;householdsbyraceofhouseholder.HHAIHHR10;householdsbyraceofhouseholder.HHASNHHR10;householdsbyraceofhouseholder.HHBLKHHR10;householdsbyraceofhouseholder.HHOTHHHR10;householdsbyraceofhouseholder.HHPIHHR10;householdsbyraceofhouseholder.HHWHTHHR10;industry.INDAGRI_CY;industry.INDCONS_CY;industry.INDMIN_CY;householdincome.MEDHINC_CY;ElectronicsInternet.MP09134a_B;ElectronicsInternet.MP09147a_B;ElectronicsInternet.MP09148a_B;HealthPersonalCare.MP14129a_B;populationtotals.POPGRW10CY;tapestryadultsNEW.TADULT01;tapestryadultsNEW.TADULT02;tapestryadultsNEW.TADULTBASE;householdtotals.TOTHH_CY;populationtotals.TOTPOP_CY;education.X11001_X&#39;
+</pre></div></div>
 </div>
 </section>
 </section>
@@ -1976,7 +2563,7 @@ Health.MEDHINC_CY;ACS_Housing_Summary_rep.MOETOTPOP;travelMPI.TADULTBASE;Age_by_
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

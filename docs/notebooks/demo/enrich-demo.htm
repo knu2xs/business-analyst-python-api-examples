@@ -1,0 +1,1200 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>&lt;no title&gt; &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.htm" />
+    <link rel="search" title="Search" href="../../search.htm" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.htm">BA-Python-API-Examples</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=knu2xs&repo=business-analyst-python-api-examples&type=watch&count=False&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../setup.htm">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../enrich.htm">Enrich Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.htm">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../enrich_demo.htm">Enrich Demo</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.htm">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.htm" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">arcgis.features</span> <span class="kn">import</span> <span class="n">GeoAccessor</span>
+<span class="kn">from</span> <span class="nn">arcgis.gis</span> <span class="kn">import</span> <span class="n">GIS</span>
+
+<span class="kn">from</span> <span class="nn">arcgis.geoenrichment</span> <span class="kn">import</span> <span class="n">get_countries</span><span class="p">,</span> <span class="n">Country</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[63]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sa_pth</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;D:\projects\business-analyst-python-api-examples\data\raw\raw.gdb\pdx_coffee_study_areas_3min_small&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">GeoAccessor</span><span class="o">.</span><span class="n">from_featureclass</span><span class="p">(</span><span class="n">sa_pth</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5 entries, 0 to 4
+Data columns (total 3 columns):
+ #   Column    Non-Null Count  Dtype
+---  ------    --------------  -----
+ 0   OBJECTID  5 non-null      int64
+ 1   locnum    5 non-null      object
+ 2   SHAPE     5 non-null      geometry
+dtypes: geometry(1), int64(1), object(1)
+memory usage: 248.0+ bytes
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[64]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>OBJECTID</th>
+      <th>locnum</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>395959703</td>
+      <td>{"rings": [[[-13633937.6097, 5701669.707400002...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>632063731</td>
+      <td>{"rings": [[[-13634112.6089, 5707200.597800001...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>740967835</td>
+      <td>{"rings": [[[-13623737.656399999, 5701455.6771...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>749646031</td>
+      <td>{"rings": [[[-13629262.631099999, 5706593.8169...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>750786722</td>
+      <td>{"rings": [[[-13625787.647, 5708271.488200001]...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[65]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gis</span> <span class="o">=</span> <span class="n">GIS</span><span class="p">(</span><span class="s1">&#39;pro&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_countries</span><span class="p">(</span><span class="n">gis</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[66]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>iso2</th>
+      <th>iso3</th>
+      <th>name</th>
+      <th>vintage</th>
+      <th>country_id</th>
+      <th>data_source_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>CA</td>
+      <td>CAN</td>
+      <td>Canada</td>
+      <td>2021</td>
+      <td>CAN_ESRI_2021</td>
+      <td>LOCAL;;CAN_ESRI_2021</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>US</td>
+      <td>USA</td>
+      <td>United States</td>
+      <td>2020</td>
+      <td>USA_ESRI_2020</td>
+      <td>LOCAL;;USA_ESRI_2020</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>US</td>
+      <td>USA</td>
+      <td>United States</td>
+      <td>2022</td>
+      <td>USA_ESRI_2022</td>
+      <td>LOCAL;;USA_ESRI_2022</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">usa</span> <span class="o">=</span> <span class="n">Country</span><span class="p">(</span><span class="s1">&#39;usa&#39;</span><span class="p">,</span> <span class="n">gis</span><span class="o">=</span><span class="n">gis</span><span class="p">)</span>
+
+<span class="n">usa</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[67]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Country - United States 2022 (&#39;local&#39;)&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich_variables</span>
+
+<span class="n">ev</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>THHBASE</td>
+      <td>2022 Tapestry Household Base</td>
+      <td>BabyProductsToysGames</td>
+      <td>BabyProductsToysGames.THHBASE</td>
+      <td>BabyProductsToysGames_THHBASE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>TADULTBASE</td>
+      <td>2022 Tapestry Adult Pop Base</td>
+      <td>BabyProductsToysGames</td>
+      <td>BabyProductsToysGames.TADULTBASE</td>
+      <td>BabyProductsToysGames_TADULTBASE</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>MP03017h_B</td>
+      <td>2022 HH Owns Any Baby Furniture or Equipment</td>
+      <td>BabyProductsToysGames</td>
+      <td>BabyProductsToysGames.MP03017h_B</td>
+      <td>BabyProductsToysGames_MP03017h_B</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>MP03017h_I</td>
+      <td>2022 Index: HH Owns Any Baby Furniture or Equi...</td>
+      <td>BabyProductsToysGames</td>
+      <td>BabyProductsToysGames.MP03017h_I</td>
+      <td>BabyProductsToysGames_MP03017h_I</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>MP03018h_B</td>
+      <td>2022 HH Bought Baby Furniture or Equipment/6 Mo</td>
+      <td>BabyProductsToysGames</td>
+      <td>BabyProductsToysGames.MP03018h_B</td>
+      <td>BabyProductsToysGames_MP03018h_B</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>18863</th>
+      <td>MOEMEDYRMV</td>
+      <td>2020 Median Year Householder Moved In MOE (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEMEDYRMV</td>
+      <td>yearmovedin_MOEMEDYRMV</td>
+    </tr>
+    <tr>
+      <th>18864</th>
+      <td>RELMEDYRMV</td>
+      <td>2020 Median Year Householder Moved In REL (ACS...</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELMEDYRMV</td>
+      <td>yearmovedin_RELMEDYRMV</td>
+    </tr>
+    <tr>
+      <th>18865</th>
+      <td>ACSOWNER</td>
+      <td>2020 Owner Households (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.ACSOWNER</td>
+      <td>yearmovedin_ACSOWNER</td>
+    </tr>
+    <tr>
+      <th>18866</th>
+      <td>MOEOWNER</td>
+      <td>2020 Owner Households MOE (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.MOEOWNER</td>
+      <td>yearmovedin_MOEOWNER</td>
+    </tr>
+    <tr>
+      <th>18867</th>
+      <td>RELOWNER</td>
+      <td>2020 Owner Households REL (ACS 5-Yr)</td>
+      <td>yearmovedin</td>
+      <td>yearmovedin.RELOWNER</td>
+      <td>yearmovedin_RELOWNER</td>
+    </tr>
+  </tbody>
+</table>
+<p>18868 rows × 5 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kv</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;cy&#39;</span><span class="p">))</span>
+    <span class="o">&amp;</span> <span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">data_collection</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">))</span>
+<span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">kv</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>alias</th>
+      <th>data_collection</th>
+      <th>enrich_name</th>
+      <th>enrich_field_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>TOTPOP_CY</td>
+      <td>2022 Total Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTPOP_CY</td>
+      <td>KeyUSFacts_TOTPOP_CY</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>GQPOP_CY</td>
+      <td>2022 Group Quarters Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.GQPOP_CY</td>
+      <td>KeyUSFacts_GQPOP_CY</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>DIVINDX_CY</td>
+      <td>2022 Diversity Index</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DIVINDX_CY</td>
+      <td>KeyUSFacts_DIVINDX_CY</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>TOTHH_CY</td>
+      <td>2022 Total Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHH_CY</td>
+      <td>KeyUSFacts_TOTHH_CY</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AVGHHSZ_CY</td>
+      <td>2022 Average Household Size</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHHSZ_CY</td>
+      <td>KeyUSFacts_AVGHHSZ_CY</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>MEDHINC_CY</td>
+      <td>2022 Median Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDHINC_CY</td>
+      <td>KeyUSFacts_MEDHINC_CY</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>AVGHINC_CY</td>
+      <td>2022 Average Household Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGHINC_CY</td>
+      <td>KeyUSFacts_AVGHINC_CY</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>PCI_CY</td>
+      <td>2022 Per Capita Income</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.PCI_CY</td>
+      <td>KeyUSFacts_PCI_CY</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>TOTHU_CY</td>
+      <td>2022 Total Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.TOTHU_CY</td>
+      <td>KeyUSFacts_TOTHU_CY</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>OWNER_CY</td>
+      <td>2022 Owner Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.OWNER_CY</td>
+      <td>KeyUSFacts_OWNER_CY</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>RENTER_CY</td>
+      <td>2022 Renter Occupied HUs</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.RENTER_CY</td>
+      <td>KeyUSFacts_RENTER_CY</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>VACANT_CY</td>
+      <td>2022 Vacant Housing Units</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.VACANT_CY</td>
+      <td>KeyUSFacts_VACANT_CY</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>MEDVAL_CY</td>
+      <td>2022 Median Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MEDVAL_CY</td>
+      <td>KeyUSFacts_MEDVAL_CY</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>AVGVAL_CY</td>
+      <td>2022 Average Home Value</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.AVGVAL_CY</td>
+      <td>KeyUSFacts_AVGVAL_CY</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>POPGRWCYFY</td>
+      <td>2022-2027 Growth Rate: Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.POPGRWCYFY</td>
+      <td>KeyUSFacts_POPGRWCYFY</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>HHGRWCYFY</td>
+      <td>2022-2027 Growth Rate: Households</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.HHGRWCYFY</td>
+      <td>KeyUSFacts_HHGRWCYFY</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>FAMGRWCYFY</td>
+      <td>2022-2027 Growth Rate: Families</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.FAMGRWCYFY</td>
+      <td>KeyUSFacts_FAMGRWCYFY</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>MHIGRWCYFY</td>
+      <td>2022-2027 Growth Rate: Median HH Inc</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.MHIGRWCYFY</td>
+      <td>KeyUSFacts_MHIGRWCYFY</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>PCIGRWCYFY</td>
+      <td>2022-2027 Growth Rate: Per Capita Inc</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.PCIGRWCYFY</td>
+      <td>KeyUSFacts_PCIGRWCYFY</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>DPOP_CY</td>
+      <td>2022 Total Daytime Population</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOP_CY</td>
+      <td>KeyUSFacts_DPOP_CY</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>DPOPWRK_CY</td>
+      <td>2022 Daytime Pop: Workers</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPWRK_CY</td>
+      <td>KeyUSFacts_DPOPWRK_CY</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>DPOPRES_CY</td>
+      <td>2022 Daytime Pop: Residents</td>
+      <td>KeyUSFacts</td>
+      <td>KeyUSFacts.DPOPRES_CY</td>
+      <td>KeyUSFacts_DPOPRES_CY</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">e_df</span> <span class="o">=</span> <span class="n">usa</span><span class="o">.</span><span class="n">enrich</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">kv</span><span class="p">)</span>
+
+<span class="n">e_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="n">e_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5 entries, 0 to 4
+Data columns (total 26 columns):
+ #   Column              Non-Null Count  Dtype
+---  ------              --------------  -----
+ 0   locnum              5 non-null      object
+ 1   has_data            5 non-null      int32
+ 2   aggregation_method  5 non-null      object
+ 3   totpop_cy           5 non-null      float64
+ 4   gqpop_cy            5 non-null      float64
+ 5   divindx_cy          5 non-null      float64
+ 6   tothh_cy            5 non-null      float64
+ 7   avghhsz_cy          5 non-null      float64
+ 8   medhinc_cy          5 non-null      float64
+ 9   avghinc_cy          5 non-null      float64
+ 10  pci_cy              5 non-null      float64
+ 11  tothu_cy            5 non-null      float64
+ 12  owner_cy            5 non-null      float64
+ 13  renter_cy           5 non-null      float64
+ 14  vacant_cy           5 non-null      float64
+ 15  medval_cy           5 non-null      float64
+ 16  avgval_cy           5 non-null      float64
+ 17  popgrwcyfy          5 non-null      float64
+ 18  hhgrwcyfy           5 non-null      float64
+ 19  famgrwcyfy          5 non-null      float64
+ 20  mhigrwcyfy          5 non-null      float64
+ 21  pcigrwcyfy          5 non-null      float64
+ 22  dpop_cy             5 non-null      float64
+ 23  dpopwrk_cy          5 non-null      float64
+ 24  dpopres_cy          5 non-null      float64
+ 25  SHAPE               5 non-null      geometry
+dtypes: float64(22), geometry(1), int32(1), object(2)
+memory usage: 1.1+ KB
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>locnum</th>
+      <th>has_data</th>
+      <th>aggregation_method</th>
+      <th>totpop_cy</th>
+      <th>gqpop_cy</th>
+      <th>divindx_cy</th>
+      <th>tothh_cy</th>
+      <th>avghhsz_cy</th>
+      <th>medhinc_cy</th>
+      <th>avghinc_cy</th>
+      <th>pci_cy</th>
+      <th>tothu_cy</th>
+      <th>owner_cy</th>
+      <th>renter_cy</th>
+      <th>vacant_cy</th>
+      <th>medval_cy</th>
+      <th>avgval_cy</th>
+      <th>popgrwcyfy</th>
+      <th>hhgrwcyfy</th>
+      <th>famgrwcyfy</th>
+      <th>mhigrwcyfy</th>
+      <th>pcigrwcyfy</th>
+      <th>dpop_cy</th>
+      <th>dpopwrk_cy</th>
+      <th>dpopres_cy</th>
+      <th>SHAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>395959703</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>8795.0</td>
+      <td>118.0</td>
+      <td>68.3</td>
+      <td>3381.0</td>
+      <td>2.57</td>
+      <td>64396.0</td>
+      <td>83798.0</td>
+      <td>31993.0</td>
+      <td>3489.0</td>
+      <td>1696.0</td>
+      <td>1685.0</td>
+      <td>108.0</td>
+      <td>365784.0</td>
+      <td>418205.0</td>
+      <td>-0.22</td>
+      <td>-0.33</td>
+      <td>-0.35</td>
+      <td>3.96</td>
+      <td>3.27</td>
+      <td>6406.0</td>
+      <td>1896.0</td>
+      <td>4510.0</td>
+      <td>{"rings": [[[-122.47574537525485, 45.506843586...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>632063731</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>16520.0</td>
+      <td>250.0</td>
+      <td>83.3</td>
+      <td>5611.0</td>
+      <td>2.90</td>
+      <td>52126.0</td>
+      <td>70365.0</td>
+      <td>24060.0</td>
+      <td>5921.0</td>
+      <td>2385.0</td>
+      <td>3226.0</td>
+      <td>310.0</td>
+      <td>333484.0</td>
+      <td>345938.0</td>
+      <td>-0.11</td>
+      <td>-0.19</td>
+      <td>-0.21</td>
+      <td>3.52</td>
+      <td>4.59</td>
+      <td>11878.0</td>
+      <td>3007.0</td>
+      <td>8871.0</td>
+      <td>{"rings": [[[-122.47731741981552, 45.541653144...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>740967835</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>6478.0</td>
+      <td>86.0</td>
+      <td>50.0</td>
+      <td>2071.0</td>
+      <td>3.09</td>
+      <td>102853.0</td>
+      <td>119153.0</td>
+      <td>39285.0</td>
+      <td>2136.0</td>
+      <td>1451.0</td>
+      <td>620.0</td>
+      <td>65.0</td>
+      <td>440838.0</td>
+      <td>473466.0</td>
+      <td>-0.25</td>
+      <td>-0.31</td>
+      <td>-0.33</td>
+      <td>1.21</td>
+      <td>3.05</td>
+      <td>4168.0</td>
+      <td>1149.0</td>
+      <td>3019.0</td>
+      <td>{"rings": [[[-122.38411763578789, 45.505496118...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>749646031</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>11307.0</td>
+      <td>164.0</td>
+      <td>70.4</td>
+      <td>4519.0</td>
+      <td>2.47</td>
+      <td>64712.0</td>
+      <td>83114.0</td>
+      <td>33068.0</td>
+      <td>4753.0</td>
+      <td>2091.0</td>
+      <td>2428.0</td>
+      <td>234.0</td>
+      <td>339108.0</td>
+      <td>370919.0</td>
+      <td>-0.15</td>
+      <td>-0.14</td>
+      <td>-0.21</td>
+      <td>4.37</td>
+      <td>4.13</td>
+      <td>11428.0</td>
+      <td>5702.0</td>
+      <td>5726.0</td>
+      <td>{"rings": [[[-122.43374932796173, 45.537835321...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>750786722</td>
+      <td>1</td>
+      <td>BlockApportionment:US.BlockGroups;PointsLayer:...</td>
+      <td>1567.0</td>
+      <td>21.0</td>
+      <td>64.9</td>
+      <td>600.0</td>
+      <td>2.58</td>
+      <td>79595.0</td>
+      <td>104141.0</td>
+      <td>39920.0</td>
+      <td>613.0</td>
+      <td>328.0</td>
+      <td>272.0</td>
+      <td>13.0</td>
+      <td>344498.0</td>
+      <td>346494.0</td>
+      <td>-0.32</td>
+      <td>-0.37</td>
+      <td>-0.39</td>
+      <td>4.75</td>
+      <td>4.93</td>
+      <td>1921.0</td>
+      <td>1143.0</td>
+      <td>778.0</td>
+      <td>{"rings": [[[-122.40253301467071, 45.548390478...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, Joel McCune.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/notebooks/demo/enrich-demo.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

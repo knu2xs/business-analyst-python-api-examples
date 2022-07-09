@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Enrich Using Point Geometries &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,12 +13,13 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
    
@@ -51,9 +52,10 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -72,7 +74,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -304,6 +306,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -312,10 +315,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -327,18 +334,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Enrich-Using-Point-Geometries">
-<h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this headline">¶</a></h1>
+<h1>Enrich Using Point Geometries<a class="headerlink" href="#Enrich-Using-Point-Geometries" title="Permalink to this heading">¶</a></h1>
 <p>Starting off, we import a few required Python resources. While there are quite a few in there, the import of note is <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">arcgis.geoenrichment</span> <span class="pre">import</span> <span class="pre">Country,</span> <span class="pre">get_countries</span></code>. We are going to use this object and method to discover and perform our analysis.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -498,7 +508,7 @@ memory usage: 4.0+ KB
 </pre></div></div>
 </div>
 <section id="Select-Variables">
-<h2>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this headline">¶</a></h2>
+<h2>Select Variables<a class="headerlink" href="#Select-Variables" title="Permalink to this heading">¶</a></h2>
 <p>Next, we need to get some enrich variables to use. We can discover what is available using the <code class="docutils literal notranslate"><span class="pre">enrich_variables</span></code> property of the country object to retrieve a Pandas Data Frame of variables available for the country.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -944,7 +954,7 @@ memory usage: 4.0+ KB
 </div>
 </section>
 <section id="Enrich-with-Defaults">
-<h2>Enrich with Defaults<a class="headerlink" href="#Enrich-with-Defaults" title="Permalink to this headline">¶</a></h2>
+<h2>Enrich with Defaults<a class="headerlink" href="#Enrich-with-Defaults" title="Permalink to this heading">¶</a></h2>
 <p>Finally, we can enrich using the points and variables collected above. Please notice, we are not specifying the area around the input points, so the proximity defaults are being used - a straight line distance of one kilometer around the points. This circular area is then used to apportion data to the locations specified by the point geometries.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -1244,7 +1254,7 @@ memory usage: 60.9+ KB
 </div>
 </section>
 <section id="Specify-Proximity-Value">
-<h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this headline">¶</a></h2>
+<h2>Specify Proximity Value<a class="headerlink" href="#Specify-Proximity-Value" title="Permalink to this heading">¶</a></h2>
 <p>If wanting to use a value different from the default (highly recommended) of one kilometer, this can easily be specified using the <code class="docutils literal notranslate"><span class="pre">proximity_value</span></code> parameter.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1480,7 +1490,7 @@ memory usage: 60.9+ KB
 </div>
 </section>
 <section id="Specify-Proximity-Value-and-Metric">
-<h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this headline">¶</a></h2>
+<h2>Specify Proximity Value and Metric<a class="headerlink" href="#Specify-Proximity-Value-and-Metric" title="Permalink to this heading">¶</a></h2>
 <p>If desiring to use a different measure of distance, such as miles, this can be specified as well using the <code class="docutils literal notranslate"><span class="pre">proximity_metric</span></code> parameter.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -1717,7 +1727,7 @@ memory usage: 60.9+ KB
 </div>
 </section>
 <section id="Determine-Proximity-Type">
-<h2>Determine Proximity Type<a class="headerlink" href="#Determine-Proximity-Type" title="Permalink to this headline">¶</a></h2>
+<h2>Determine Proximity Type<a class="headerlink" href="#Determine-Proximity-Type" title="Permalink to this heading">¶</a></h2>
 <p>The above examples all use the default <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> of <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>. However, based on what transportation network you have available with the GIS source you are using, other methods are also available. These can be discovered using the <code class="docutils literal notranslate"><span class="pre">travel_modes</span></code> property of the <code class="docutils literal notranslate"><span class="pre">Country</span></code>. Any of the vaues in the <code class="docutils literal notranslate"><span class="pre">names</span></code> column are valid values for <code class="docutils literal notranslate"><span class="pre">proximity_type</span></code> in addition to the default <code class="docutils literal notranslate"><span class="pre">straight_line</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -2199,7 +2209,7 @@ During handling of the above exception, another exception occurred:
 </pre></div></div>
 </div>
 <section id="Enrich-using-Proximity-Parameters">
-<h3>Enrich using Proximity Parameters<a class="headerlink" href="#Enrich-using-Proximity-Parameters" title="Permalink to this headline">¶</a></h3>
+<h3>Enrich using Proximity Parameters<a class="headerlink" href="#Enrich-using-Proximity-Parameters" title="Permalink to this heading">¶</a></h3>
 <p><em>Most</em> people aren’t going to be driving as fast on a gravel road as they are on an interstate. This enables us to take into consideration the differences in speed based on the road type. Using drive time as a method to define proximity around a location is a much better represenation of how people actually move around and interact with their surrouding environemnt…such as finding food at a grocery store.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -2458,7 +2468,7 @@ memory usage: 60.9+ KB
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

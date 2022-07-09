@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Data Frame Accessor &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,13 +13,13 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
-    <link rel="prev" title="Preprocessing" href="preprocessing.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -48,24 +48,18 @@
 
 
 <h3>Navigation</h3>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.htm">Workflows</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="tools.htm">Tools</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="preprocessing.htm">Preprocessing</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Frame Accessor</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
-  <li><a href="tools.htm">Tools</a><ul>
-      <li>Previous: <a href="preprocessing.htm" title="previous chapter">Preprocessing</a></li>
-  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -78,7 +72,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -96,7 +90,7 @@
           <div class="body" role="main">
             
   <section id="data-frame-accessor">
-<h1>Data Frame Accessor<a class="headerlink" href="#data-frame-accessor" title="Permalink to this headline">¶</a></h1>
+<h1>Data Frame Accessor<a class="headerlink" href="#data-frame-accessor" title="Permalink to this heading">¶</a></h1>
 <p>Pandas includes the ability to <a class="reference external" href="https://pandas.pydata.org/docs/development/extending.html">extend the Data Frame object capabilities</a> using the
 concept of accessors, custom namespaces as a property of the <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> object. In
 the Python API for ArcGIS, the <code class="docutils literal notranslate"><span class="pre">spatial</span></code> namespace is an accessor, the GeoAccessor
@@ -116,7 +110,7 @@ create a <code class="docutils literal notranslate"><span class="pre">ba</span><
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

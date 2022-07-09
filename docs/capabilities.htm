@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Capabilities and Functionality &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,13 +13,14 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
-    <link rel="next" title="Current Capabilities" href="current.htm" />
+    <link rel="next" title="Workflows" href="workflows.htm" />
     <link rel="prev" title="Setup and Configuration" href="setup.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -51,14 +52,12 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Capabilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="current.htm">Current</a></li>
-<li class="toctree-l2"><a class="reference internal" href="next.htm">Next Release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="future.htm">Future</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Capabilities</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -66,7 +65,7 @@
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
       <li>Previous: <a href="setup.htm" title="previous chapter">Setup and Configuration</a></li>
-      <li>Next: <a href="current.htm" title="next chapter">Current Capabilities</a></li>
+      <li>Next: <a href="workflows.htm" title="next chapter">Workflows</a></li>
   </ul></li>
 </ul>
 </div>
@@ -79,7 +78,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -97,7 +96,7 @@
           <div class="body" role="main">
             
   <section id="capabilities-and-functionality">
-<h1>Capabilities and Functionality<a class="headerlink" href="#capabilities-and-functionality" title="Permalink to this headline">¶</a></h1>
+<h1>Capabilities and Functionality<a class="headerlink" href="#capabilities-and-functionality" title="Permalink to this heading">¶</a></h1>
 <p>Currently we have an aggressive list of capabilities we want to include, but only
 so many hours in the day. Still, we want to share a few useufl examples of how to
 use what is avilable today (<em>current</em>), what is coming soon (<em>next</em>),
@@ -108,58 +107,6 @@ being reviewed as a pull request, things you can reasonably expect to see in the
 release. <em>Future</em> includes functionality we are actively working on, and
 likely is in some working state, but emphatically not ready for release, yet.</p>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="current.htm">Current</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/introspection.htm">Introspection</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#GIS-Source">GIS <em>Source</em></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#Discovering-Countries">Discovering Countries</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Country-Source---local">Country Source - local</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Country-Source---Web-GIS">Country Source - Web GIS</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#Creating-a-Country">Creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#Enrichment-Variables">Enrichment Variables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#Filtering-Variables">Filtering Variables</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Get-Current-Income-Metrics">Get Current Income Metrics</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Get-Current-Key-Metrics">Get Current Key Metrics</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm#Onto-Enrich">Onto Enrich</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Enrich-Variables-for-Web-GIS">Enrich Variables for Web GIS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Enrich-Variables-for-Local">Enrich Variables for Local</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="next.htm">Next Release</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="enrich.htm">Enrich</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Dev Summit 2021</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Setup">Setup</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#General-Imports">General Imports</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Business-Analyst-Imports">Business Analyst Imports</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration-Data">Demonstration Data</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#GIS-Objects">GIS Objects</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration">Demonstration</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Point-List-Using-Defaults">Point List Using Defaults</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value">Specify Proximity Value</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Type">Specify Proximity Type</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="future.htm">Future</a></li>
-</ul>
 </div>
 </section>
 
@@ -174,7 +121,7 @@ likely is in some working state, but emphatically not ready for release, yet.</p
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

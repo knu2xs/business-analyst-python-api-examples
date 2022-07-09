@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Business Analyst Python API Examples &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,6 +13,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -50,9 +51,10 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -72,7 +74,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -90,7 +92,7 @@
           <div class="body" role="main">
             
   <section id="business-analyst-python-api-examples">
-<h1>Business Analyst Python API Examples<a class="headerlink" href="#business-analyst-python-api-examples" title="Permalink to this headline">¶</a></h1>
+<h1>Business Analyst Python API Examples<a class="headerlink" href="#business-analyst-python-api-examples" title="Permalink to this heading">¶</a></h1>
 <p>Recently, the development team working on Business Analyst has put significant resources into improving the
 functionality of Business Analyst through Python, specifically the Python API for ArcGIS, the <code class="docutils literal notranslate"><span class="pre">arcgis</span></code>
 package. This <a class="reference external" href="https://github.com/knu2xs/business-analyst-python-api-examples">repository</a> contains examples of how this functionality can be used.</p>
@@ -105,64 +107,47 @@ you may find some useful nuggets in here if you work with Business Analyst and P
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="setup.htm#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="setup.htm#conda">Conda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="setup.htm#creating-conda-environments">Creating Conda Environments</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="setup.htm#creating-an-environment-with-stable">Creating an Environment with Stable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup.htm#creating-an-environment-with-a-development-branch">Creating an Environment with a Development Branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.htm#creating-conda-environments">Creating Conda Environments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enrich.htm">Enrich Capabilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm">Introducation to ``enrich``</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#GIS-Source">GIS <em>Source</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Discovering-Countries">Discovering Countries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-intro.htm#Country-Source---local">Country Source - local</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-intro.htm#Country-Source---Web-GIS">Country Source - Web GIS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Creating-a-Country">Creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrichment-Variables">Enrichment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Filtering-Variables">Filtering Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-intro.htm#Get-Current-Income-Metrics">Get Current Income Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-intro.htm#Get-Current-Key-Metrics">Get Current Key Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Onto-Enrich">Onto Enrich</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrich-Study-Area-Polygons">Enrich Study Area Polygons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrich-Point-Locations">Enrich Point Locations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="enrich_options.htm">Enrich Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Enrich Using Standard Geography</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Create-a-GIS-Object">Create a GIS Object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Create-Country">Create Country</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Discover-Available-Geographic-Levels">Discover Available Geographic Levels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Enrich-a-County-by-FIPS">Enrich a County by FIPS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Point-List-Using-Defaults">Point List Using Defaults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value">Specify Proximity Value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Type">Specify Proximity Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="current.htm">Current</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/introspection.htm">Introspection</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#GIS-Source">GIS <em>Source</em></a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Discovering-Countries">Discovering Countries</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Country-Source---local">Country Source - local</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Country-Source---Web-GIS">Country Source - Web GIS</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Creating-a-Country">Creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Enrichment-Variables">Enrichment Variables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Filtering-Variables">Filtering Variables</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Get-Current-Income-Metrics">Get Current Income Metrics</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Get-Current-Key-Metrics">Get Current Key Metrics</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/introspection.htm#Onto-Enrich">Onto Enrich</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Enrich-Variables-for-Web-GIS">Enrich Variables for Web GIS</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/introspection.htm#Enrich-Variables-for-Local">Enrich Variables for Local</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="next.htm">Next Release</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="enrich.htm">Enrich</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Dev Summit 2021</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Setup">Setup</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="notebooks/enrich-std-geo.htm#General-Imports">General Imports</a></li>
-<li class="toctree-l6"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Business-Analyst-Imports">Business Analyst Imports</a></li>
-<li class="toctree-l6"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration-Data">Demonstration Data</a></li>
-<li class="toctree-l6"><a class="reference internal" href="notebooks/enrich-std-geo.htm#GIS-Objects">GIS Objects</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration">Demonstration</a></li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Point-List-Using-Defaults">Point List Using Defaults</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value">Specify Proximity Value</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Type">Specify Proximity Type</a></li>
-<li class="toctree-l5"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="future.htm">Future</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.htm">Workflows</a><ul>
@@ -177,6 +162,11 @@ you may find some useful nuggets in here if you work with Business Analyst and P
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Concantenating-for-Local-Enrich">Concantenating for Local Enrich</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Adding-Onto-Existing-Table">Adding Onto Existing Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Saving-Results">Saving Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Garbage-Disposal-Function">Garbage Disposal Function</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm">Enrich Store Locations</a><ul>
@@ -255,7 +245,16 @@ you may find some useful nuggets in here if you work with Business Analyst and P
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.htm">Preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="accessor.htm">Data Frame Accessor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="enrich_demo.htm#setup-data">Setup Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enrich_demo.htm#demonstration">Demonstration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="enrich_demo.htm#key-messages">Key Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enrich_demo.htm#open-pdx-coffee-demo-map">Open PDX Coffee Demo Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="enrich_demo.htm#open-enrich-demo-ipynb-notebook">Open <code class="docutils literal notranslate"><span class="pre">enrich-demo.ipynb</span></code> Notebook</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -273,7 +272,7 @@ you may find some useful nuggets in here if you work with Business Analyst and P
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

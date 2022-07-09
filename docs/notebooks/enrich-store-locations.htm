@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Enrich Store Locations &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,12 +13,13 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.htm" />
     <link rel="search" title="Search" href="../search.htm" />
     <link rel="next" title="Getting Data for Medical Fraud Detection" href="medical-fraud-enrich-aliases-to-excel.htm" />
@@ -53,7 +54,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../workflows.htm">Workflows</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="enrich-variable-name-lookup.htm">Enrich Variable Name Lookup</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Enrich Store Locations</a><ul>
@@ -90,6 +91,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
@@ -112,7 +114,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -344,6 +346,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -352,10 +355,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -367,18 +374,21 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
 <section id="Enrich-Store-Locations">
-<h1>Enrich Store Locations<a class="headerlink" href="#Enrich-Store-Locations" title="Permalink to this headline">¶</a></h1>
+<h1>Enrich Store Locations<a class="headerlink" href="#Enrich-Store-Locations" title="Permalink to this heading">¶</a></h1>
 <p>Enriching store locations from a Web GIS Feature Layer is a very common workflow. Here, we detail how to enrich store locations both using current capabilities (v2.0.0) and soon to be released capabilties (v2.0.1).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -396,9 +406,9 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Setup">
-<h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this headline">¶</a></h2>
+<h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this heading">¶</a></h2>
 <section id="Using-Python-DotEnv">
-<h3>Using Python-DotEnv<a class="headerlink" href="#Using-Python-DotEnv" title="Permalink to this headline">¶</a></h3>
+<h3>Using Python-DotEnv<a class="headerlink" href="#Using-Python-DotEnv" title="Permalink to this heading">¶</a></h3>
 <p>To not inadvertantly share a credentials, I make a habit of using the <code class="docutils literal notranslate"><span class="pre">python-dotenv</span></code> package. The url, username and password are saved in a file called <code class="docutils literal notranslate"><span class="pre">.env</span></code> in the project directory, and this file is always excluded from version tracking in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file. The contents of the <code class="docutils literal notranslate"><span class="pre">.env</span></code> file are really simple.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ESRI_GIS_URL = https://raddudes.maps.arcgis.com
 ESRI_GIS_USERNAME = oneRadDude
@@ -424,7 +434,7 @@ ESRI_GIS_PASSWORD = P@$$w0rd
 </div>
 </section>
 <section id="Parameterizing">
-<h3>Parameterizing<a class="headerlink" href="#Parameterizing" title="Permalink to this headline">¶</a></h3>
+<h3>Parameterizing<a class="headerlink" href="#Parameterizing" title="Permalink to this heading">¶</a></h3>
 <p>To make the notebook a little more portable, this cell is where values unique to your specific data or preferences can be easily modified.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -436,7 +446,7 @@ ESRI_GIS_PASSWORD = P@$$w0rd
 </div>
 </section>
 <section id="Create-GIS-Object-Instance">
-<h3>Create GIS Object Instance<a class="headerlink" href="#Create-GIS-Object-Instance" title="Permalink to this headline">¶</a></h3>
+<h3>Create GIS Object Instance<a class="headerlink" href="#Create-GIS-Object-Instance" title="Permalink to this heading">¶</a></h3>
 <p>Now, to get to data and services, we need a connection to a Web GIS. This is accomplished by connecting to ArcGIS Online in this case through the GIS object.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -458,9 +468,9 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </section>
 </section>
 <section id="Get-Store-Locations">
-<h2>Get Store Locations<a class="headerlink" href="#Get-Store-Locations" title="Permalink to this headline">¶</a></h2>
+<h2>Get Store Locations<a class="headerlink" href="#Get-Store-Locations" title="Permalink to this heading">¶</a></h2>
 <section id="Create-Item-Instance">
-<h3>Create Item Instance<a class="headerlink" href="#Create-Item-Instance" title="Permalink to this headline">¶</a></h3>
+<h3>Create Item Instance<a class="headerlink" href="#Create-Item-Instance" title="Permalink to this heading">¶</a></h3>
 <p>We now get the reference to the Item in the Web GIS using the <code class="docutils literal notranslate"><span class="pre">stores_itm_id</span></code> from above.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -495,7 +505,7 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </div>
 </section>
 <section id="Get-the-Layer">
-<h3>Get the Layer<a class="headerlink" href="#Get-the-Layer" title="Permalink to this headline">¶</a></h3>
+<h3>Get the Layer<a class="headerlink" href="#Get-the-Layer" title="Permalink to this heading">¶</a></h3>
 <p>The item only saves the reference to the layer, and the layer is how we access data, so we need to get the first layer saved as part of the item (the only layer) to access the data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -518,7 +528,7 @@ GIS @ <a href="https://bateam.maps.arcgis.com">https://bateam.maps.arcgis.com</a
 </div>
 </section>
 <section id="Get-the-Data">
-<h3>Get the Data<a class="headerlink" href="#Get-the-Data" title="Permalink to this headline">¶</a></h3>
+<h3>Get the Data<a class="headerlink" href="#Get-the-Data" title="Permalink to this heading">¶</a></h3>
 <p>Now, we can retrieve and examine the data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -616,9 +626,9 @@ memory usage: 272.0+ bytes
 </section>
 </section>
 <section id="Enrich-Data">
-<h2>Enrich Data<a class="headerlink" href="#Enrich-Data" title="Permalink to this headline">¶</a></h2>
+<h2>Enrich Data<a class="headerlink" href="#Enrich-Data" title="Permalink to this heading">¶</a></h2>
 <section id="Create-a-Country">
-<h3>Create a Country<a class="headerlink" href="#Create-a-Country" title="Permalink to this headline">¶</a></h3>
+<h3>Create a Country<a class="headerlink" href="#Create-a-Country" title="Permalink to this heading">¶</a></h3>
 <p>Since working with in the United States, we need a Country object instance referencing the USA to access this data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -641,7 +651,7 @@ memory usage: 272.0+ bytes
 </div>
 </section>
 <section id="Filter-to-Variables-of-Interest">
-<h3>Filter to Variables of Interest<a class="headerlink" href="#Filter-to-Variables-of-Interest" title="Permalink to this headline">¶</a></h3>
+<h3>Filter to Variables of Interest<a class="headerlink" href="#Filter-to-Variables-of-Interest" title="Permalink to this heading">¶</a></h3>
 <p>With over 19 thousand variables available, we are going to reduce it to something at least under 100.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -827,9 +837,9 @@ Total Available United States Enrichment Variables: 19,153
 </div>
 </section>
 <section id="Pre-Python-API-v2.0.1">
-<h3>Pre-Python API v2.0.1<a class="headerlink" href="#Pre-Python-API-v2.0.1" title="Permalink to this headline">¶</a></h3>
+<h3>Pre-Python API v2.0.1<a class="headerlink" href="#Pre-Python-API-v2.0.1" title="Permalink to this heading">¶</a></h3>
 <section id="Create-Geometries-to-Enrich">
-<h4>Create Geometries to Enrich<a class="headerlink" href="#Create-Geometries-to-Enrich" title="Permalink to this headline">¶</a></h4>
+<h4>Create Geometries to Enrich<a class="headerlink" href="#Create-Geometries-to-Enrich" title="Permalink to this heading">¶</a></h4>
 <p>Although there is a way to pass these parameters direclty in the JSON payload in the <code class="docutils literal notranslate"><span class="pre">geographies</span></code> parameter, the somewhat more obvious method is creation of the geometries using available methods.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -1336,9 +1346,9 @@ Total Available United States Enrichment Variables: 19,153
 </section>
 </section>
 <section id="Post-Python-API-v2.0.1">
-<h3>Post Python API v2.0.1<a class="headerlink" href="#Post-Python-API-v2.0.1" title="Permalink to this headline">¶</a></h3>
+<h3>Post Python API v2.0.1<a class="headerlink" href="#Post-Python-API-v2.0.1" title="Permalink to this heading">¶</a></h3>
 <section id="Travel-Modes">
-<h4>Travel Modes<a class="headerlink" href="#Travel-Modes" title="Permalink to this headline">¶</a></h4>
+<h4>Travel Modes<a class="headerlink" href="#Travel-Modes" title="Permalink to this heading">¶</a></h4>
 <p>Travel modes can be specified as input into the <code class="docutils literal notranslate"><span class="pre">Country.enrich</span></code> method using</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
@@ -1494,7 +1504,7 @@ Total Available United States Enrichment Variables: 19,153
 </div>
 </section>
 <section id="Use-Rural-Driving-Modes">
-<h4>Use <em>Rural</em> Driving Modes<a class="headerlink" href="#Use-Rural-Driving-Modes" title="Permalink to this headline">¶</a></h4>
+<h4>Use <em>Rural</em> Driving Modes<a class="headerlink" href="#Use-Rural-Driving-Modes" title="Permalink to this heading">¶</a></h4>
 <p>I really enjoy pointing out this distinction because I frequenlty use it. Other driving modes on ArcGIS Online discourage travel on unpaved roads. In many locales, this is decidedly <em>not</em> desirable for accurate analysis results. Where we are doing this analysis example, in Corpus Christi, Texas, you do not have to venure far out of town to find dirt and gravel roads, especially if you head south toward King Ranch. Consequently, for this example, to accurately model the way people travel, I am
 using <em>rural</em> driving modes.</p>
 <div class="nbinput docutils container">
@@ -2123,7 +2133,7 @@ memory usage: 5.0+ KB
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

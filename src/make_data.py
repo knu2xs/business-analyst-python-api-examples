@@ -18,6 +18,7 @@ permissions and limitations under the License.
 A copy of the license is available in the repository's
 LICENSE file.
 """
+import importlib
 import sys
 from pathlib import Path
 
@@ -47,19 +48,27 @@ def make_data():
         if not data_dir.exists():
             data_dir.mkdir(parents=True)
 
-    gdb_raw = dir_raw/'raw.gdb'
-    gdb_int = dir_int/'interim.gdb'
-    gdb_out = dir_out/'processed.gdb'
-    gdb_ext = dir_ext/'external.gdb'
-    gdb_lst = [gdb_raw, gdb_int, gdb_out, gdb_ext]
+    if importlib.util.find_spec('arcpy') is not None:
 
-    for gdb in gdb_lst:
-        if not arcpy.Exists(str(gdb)):
-            arcpy.management.CreateFileGDB(str(gdb.parent), str(gdb.name))
+        gdb_raw = dir_raw/'raw.gdb'
+        gdb_int = dir_int/'interim.gdb'
+        gdb_out = dir_out/'processed.gdb'
+        gdb_ext = dir_ext/'external.gdb'
+        gdb_lst = [gdb_raw, gdb_int, gdb_out, gdb_ext]
 
-    for itm in demo_data:
-        if isinstance(itm, DataAsset):
-            itm.df.spatial.to_featureclass(str(gdb_raw/itm.name))
+        for gdb in gdb_lst:
+            if not arcpy.Exists(str(gdb)):
+                arcpy.management.CreateFileGDB(str(gdb.parent), str(gdb.name))
+
+        for itm in demo_data.assets:
+            itm.to_feature_class(gdb_raw)
+
+        loc_id_lst = ['749646031', '740967835', '750786722', '632063731', '395959703']
+        for asset_name in ['pdx_coffee_locations', 'pdx_coffee_study_areas_3min']:
+            asset = getattr(demo_data, asset_name)
+            df = asset.df
+            df = df.loc[df['LOCNUM'].isin(loc_id_lst)].reset_index(drop=True)
+            df.spatial.to_featureclass(str(gdb_raw/f'{asset.name}_small'))
 
 
 if __name__ == '__main__':

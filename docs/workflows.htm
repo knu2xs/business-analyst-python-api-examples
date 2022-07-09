@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Workflows &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -13,6 +13,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
@@ -20,7 +21,7 @@
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
     <link rel="next" title="Enrich Variable Name Lookup" href="notebooks/enrich-variable-name-lookup.htm" />
-    <link rel="prev" title="Future" href="future.htm" />
+    <link rel="prev" title="Enrich Using Point Geometries" href="notebooks/enrich-pt-geom.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -51,7 +52,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="capabilities.htm">Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich.htm">Enrich Capabilities</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflows</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm">Enrich Variable Name Lookup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-store-locations.htm">Enrich Store Locations</a></li>
@@ -60,13 +61,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
-      <li>Previous: <a href="future.htm" title="previous chapter">Future</a></li>
+      <li>Previous: <a href="notebooks/enrich-pt-geom.htm" title="previous chapter">Enrich Using Point Geometries</a></li>
       <li>Next: <a href="notebooks/enrich-variable-name-lookup.htm" title="next chapter">Enrich Variable Name Lookup</a></li>
   </ul></li>
 </ul>
@@ -80,7 +82,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -98,7 +100,7 @@
           <div class="body" role="main">
             
   <section id="workflows">
-<h1>Workflows<a class="headerlink" href="#workflows" title="Permalink to this headline">¶</a></h1>
+<h1>Workflows<a class="headerlink" href="#workflows" title="Permalink to this heading">¶</a></h1>
 <p>The examples found in this section are much more about application, things I have
 cooked up and tried. These examples are much less likely to run in your environment
 since they may require additional dependencies or depend on datasets not included
@@ -116,6 +118,11 @@ with this repository.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Concantenating-for-Local-Enrich">Concantenating for Local Enrich</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Adding-Onto-Existing-Table">Adding Onto Existing Table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Saving-Results">Saving Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-variable-name-lookup.htm#Garbage-Disposal-Function">Garbage Disposal Function</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/enrich-store-locations.htm">Enrich Store Locations</a><ul>
@@ -205,7 +212,7 @@ with this repository.</p>
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

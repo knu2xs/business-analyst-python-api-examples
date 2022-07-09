@@ -1,26 +1,27 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Enrich &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
+    <title>Geoenrichment - Enrich &#8212; BA-Python-API-Examples 0.1.0-dev0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.htm" />
     <link rel="search" title="Search" href="search.htm" />
-    <link rel="next" title="Dev Summit 2021" href="notebooks/enrich-std-geo.htm" />
-    <link rel="prev" title="Next Release" href="next.htm" />
+    <link rel="next" title="Geoenrichment - Introduction to Enrich" href="notebooks/enrich-intro.htm" />
+    <link rel="prev" title="Setup and Configuration" href="setup.htm" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -51,33 +52,22 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="setup.htm">Setup</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="capabilities.htm">Capabilities</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="current.htm">Current</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="next.htm">Next Release</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Enrich</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Dev Summit 2021</a></li>
-<li class="toctree-l4"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="future.htm">Future</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Enrich Capabilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm">Introducation to ``enrich``</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enrich_options.htm">Enrich Examples</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.htm">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.htm">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_demo.htm">Enrich Demo</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.htm">Documentation overview</a><ul>
-  <li><a href="capabilities.htm">Capabilities and Functionality</a><ul>
-  <li><a href="next.htm">Next Release</a><ul>
-      <li>Previous: <a href="next.htm" title="previous chapter">Next Release</a></li>
-      <li>Next: <a href="notebooks/enrich-std-geo.htm" title="next chapter">Dev Summit 2021</a></li>
-  </ul></li>
-  </ul></li>
+      <li>Previous: <a href="setup.htm" title="previous chapter">Setup and Configuration</a></li>
+      <li>Next: <a href="notebooks/enrich-intro.htm" title="next chapter">Geoenrichment - Introduction to Enrich</a></li>
   </ul></li>
 </ul>
 </div>
@@ -90,7 +80,7 @@
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -107,31 +97,48 @@
 
           <div class="body" role="main">
             
-  <section id="enrich">
-<h1>Enrich<a class="headerlink" href="#enrich" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">enrich</span></code> method enables access to the vast treasure trove of demographic data
-available through Business Analyst. Whilemake  not wanting to rewrite the documentation
-here, I want to highlight the different possibilities of how to provide
-input geographies for enrichment. Obviously this is dependent on available time…</p>
+  <section id="geoenrichment-enrich">
+<h1>Geoenrichment - Enrich<a class="headerlink" href="#geoenrichment-enrich" title="Permalink to this heading">¶</a></h1>
+<p>The current release of the Python API for ArcGIS is 2.0.1, at least when I last updated this
+repository. These are the demonstration notebooks highlighting the capabilities included in
+this release.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Dev Summit 2021</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Setup">Setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#General-Imports">General Imports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Business-Analyst-Imports">Business Analyst Imports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration-Data">Demonstration Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#GIS-Objects">GIS Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/enrich-intro.htm">Introducation to ``enrich``</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#GIS-Source">GIS <em>Source</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Discovering-Countries">Discovering Countries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Country-Source---local">Country Source - local</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Country-Source---Web-GIS">Country Source - Web GIS</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Demonstration">Demonstration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Creating-a-Country">Creating a <code class="docutils literal notranslate"><span class="pre">Country</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrichment-Variables">Enrichment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Filtering-Variables">Filtering Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Get-Current-Income-Metrics">Get Current Income Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-intro.htm#Get-Current-Key-Metrics">Get Current Key Metrics</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Point-List-Using-Defaults">Point List Using Defaults</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value">Specify Proximity Value</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Type">Specify Proximity Type</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Onto-Enrich">Onto Enrich</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrich-Study-Area-Polygons">Enrich Study Area Polygons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-intro.htm#Enrich-Point-Locations">Enrich Point Locations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enrich_options.htm">Enrich Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-std-geo.htm">Enrich Using Standard Geography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Create-a-GIS-Object">Create a GIS Object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Create-Country">Create Country</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Discover-Available-Geographic-Levels">Discover Available Geographic Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-std-geo.htm#Enrich-a-County-by-FIPS">Enrich a County by FIPS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/enrich-pt-geom.htm">Enrich Using Point Geometries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Point-List-Using-Defaults">Point List Using Defaults</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value">Specify Proximity Value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Value-and-Metric">Specify Proximity Value and Metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Specify-Proximity-Type">Specify Proximity Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/enrich-pt-geom.htm#Use-a-Spatially-Enabled-Data-Frame">Use a Spatially Enabled Data Frame</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -149,7 +156,7 @@ input geographies for enrichment. Obviously this is dependent on available time�
       &copy;2021, Joel McCune.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
